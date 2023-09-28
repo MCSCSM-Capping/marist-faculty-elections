@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Site</title>
+    <!-- Google Font: Lobster -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <!-- Linking Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom styles for the page -->
+    <link rel="stylesheet" href="../public/stylesheets/base.css">
+</head>
+<body>
+
+<!-- Check if navbar should be shown -->
+{% if show_navbar %}
+{% block navbar %}
+<!-- Button to open the sidebar -->
+<button class="openbtn" onclick="openNav()">&#9776; Menu</button>
+
+<!-- Sidebar content -->
+<div id="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!-- Sidebar navigation links -->
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/homepage">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile_view">Profile View</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/name_and_picture">Name and Picture</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/statement">Statement</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/committees">Committees</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<!-- Scripts to open and close the sidebar -->
+<script>
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.width = "0";
+    }
+</script>
+{% endblock %}
+{% endif %}
+
+<div class="container mt-5">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Linking jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

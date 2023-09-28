@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../public/stylesheets/statement.css">
+
+<div class="container mt-5">
+    <div class="form-card">
+        <h2>Statement</h2>
+
+        <form action="/update_statement" method="post">
+            <div class="form-group">
+                <label for="userStatement">Your Personal Statement:</label>
+                <textarea class="form-control" id="userStatement" name="userStatement" rows="10" placeholder="Enter your personal statement here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Statement</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

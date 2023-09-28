@@ -1,0 +1,63 @@
+/* Container and Layout */
+.container {
+    max-width: 700px; /* Restricting the width for better visual appeal */
+}
+
+.form-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Typography */
+label {
+    color: #34495e;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Input Styles */
+.form-control, .form-control-file {
+    border-radius: 5px;
+    border: 1px solid #ecf0f1;
+    padding: 12px;
+    font-size: 16px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.form-control::placeholder {
+    color: #95a5a6;
+}
+
+.form-control:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 10px rgba(41, 128, 185, 0.25);
+}
+
+.form-control-file {
+    padding: 5px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: #2980b9;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color .2s, transform .1s;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #3498db;
+    transform: translateY(-2px);
+}
+
+/* Additional Spacing */
+.form-group {
+    margin-bottom: 20px;
+}
