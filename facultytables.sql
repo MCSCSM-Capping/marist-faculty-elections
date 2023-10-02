@@ -30,4 +30,4 @@ CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name ENUM(
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
---CREATE TABLE IF NOT EXISTS Admin_Login (Username INT PRIMARY KEY, Password INT);
+CREATE TABLE IF NOT EXISTS Admin_Login (Username INT PRIMARY KEY, Admin_Password VARCHAR(100)); --password may change type
