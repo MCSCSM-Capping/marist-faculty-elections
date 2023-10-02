@@ -5,18 +5,18 @@ DROP TABLE IF EXISTS Faculty;
 DROP TABLE IF EXISTS Committees;
 Drop TABLE IF EXISTS Schools;
 Drop TABLE IF EXISTS Faculty_Committees;
-
+DROP TABLE IF EXISTS Admin_Login;
 
 CREATE TABLE IF NOT EXISTS Faculty (CWID INT PRIMARY KEY, 
 RecActive ENUM("Y","N") DEFAULT "Y", --change to "N" when deleted
-First_Name TEXT, 
-Last_Name TEXT, 
-Preferred_Name TEXT, 
+First_Name VARCHAR(50), 
+Last_Name VARCHAR(50), 
+Preferred_Name VARCHAR(100), 
 Service_Statement TEXT, 
 Candidate_Statement TEXT, 
 School_ID INT,
 Is_On_Committee NUMBER(1),
-Website_URL TEXT, );
+Website_URL VARCHAR(150), );
 --INSERT INTO Faculty VALUES ();
 --Select * From Faculty;
 
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_N
 --INSERT INTO Committees VALUES ();
 --Select * From Committees;
 
-CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name);
- --INSERT INTO T6_User VALUES ("1","Y","Andrew.Tokash@marist.edu","ProfAPTO","2021-10-7","Admin","Andrew","Tokash","21 Marist Way");
- --SELECT * From T6_User;
+CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name ENUM("School of Communication and the Arts", 
+"School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
+"School of Social and Behavioural Sciences", "School of Professional Programs"));
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
