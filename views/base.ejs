@@ -9,13 +9,12 @@
     <!-- Linking Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom styles for the page -->
-    <link rel="stylesheet" href="../public/stylesheets/base.css">
+    <link rel="stylesheet" href="/stylesheets/base.css">
 </head>
 <body>
 
 <!-- Check if navbar should be shown -->
-{% if show_navbar %}
-{% block navbar %}
+
 <!-- Button to open the sidebar -->
 <button class="openbtn" onclick="openNav()">&#9776; Menu</button>
 
@@ -55,8 +54,7 @@
         document.getElementById("sidebar").style.width = "0";
     }
 </script>
-{% endblock %}
-{% endif %}
+
 
 <div class="container mt-5">
     {% block content %}
