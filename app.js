@@ -16,6 +16,9 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
+app.get('/', (req, res) => {
+    res.render('landing');
+});
 
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
