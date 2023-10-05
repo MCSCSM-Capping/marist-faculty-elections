@@ -20,6 +20,26 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
+app.post('/home', (req, res) => {
+    res.render('profile_view');
+});
+
+app.get('/profile', (req, res) => {
+    res.render('profile_view');
+});
+
+app.get('/picture', (req, res) => {
+    res.render('name_and_picture');
+});
+
+app.get('/statement', (req, res) => {
+    res.render('statement');
+});
+
+app.get('/committees', (req, res) => {
+    res.render('committees');
+});
+
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
 });
