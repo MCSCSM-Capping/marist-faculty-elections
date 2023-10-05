@@ -1,0 +1,63 @@
+/* Global Settings */
+body {
+    background-color: #f4f4f4; /* Light gray background for the whole page */
+}
+
+/* Profile Container and Layout */
+.profile-container {
+    background-color: #ffffff; /* White background for the profile card */
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin: 50px auto; /* Auto for center alignment */
+    max-width: 800px; /* Limiting the maximum width for larger screens */
+}
+
+/* Image Styling */
+.profile-img {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 4px solid #e1e1e1; /* Adding a border */
+    transition: transform .2s; /* Animation */
+}
+
+.profile-img:hover {
+    transform: scale(1.03); /* Slight zoom on hover */
+}
+
+/* Typography */
+h1 {
+    color: #2c3e50; /* Darker tone for the main name */
+    font-weight: 600; /* Semi-bold weight */
+}
+
+h4, h5 {
+    color: #34495e; /* Dark gray-blue for subheadings */
+    font-weight: 500; /* Medium weight */
+}
+
+p {
+    color: #7f8c8d; /* Gray for regular text */
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* HR Styling */
+hr {
+    border-top: 2px solid #ecf0f1; /* Slightly thicker and lighter color */
+    margin: 30px 0; /* Increased spacing */
+}
+
+/* Buttons/Links - In case you add them later */
+.profile-btn {
+    background-color: #2980b9; /* Blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.profile-btn:hover {
+    background-color: #3498db; /* Lighter Blue on hover */
+}
