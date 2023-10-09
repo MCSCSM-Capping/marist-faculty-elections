@@ -12,7 +12,7 @@
             <!-- Name Input -->
             <div class="form-group">
                 <label for="username">Name:</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ session['name'] or '' }}" placeholder="Enter your name">
+                <input type="text" class="form-control" id="user_name" name="user_name" value="{{ session['name'] or '' }}" placeholder="Enter your name">
             </div>
             
             <!-- Preferred Name Input -->
@@ -26,6 +26,9 @@
                 <label for="school">School:</label>
                 <input type="text" class="form-control" id="school" name="school" value="{{ session['school'] or '' }}" placeholder="Enter your school">
             </div>
+            <br>
+            <br>
+            <br>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
