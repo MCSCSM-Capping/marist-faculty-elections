@@ -1,6 +1,7 @@
 /* Container and Layout */
 .container {
     max-width: 700px; /* Restricting the width for better visual appeal */
+    margin: auto;
 }
 
 .form-card {
@@ -55,7 +56,6 @@ label {
 
 .btn-primary:hover, .btn-primary:focus {
     background-color: #3498db;
-    transform: translateY(-2px); /* Subtle lift on hover/focus */
 }
 
 /* Additional Spacing */

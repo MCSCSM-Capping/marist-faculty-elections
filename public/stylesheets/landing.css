@@ -19,21 +19,22 @@ body {
 /* Top-centered title styles */
 .title-top-centered {
     position: absolute;
+    text-align: center;
     top: 40px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(45deg, #f24646, #8e1c1c);
     padding: 10px 30px;
     border-radius: 8px;
-    color: #ffffff;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Helvetica', 'sans-serif';
+    font-stretch: semi-condensed;
+    color:rgb(255, 255, 255);
+    box-shadow: 0 5px 15px rgba(185, 75, 75, 0.2);
 }
 
 /* Styles for the login card */
 .card {
-    width: 320px;
+    width: 300px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
@@ -42,9 +43,11 @@ body {
 
 
 .card-header {
-    padding: 20px;
+    padding: 7px;
     background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
+    color:rgb(255, 255, 255);
+    font-family: 'Helvetica', 'sans-serif';
+    text-align: center;
 }
 
 .card-body {
@@ -64,20 +67,28 @@ body {
 /* Styles for the danger/red button */
 .btn-danger {
     background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
+    color:rgb(255, 255, 255);
+    padding: 10px 30px;
+    margin: 0;
+    position: absolute;
+    top: 56.5%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .btn-danger:hover, .btn-danger:focus {
-    background: linear-gradient(45deg, #8e1c1c, #f24646);
-    transform: translateY(-2px);
+    background: #ffffff;
+    color: black;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Styles for the outlined danger/red button */
 .btn-outline-danger {
     background-color: transparent;
-    border: 2px solid #f24646;
     color: #f24646;
+    font-size: 13px;
+    margin-left: -165px;
 }
 
 .btn-outline-danger:hover, .btn-outline-danger:focus {

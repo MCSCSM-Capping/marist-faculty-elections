@@ -1,11 +1,12 @@
 /* Container and Layout */
 .container {
     max-width: 700px; /* Restricting the width for better visual appeal */
+    margin: auto;
 }
 
 .form-card {
     background-color: #ffffff;
-    padding: 30px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
@@ -15,8 +16,9 @@
 label {
     color: #34495e;
     font-weight: 500;
-    display: block;
     margin-bottom: 8px;
+    display: inline-block;
+    width: 47%;
 }
 
 /* Input Styles */
@@ -26,6 +28,7 @@ label {
     padding: 12px;
     font-size: 16px;
     transition: border-color .2s, box-shadow .2s;
+    width: 97%;
 }
 
 .form-control::placeholder {
@@ -44,20 +47,26 @@ label {
 /* Button */
 .btn-primary {
     background-color: #2980b9;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 7px 100px;
     cursor: pointer;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
+    margin: 0;
+    position: absolute;
+    top: 56.5%;
+    left: 50%;
     transition: background-color .2s, transform .1s;
 }
 
 .btn-primary:hover, .btn-primary:focus {
     background-color: #3498db;
-    transform: translateY(-2px);
 }
 
 /* Additional Spacing */
 .form-group {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
 }
