@@ -1,0 +1,97 @@
+/* Global styling for body */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f8; 
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Styling for the login page container */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+}
+
+/* Card styling for login form */
+.card {
+    width: 340px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Card header styling */
+.card-header {
+    padding: 20px;
+    background: linear-gradient(45deg, #f24646, #8e1c1c);
+    color: #ffffff;
+    text-align: center; /* Added this line to center the text horizontally */
+}
+
+/* Card body styling */
+.card-body {
+    padding: 20px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* General form control styling */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    transition: border-color .3s ease;
+}
+
+/* Styling for focused form control */
+.form-control:focus {
+    border-color: #f24646;
+    box-shadow: 0 0 10px rgba(242,70,70,0.25);
+}
+
+/* General button styling */
+.btn {
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+/* Hover and focus styling for the danger button */
+.btn-danger {
+    background: linear-gradient(45deg, #f24646, #8e1c1c);
+    color: #ffffff;
+}
+
+/* Hover and focus styling for the danger button */
+.btn-danger:hover, .btn-danger:focus {
+    background: linear-gradient(45deg, #8e1c1c, #f24646);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the outline danger button */
+.btn-outline-danger {
+    background-color: transparent;
+    border: 2px solid #f24646;
+    color: #f24646;
+}
+
+/* Hover and focus styling for the outline danger button */
+.btn-outline-danger:hover, .btn-outline-danger:focus {
+    background: linear-gradient(45deg, #f24646, #8e1c1c);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
