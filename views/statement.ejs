@@ -1,0 +1,28 @@
+<%- include('./partials/base.ejs') %>
+
+<link rel="stylesheet" href="/stylesheets/statement.css">
+
+<div class="container mt-5">
+    <div class="form-card">
+        <h2>Statements</h2>
+
+        <form action="/update_statement" method="post">
+            <div class="form-group">
+                <label for="userStatement">Service Statement:</label>
+                <textarea class="form-control" id="userStatement" name="userStatement" rows="10" placeholder="Enter your personal statement here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="form-group">
+                <label for="userStatement">Candidate Statement:</label>
+                <textarea class="form-control" id="userStatement" name="userStatement" rows="10" placeholder="Enter your personal statement here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>

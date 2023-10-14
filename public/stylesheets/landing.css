@@ -1,0 +1,79 @@
+/* Global styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #555; /* Slightly darker for better contrast */
+    background: #fafafa; /* Neutral background for a more professional look */
+}
+
+/* Login Page Layout */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px; /* Added padding for better responsiveness on smaller screens */
+}
+
+/* Title */
+.title-top-centered {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 40px; 
+    border-radius: 12px;
+    font-family: 'Helvetica', 'sans-serif';
+    color: #fff;
+    background: #f24646; /* Removing gradient for a more professional look */
+    box-shadow: 0px 5px 15px rgba(185, 75, 75, 0.2); /* Slightly softened the shadow for a modern touch */
+}
+
+/* Card */
+.card {
+    width: 330px;
+    border: none; /* Border removed for a cleaner look */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s; /* Animation on hover */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Subtle lift on hover for interactivity */
+}
+
+.card-header {
+    background-color: #f24646;
+    color: #fff;
+    font-family: 'Helvetica', 'sans-serif';
+    text-align: center;
+    padding: 12px 16px; /* Consistent padding */
+    font-size: 1.25rem; /* Slightly increased font size for emphasis */
+}
+
+/* Button Styles */
+.btn-danger {
+    background-color: #f24646;
+    border: none;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: all 0.3s; /* Smoothens the hover effect */
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #e03535; /* Slightly brighter on hover */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+}
+
+.btn-outline-danger {
+    color: #f24646;
+    border: 2px solid #f24646;
+}
+
+.btn-outline-danger:hover, .btn-outline-danger:focus {
+    background-color: #f24646;
+    color: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Consistent with .btn-danger */
+}

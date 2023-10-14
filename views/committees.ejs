@@ -1,0 +1,19 @@
+<%- include('base.ejs') %>
+
+<link rel="stylesheet" href="/stylesheets/committees.css">
+
+<div class="container mt-4">
+    <div class="form-card">
+        <h2>Committees</h2>
+
+        <form action="/update_committees" method="post">
+            <div class="form-group">
+                <label for="committees">List Your Committees:</label>
+                <textarea class="form-control" id="committees" name="committees" rows="5" placeholder="Enter each committee on a new line or separate with commas."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Committees</button>
+        </form>
+    </div>
+</div>
+
+<%- include('./partials/footer.ejs') %>

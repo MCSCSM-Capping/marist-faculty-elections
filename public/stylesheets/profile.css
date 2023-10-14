@@ -1,0 +1,71 @@
+/* Global Settings */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif; /* Set a default font-family */
+}
+
+/* Profile Container */
+.profile-container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    max-width: 800px;
+    transition: transform .2s; /* Smooth transition for hover effects */
+}
+
+.profile-container:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+/* Profile Image Styling */
+.profile-img {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 4px solid #e1e1e1;
+    transition: transform .2s;
+}
+
+.profile-img:hover {
+    transform: scale(1.03);
+}
+
+/* Typography */
+h1 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 20px; /* Space out from subheading */
+}
+
+h4, h5 {
+    color: #34495e;
+    font-weight: 500;
+    margin-bottom: 10px; /* Consistent spacing for subheadings */
+}
+
+p {
+    color: #7f8c8d;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* HR Styling */
+hr {
+    border-top: 2px solid #ecf0f1;
+    margin: 30px 0;
+}
+
+/* Buttons/Links */
+.profile-btn {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.profile-btn:hover {
+    background-color: #3498db;
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Site</title>
+    <!-- Google Font: Lobster -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <!-- Linking Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Custom styles for the page -->
+    <style>
+        /* Global body styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+        }
+        /* Card styles including hover effect */
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Primary button styles */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #0056b3;
+            border-color: #004999;
+        }
+
+        /* Styles specific to the sidebar */
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #dc3545;  /* Red background color */
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar .navbar-nav {
+            width: 250px;
+            flex-direction: column;
+        }
+
+        #sidebar a {
+            padding: 10px 15px 10px 30px;
+            text-decoration: none;
+            font-size: 25px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+            background-color: rgba(255, 0, 0, 0.7);  /* Slightly darker red on hover */
+        }
+
+        #sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            color: white;  /* Color of the close button */
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #dc3545;  /* Red background color */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .openbtn:hover {
+            background-color: rgba(255, 0, 0, 0.7);  /* Slightly darker red on hover */
+        }
+
+        /* Style for circular images */
+        .img-circle {
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Check if navbar should be shown -->
+{% if show_navbar %}
+{% block navbar %}
+<!-- Button to open the sidebar -->
+<button class="openbtn" onclick="openNav()">&#9776; Menu</button>
+
+<!-- Sidebar content -->
+<div id="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!-- Sidebar navigation links -->
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/homepage">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile_view">Profile View</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/name_and_picture">Name and Picture</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/statement">Statement</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/committees">Committees</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<!-- Scripts to open and close the sidebar -->
+<script>
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.width = "0";
+    }
+</script>
+{% endblock %}
+{% endif %}
+
+<div class="container mt-5">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Linking jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
