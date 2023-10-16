@@ -8,14 +8,14 @@
         <h2 class="card-header text-center">Admin Login</h2>
         <div class="card-body">
             <!-- Login form -->
-            <form method="POST" action="/admin_authenticate">
+            <form method="POST" action="/admin_authenticate"> <!-- Change action to match our route -->
                 <div class="form-group">
                     <label for="admin_username">Username</label>
-                    <input type="text" id="admin_username" name="admin_username" class="form-control" required>
+                    <input type="text" id="admin_username" name="username" class="form-control" required> <!-- name attribute changed to "username" -->
                 </div>
                 <div class="form-group">
                     <label for="admin_password">Password</label>
-                    <input type="password" id="admin_password" name="admin_password" class="form-control" required>
+                    <input type="password" id="admin_password" name="password" class="form-control" required> <!-- name attribute changed to "password" -->
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Login" class="btn btn-danger btn-block">
@@ -30,4 +30,5 @@
         </div>
     </div>
 </div>
-<!-- End login page layout -->
+
+<%- include('./partials/footer') %>
