@@ -1,6 +1,5 @@
-{% extends "base.html" %}
+<%- include('base.ejs') %>
 
-{% block content %}
 <link rel="stylesheet" href="/stylesheets/committees.css">
 
 <div class="container mt-4">
@@ -16,4 +15,5 @@
         </form>
     </div>
 </div>
-{% endblock %}
+
+<%- include('./partials/footer.ejs') %>

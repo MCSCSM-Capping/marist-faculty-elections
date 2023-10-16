@@ -1,13 +1,15 @@
-/* Container and Layout */
+/* Base Styles */
 .container {
-    max-width: 700px; /* Restricting the width for better visual appeal */
+    max-width: 700px;
+    margin: auto;
 }
 
+/* Form Card */
 .form-card {
-    background-color: #ffffff; /* White background for the card */
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px; /* Rounded corners for the card */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Typography */
@@ -22,43 +24,46 @@ h2 {
 label {
     color: #34495e;
     font-weight: 500;
+    display: block; /* Ensures that the label takes up the full width */
+    margin-bottom: 5px; /* Spacing between label and input/textarea */
 }
 
-/* Textarea */
+/* Form Controls */
 .form-control {
+    width: 100%; /* Ensures full width within parent */
     border-radius: 5px;
     border: 1px solid #ecf0f1;
     padding: 15px;
     font-size: 16px;
     transition: border-color .2s, box-shadow .2s;
-    resize: vertical; /* Allows vertical resizing only */
+    resize: vertical;
 }
 
 .form-control::placeholder {
-    color: #95a5a6; /* Light gray color for the placeholder text */
+    color: #95a5a6;
 }
 
 .form-control:focus {
     border-color: #2980b9;
-    box-shadow: 0 0 10px rgba(41, 128, 185, 0.25); /* Subtle glow on focus */
+    box-shadow: 0 0 10px rgba(41, 128, 185, 0.25);
 }
 
-/* Button */
+/* Button Styles */
 .btn-primary {
     background-color: #2980b9;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color .2s, transform .1s; /* Added transform transition */
+    transition: background-color .2s, transform .1s;
 }
 
 .btn-primary:hover, .btn-primary:focus {
     background-color: #3498db;
-    transform: translateY(-2px); /* Subtle lift on hover/focus */
+    transform: translateY(-2px);
 }
 
-/* Additional Spacing */
+/* Layout and Spacing */
 .form-group {
     margin-bottom: 30px;
 }
