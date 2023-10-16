@@ -84,9 +84,19 @@ app.post('/admin_authenticate', (req, res) => {
     }
 });
 
-// Admin view page with middleware to check if user is admin
+// Admin view page (profile search) with middleware to check if user is admin
 app.get('/admin_view', ensureAdmin, (req, res) => {
     res.render('admin_view');
+});
+
+// Admin View and Manage
+app.get('/view_and_manage', (req, res) => {
+    res.render('view_and_manage');
+});
+
+// Admin Query Preview
+app.get('/query_preview', (req, res) => {
+    res.render('query_preview');
 });
 
 app.listen(3000, () => {

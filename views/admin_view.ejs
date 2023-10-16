@@ -1,31 +1,122 @@
+<%- include('./partials/adminbase.ejs') %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin View</title>
+    <title>Search Profile</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container mt-5">
-    <h1 class="text-center">Admin Dashboard</h1>
+    <h1 class="text-center">Search Profile</h1>
     <hr>
 
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h3>Section 1</h3>
-            <p>This is a sample section for the admin dashboard. You can put relevant data or controls here.</p>
-        </div>
-        <div class="col-md-6">
-            <h3>Section 2</h3>
-            <p>This is another sample section. Add any other data or controls relevant to the admin's needs.</p>
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-8">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter profile name or details..." aria-label="Profile search" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" id="button-addon2">Search</button>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Filter dropdown boxes -->
+    <div class="row mt-3 justify-content-center">
+        <div class="col-md-3 mb-3">
+            <label for="schoolFilter">All Schools</label>
+            <select class="form-control" id="schoolFilter">
+                <option selected>Select a School</option>
+                <option value="school1">School 1</option>
+                <option value="school2">School 2</option>
+                <!-- ... -->
+            </select>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+            <label for="committeeFilter">All Committees</label>
+            <select class="form-control" id="committeeFilter">
+                <option selected>Select a Committee</option>
+                <option value="committee1">Committee 1</option>
+                <option value="committee2">Committee 2</option>
+                <!-- ... -->
+            </select>
+        </div>
+    </div>
+
+    <!-- Buttons for "Add to Query" and "View Profile" -->
+    <div class="row mt-3 justify-content-center">
+        <div class="col-md-3 mb-3">
+            <button class="btn btn-danger btn-block">Add to Query</button>
+        </div>
+        <div class="col-md-3 mb-3">
+            <button class="btn btn-danger btn-block">View Profile</button>
+        </div>
+    </div>
+
+    <!-- Display search results -->
     <div class="row mt-5">
         <div class="col-12">
-            <a href="/" class="btn btn-danger btn-block">Logout or Go Back to Main Page</a>
+            <h3>Search Results</h3>
+            
+            <!-- Table to display search results -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Image</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Preferred Name</th>
+                        <th>School</th>
+                        <th>Committee(s)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add dynamic content here to populate the table rows -->
+                    <!-- Example: 
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
+                        <td>Doe</td>
+                        <td>John</td>
+                        <td>Johnny</td>
+                        <td>School 1</td>
+                        <td>Committee 1</td>
+                        <td><a href="#">View</a></td>
+                    </tr>
+                    -->
+
+                    <!-- Blank rows for illustration purposes -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- You can add as many blank rows as you need -->
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
