@@ -4,7 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const CASAuth = require('express-cas-authentication');
+const CASAuthentication = require('express-cas-authentication');
 
 const app = express();
 
@@ -20,14 +20,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 app.set('view engine', 'ejs');
 
-var cas = new CASAuth({
+var cas = new CASAuthentication({
     cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
     service_url: 'http://fac_voting.ecrl.marist.edu',
     cas_version: "3.0",
     renew: false,
     is_dev_mode: false,
-    dev_mode_user: 'dev',
-    session_info: "sesssion_info"
+    dev_mode_user: 'dev'
 });
 
 // Middleware to ensure user authentication
@@ -51,8 +50,9 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
-app.get('/login', cas.bounce, (req, res) => {
+app.get('/authenticate', cas.bounce, (req, res) => {
     //Initialize cookie for user
+    req.session.isUserAuthenticated = true;
     req.session.user = cas.cas_user;
     res.redirect('profile_view');
 });
