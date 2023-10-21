@@ -4,7 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const CASAuthentication = require('express-cas-authentication');
+const CASAuthentication = require('cas-authentication');
 
 const app = express();
 
@@ -57,6 +57,11 @@ app.get('/authenticate', cas.bounce, (req, res) => {
     res.redirect('profile_view');
 });
 
+// app.get('/authenticate', (req, res) => {
+//     req.session.isUserAuthenticated = true;
+//     req.session.user = cas.cas_user;
+//     res.redirect('profile_view');
+// });
 
 
 // Profile view GET handler
