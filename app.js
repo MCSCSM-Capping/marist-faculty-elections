@@ -4,7 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const CASAuthentication = require('cas-authentication');
+const CASAuthentication = require('express-cas-authentication');
 
 const app = express();
 
@@ -25,7 +25,7 @@ var cas = new CASAuthentication({
     service_url: 'http://fac_voting.ecrl.marist.edu',
     cas_version: "3.0",
     renew: false,
-    is_dev_mode: false,
+    is_dev_mode: true,
     dev_mode_user: 'dev'
 });
 
