@@ -3,19 +3,31 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const CASAuthentication = require('express-cas-authentication');
 
 const app = express();
 
 // Session data and cookie setup for users
 app.use(session({
-    secret: 'secret',
+    secret: 'secret key',
     saveUninitialized: false,
     resave: false
 }));
 
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser())
 app.set('view engine', 'ejs');
+
+var cas = new CASAuthentication({
+    cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
+    service_url: 'http://fac_voting.ecrl.marist.edu',
+    cas_version: "3.0",
+    renew: false,
+    is_dev_mode: true,
+    dev_mode_user: 'dev'
+});
 
 // Middleware to ensure user authentication
 const ensureAuthenticated = (req, res, next) => {
@@ -37,6 +49,20 @@ const ensureAdmin = (req, res, next) => {
 app.get('/', (req, res) => {
     res.render('landing');
 });
+
+app.get('/authenticate', cas.bounce, (req, res) => {
+    //Initialize cookie for user
+    req.session.isUserAuthenticated = true;
+    req.session.user = cas.cas_user;
+    res.redirect('profile_view');
+});
+
+// app.get('/authenticate', (req, res) => {
+//     req.session.isUserAuthenticated = true;
+//     req.session.user = cas.cas_user;
+//     res.redirect('profile_view');
+// });
+
 
 // Profile view GET handler
 app.get('/profile_view', ensureAuthenticated, (req, res) => {
@@ -98,6 +124,8 @@ app.get('/view_and_manage', (req, res) => {
 app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
+
+
 
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
