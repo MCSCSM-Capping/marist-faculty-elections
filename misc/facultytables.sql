@@ -12,8 +12,8 @@ RecActive ENUM("Y","N") DEFAULT "Y", --change to "N" when deleted
 First_Name VARCHAR(50), 
 Last_Name VARCHAR(50), 
 Preferred_Name VARCHAR(100), 
-Service_Statement TEXT, 
-Candidate_Statement TEXT, 
+Service_Statement VARCHAR(255) DEFAULT "Faculty member has not written a statement of service.", 
+Candidate_Statement VARCHAR(800) DEFAULT "Not Available.", 
 School_ID INT,
 Is_On_Committee BOOLEAN,
 Website_URL VARCHAR(150) );
