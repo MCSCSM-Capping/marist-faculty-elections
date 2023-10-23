@@ -2,7 +2,15 @@
 .container {
     max-width: 700px;
     margin: auto;
-    padding: 20px; /* Padding to ensure content doesn't touch the edge at smaller screens */
+    padding: 20px;
+    /* Padding to ensure content doesn't touch the edge at smaller screens */
+}
+
+.img-thumbnail {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 /* Form Card Styles */
@@ -10,8 +18,8 @@
     background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); 
-    margin-bottom: 30px; 
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 /* Typography */
@@ -36,7 +44,7 @@ label {
     padding: 15px;
     font-size: 16px;
     transition: border-color .2s, box-shadow .2s;
-    width: 100%; 
+    width: 100%;
 }
 
 .form-control::placeholder {
@@ -44,13 +52,16 @@ label {
 }
 
 .form-control:focus {
-    border-color: #f24646; /* Updated focus border color to match the red button */
-    box-shadow: 0 0 10px rgba(242, 70, 70, 0.25); /* Shadow with red hue when input is focused */
+    border-color: #f24646;
+    /* Updated focus border color to match the red button */
+    box-shadow: 0 0 10px rgba(242, 70, 70, 0.25);
+    /* Shadow with red hue when input is focused */
 }
 
 /* Button Styles */
 .btn-primary {
-    background-color: #f24646; /* Red color */
+    background-color: #f24646;
+    /* Red color */
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -58,9 +69,12 @@ label {
     transition: background-color .2s, transform .1s;
 }
 
-.btn-primary:hover, .btn-primary:focus {
-    background-color: #e02121; /* Darker shade of red for hover */
-    transform: translateY(-2px); /* Slight lift on hover/focus */
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #e02121;
+    /* Darker shade of red for hover */
+    transform: translateY(-2px);
+    /* Slight lift on hover/focus */
 }
 
 /* Spacing and Layout */
