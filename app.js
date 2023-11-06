@@ -5,7 +5,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
-//var connection = require('./database')
+var connection = require('./database')
 const app = express();
 
 // Session data and cookie setup for users
@@ -126,16 +126,33 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
-/*app.get('/admin_getData', (req, res) => {
-    connection.query("SHOW TABLES", (err, result) =>{
+app.get('/admin_getData', async (req, res) => {
+    connection.query("SELECT School_Name FROM Schools;", (err, result) =>{
         if (err) {
+            console.log(err)
             res.status(500).send(null);
             throw err;
         } else {
             res.status(200).send(JSON.stringify(result[0]));
+            console.log(result[0]);
         }
     });
-});*/
+});
+
+app.get('/sql', (req, res) => {
+    console.log("At /SQL");
+    connection.query("SELECT School_Name FROM Schools;", (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(JSON.stringify(result[0]));
+            console.log(result[0]);
+        }
+    });
+    console.log("Past query");
+});
 
 /*app.get('/javascript/admin_view.js', (req, res) => {
     res.render('javascript/admin_view.js')
@@ -144,4 +161,5 @@ app.get('/query_preview', (req, res) => {
 //port app is listening on
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
+
 });
