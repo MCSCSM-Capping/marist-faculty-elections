@@ -27,6 +27,13 @@ CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_N
 CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name ENUM("School of Communication and the Arts", 
 "School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
 "School of Social and Behavioural Sciences", "School of Professional Programs"));
+INSERT INTO Schools VALUES (0, "School of Communication and the Arts");
+INSERT INTO Schools VALUES (1, "School of Computer Science and Mathematics");
+INSERT INTO Schools VALUES (2, "School of Liberal Arts");
+INSERT INTO Schools VALUES (3, "School of Management");
+INSERT INTO Schools VALUES (4, "School of Science");
+INSERT INTO Schools VALUES (5, "School of Social and Behavioural Sciences");
+INSERT INTO Schools VALUES (6, "School of Professional Programs");
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
