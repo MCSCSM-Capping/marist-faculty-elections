@@ -15,7 +15,7 @@ app.use(session({
     resave: false
 }));
 
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 app.set('view engine', 'ejs');
@@ -57,6 +57,7 @@ app.get('/authenticate', cas.bounce, (req, res) => {
     res.redirect('profile_view');
 });
 
+//junk code
 // app.get('/authenticate', (req, res) => {
 //     req.session.isUserAuthenticated = true;
 //     req.session.user = cas.cas_user;
@@ -125,8 +126,7 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
-
-
+//port app is listening on
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
 });
