@@ -5,7 +5,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
-var connection = require('./database')
+//var connection = require('./database')
 const app = express();
 
 // Session data and cookie setup for users
@@ -126,7 +126,7 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
-app.get('/admin_getData', (req, res) => {
+/*app.get('/admin_getData', (req, res) => {
     connection.query("SHOW TABLES", (err, result) =>{
         if (err) {
             res.status(500).send(null);
@@ -135,7 +135,11 @@ app.get('/admin_getData', (req, res) => {
             res.status(200).send(JSON.stringify(result[0]));
         }
     });
-});
+});*/
+
+/*app.get('/javascript/admin_view.js', (req, res) => {
+    res.render('javascript/admin_view.js')
+});*/
 
 //port app is listening on
 app.listen(3000, () => {
