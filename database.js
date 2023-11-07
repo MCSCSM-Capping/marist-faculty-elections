@@ -28,7 +28,7 @@ const mysql = require('mysql');
 //const mysql = require('mysql2');
 var pool = mysql.createPool({
     //host: "localhost:3000",
-    host: "127.0.0.1",
+    host: "db",
     user: "root",
     password: "example",
     database: "FacultyElectionsDB",
@@ -39,21 +39,21 @@ pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     console.log('The solution is: ', results[0].solution);
 });
 
-// function query(queryStr, callback) {
-//     pool.getConnection(function(err, connection) {
-//         if (err) {
-//             console.log(err);
-//             return callback(err);
-//         }
-//         connection.query(queryStr, function(err, results) {
-//             connection.release(); // always put connection back in pool after last query
-//             if (err){
-//                     console.log(err);
-//                     return callback(err);
-//                 }
-//             callback(null, results);
-//         });
-//     });
-// }
+function query(queryStr, callback) {
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            console.log(err);
+            return callback(err);
+        }
+        connection.query(queryStr, function(err, results) {
+            connection.release(); // always put connection back in pool after last query
+            if (err){
+                    console.log(err);
+                    return callback(err);
+                }
+            callback(null, results);
+        });
+    });
+}
 
-//module.exports.query = query;
+module.exports.query = query;
