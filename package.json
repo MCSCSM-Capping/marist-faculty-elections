@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nicholasfiore/marist-faculty-elections#readme",
   "dependencies": {
+    "bootstrap": "^5.3.2",
     "cas-authentication": "^0.0.8",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.9",
