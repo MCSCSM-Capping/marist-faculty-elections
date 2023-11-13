@@ -1,89 +1,90 @@
 /* Global body styles */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif; /* Sets the default font for the body */
+    background-color: #f4f4f4; /* Sets the background color for the body */
 }
+
 /* Card styles including hover effect */
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Initial shadow for card */
+    transition: 0.3s; /* Transition effect for hover */
 }
 
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); /* Enhanced shadow when hovered */
 }
 
 /* Primary button styles */
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
+    background-color: #007bff; /* Primary button background color */
+    border-color: #007bff; /* Border color matching the background */
+    color: #fff; /* Text color for the button */
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: #0056b3;
-    border-color: #004999;
+    background-color: #0056b3; /* Darker background on hover/focus/active */
+    border-color: #004999; /* Darker border color on hover/focus/active */
 }
 
 /* Styles specific to the sidebar */
 #sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
+    height: 100%; /* Full height for the sidebar */
+    width: 0; /* Initial width set to 0 */
+    position: fixed; /* Fixed position to stay in view */
+    z-index: 1; /* Z-index for layering */
     top: 0;
     left: 0;
-    background-color: #dc3545;  /* Red background color */
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
+    background-color: #dc3545; /* Red background color for sidebar */
+    overflow-x: hidden; /* Hides horizontal overflow */
+    transition: 0.5s; /* Transition for opening/closing */
+    padding-top: 60px; /* Top padding */
 }
 
 #sidebar .navbar-nav {
-    width: 250px;
-    flex-direction: column;
+    width: 250px; /* Width of the navigation bar */
+    flex-direction: column; /* Aligns nav items in a column */
 }
 
 #sidebar a {
-    padding: 10px 15px 10px 30px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
-    transition: 0.3s;
+    padding: 10px 15px 10px 30px; /* Padding for links */
+    text-decoration: none; /* Removes underline from links */
+    font-size: 25px; /* Font size for links */
+    color: white; /* Text color for links */
+    display: block; /* Displays links as blocks */
+    transition: 0.3s; /* Transition for hover effect */
 }
 
 #sidebar a:hover {
-    color: #f1f1f1;
-    background-color: rgba(255, 0, 0, 0.7);  /* Slightly darker red on hover */
+    color: #f1f1f1; /* Text color on hover */
+    background-color: rgba(255, 0, 0, 0.7); /* Darker red background on hover */
 }
 
 #sidebar .closebtn {
-    position: absolute;
+    position: absolute; /* Absolute position for the close button */
     top: 0;
-    right: 25px;
-    font-size: 36px;
+    right: 25px; /* Positioning to the right */
+    font-size: 36px; /* Font size for the close button */
     margin-left: 50px;
-    color: white;  /* Color of the close button */
+    color: white; /* Color of the close button */
 }
 
 .openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #dc3545;  /* Red background color */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    position: absolute;
+    font-size: 20px; /* Font size for the open button */
+    cursor: pointer; /* Cursor changes to pointer */
+    background-color: #dc3545; /* Red background color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    padding: 10px 15px; /* Padding around the button */
+    position: absolute; /* Absolute positioning */
     left: 0;
     top: 0;
 }
 
 .openbtn:hover {
-    background-color: rgba(255, 0, 0, 0.7);  /* Slightly darker red on hover */
+    background-color: rgba(255, 0, 0, 0.7); /* Darker red on hover */
 }
 
 /* Style for circular images */
 .img-circle {
-    border-radius: 50%;
+    border-radius: 50%; /* Rounds the edges to make the image circular */
 }
