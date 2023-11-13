@@ -1,77 +1,77 @@
 /* Global styling for body */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f6f8; 
-    line-height: 1.6;
-    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Default font family set to Roboto */
+    background-color: #f4f6f8; /* Light grey background color */
+    line-height: 1.6; /* Line height for better readability */
+    margin: 0; /* Removes default margin */
 }
 
 /* Styling for the login page container */
 .login-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
+    display: flex; /* Flexbox layout for alignment */
+    flex-direction: column; /* Stacks items vertically */
+    justify-content: center; /* Centers items vertically */
+    align-items: center; /* Centers items horizontally */
+    height: calc(100vh - 60px); /* Full viewport height minus 60px */
 }
 
 /* Card styling for login form */
 .card {
-    width: 340px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    width: 340px; /* Fixed width for the card */
+    background-color: #ffffff; /* White background */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden; /* Hides anything outside the border-radius */
 }
 
 /* Card header styling */
 .card-header {
-    padding: 20px;
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
-    text-align: center; /* Added this line to center the text horizontally */
+    padding: 20px; /* Padding inside the header */
+    background: linear-gradient(45deg, #f24646, #8e1c1c); /* Gradient background */
+    color: #ffffff; /* White text color */
+    text-align: center; /* Centers the text horizontally */
 }
 
 /* Card body styling */
 .card-body {
-    padding: 20px;
+    padding: 20px; /* Padding inside the body */
 }
 
 /* Form group styling */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Space below each form group */
 }
 
 /* General form control styling */
 .form-control {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    transition: border-color .3s ease;
+    width: 100%; /* Full width of parent */
+    padding: 10px; /* Padding inside the input */
+    font-size: 16px; /* Larger font size for readability */
+    border-radius: 5px; /* Rounded edges */
+    border: 1px solid #ddd; /* Light grey border */
+    transition: border-color .3s ease; /* Smooth transition for border color */
 }
 
 /* Styling for focused form control */
 .form-control:focus {
-    border-color: #f24646;
-    box-shadow: 0 0 10px rgba(242,70,70,0.25);
+    border-color: #f24646; /* Changes border color on focus */
+    box-shadow: 0 0 10px rgba(242,70,70,0.25); /* Adds a glow effect on focus */
 }
 
 /* General button styling */
 .btn {
-    border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all .3s ease;
+    border: none; /* Removes default border */
+    border-radius: 5px; /* Rounded edges */
+    padding: 12px 20px; /* Padding for a larger click area */
+    font-size: 16px; /* Larger font size for readability */
+    cursor: pointer; /* Changes cursor to indicate clickable */
+    transition: all .3s ease; /* Smooth transition for all properties */
 }
 
 /* Hover and focus styling for the danger button */
 .btn-danger {
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
+    background: linear-gradient(45deg, #f24646, #8e1c1c); /* Gradient background */
+    color: #ffffff; /* White text color */
 }
 
 /* Hover and focus styling for the danger button */
