@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 
 var cas = new CASAuthentication({
     cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
-    service_url: 'http://fac_voting.ecrl.marist.edu',
+    service_url: 'http://fac-voting.ecrl.marist.edu',
     cas_version: "2.0",
     renew: false,
 
