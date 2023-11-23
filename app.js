@@ -5,6 +5,8 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
+const https = require('https');
+const fs = require('node:fs');
 const util = require('util');
 
 const app = express();
@@ -140,7 +142,15 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
+const options = {
+    key: fs.readFileSync('/etc/ssl/private/pkey_facvoting.key'),
+    cert: fs.readFileSync('/etc/ssl/certs/fac-voting_ecrl_marist_edu_cert.cer')
+}
+
+https.createServer(options, app).listen(443);
+
+
 //port app is listening on
-app.listen(3000, () => {
-    console.log('App Listening to port 3000');
-});
+// app.listen(3000, () => {
+//     console.log('App Listening to port 3000');
+// });

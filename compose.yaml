@@ -14,7 +14,43 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 3000:3000
+      - 80:80
+      - 443:443
+    volumes:
+      - ./etc/ssl:/etc/ssl
+  db:
+    image: mysql
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - mysql:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+volumes:
+  mysql:
+  ssl:
+
+
+#mysql
+#version: "3"
+
+#services:
+#  mysql:
+#    image: mysql:8.0
+#    environment:
+#      - MYSQL_ROOT_PASSWORD
+#    volumes:
+#      - mysql:/var/lib/mysql
+#
+#volumes:
+#  mysql:
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
@@ -48,4 +84,3 @@ services:
 # secrets:
 #   db-password:
 #     file: db/password.txt
-
