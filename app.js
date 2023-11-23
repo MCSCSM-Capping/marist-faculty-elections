@@ -143,12 +143,12 @@ app.get('/query_preview', (req, res) => {
 });
 
 const options = {
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
+    key: fs.readFileSync('/etc/ssl/private/pkey_facvoting.key'),
+    cert: fs.readFileSync('/etc/ssl/certs/fac-voting_ecrl_marist_edu_cert.cer')
 }
 
-https.createServer(options, app).listen(3000, function (req, res) { 
-    console.log("Server started at port 3000"); 
+https.createServer(options, app).listen(3000, () => {
+    console.log("Starting HTTPS server on port 3000");
 });
 
 
