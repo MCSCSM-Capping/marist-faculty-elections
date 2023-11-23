@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
 const util = require('util');
-var connection = require('./database')
+var connection = require('./database');
+
 const app = express();
 
 // Session data and cookie setup for users
@@ -41,6 +42,7 @@ var cas = new CASAuthentication({
         maristcwid: "12345678"
     }
 });
+
 
 // Middleware to ensure user authentication
 const ensureAuthenticated = (req, res, next) => {
@@ -140,20 +142,98 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
-app.get('/admin_getData', async (req, res) => {
+//app.post('/admin_getData', async (req, res) => {
+app.post('/admin_getSchools', (req, res) => {
     connection.query("SELECT School_Name FROM Schools;", (err, result) =>{
         if (err) {
             console.log(err)
             res.status(500).send(null);
             throw err;
         } else {
-            res.status(200).send(JSON.stringify(result[0]));
-            console.log(result[0]);
+            res.status(200).send(result);
+            //console.log(JSON.stringify(result));
         }
     });
 });
 
-app.get('/sql', (req, res) => {
+
+app.post('/admin_getCommittees', (req, res) => {
+    connection.query("SELECT Committee_Name FROM Committees;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/admin_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/profile_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name , F.Service_Statement, F.Candidate_Statement, F.Is_On_Committee, F.Website_URL FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post('/nameAndPicture_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, F.Website_URL FROM Faculty F, Schools S WHERE F.School_ID = S.School_ID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/statements_getStatements', (req, res) => {
+    connection.query("SELECT F.Service_Statement, F.Candidate_Statement FROM Faculty F;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post('/committees_getCommittees', (req, res) => {
+    connection.query("SELECT F.Is_On_Committee, C.Committee_Name FROM Faculty F, Committees C , Faculty_Committees FC WHERE C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/sql', (req, res) => {
     console.log("At /SQL");
     connection.query("SELECT School_Name FROM Schools;", (err, result) => {
         if (err) {
@@ -167,10 +247,6 @@ app.get('/sql', (req, res) => {
     });
     console.log("Past query");
 });
-
-/*app.get('/javascript/admin_view.js', (req, res) => {
-    res.render('javascript/admin_view.js')
-});*/
 
 //port app is listening on
 app.listen(3000, () => {
