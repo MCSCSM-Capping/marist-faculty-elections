@@ -24,6 +24,7 @@
     "express": "^4.18.2",
     "express-cas-authentication": "github:nicholasfiore/cas-authentication",
     "express-session": "^1.17.3",
-    "npm": "^10.1.0"
+    "npm": "^10.1.0",
+    "mysql": "2.18.1"
   }
 }
