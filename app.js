@@ -88,14 +88,23 @@ app.get('/authenticate', cas.bounce, async (req, res) => {
 
     //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
     const user = await User.findOrCreate({
-        where: { CWID: reqCWID},
+        where: { CWID: reqCWID },
         defaults: {
             RecActive: 'Y',
             First_Name: reqFirst,
             Last_Name: reqLast,
         }
     });
-    console.log("User found/created");
+
+    //updates the URL if applicable
+    if (user.Website_URL === null) {
+        User.update({Website_URL: util.parseURL(req, res)}, {
+            where: {
+                CWID: reqCWID,
+                Website_URL: null
+            }
+        })
+    }
 
 
     res.redirect(`/user/${reqCWID}`);

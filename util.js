@@ -1,3 +1,6 @@
+const URL = require("url").URL;
+
+
 // Function to check if user logging in is not a student
 module.exports.userIsFaculty = function(req, cas) {
     if (req.session[ cas.session_info ].employeetype === "STUDENT") {
@@ -7,27 +10,42 @@ module.exports.userIsFaculty = function(req, cas) {
     }
 }
 
-// Function for getting the current user that is logged in
-module.exports.getCurrentUser = function(req) {
-    // Create the user object
-    const curUser = {
-      id: (req.session.user) ? 1 : 0,
-  };
-  // If there is an error, get the error information and reset the session 
-  if (req.session.error) {
-      curUser.id = -1;
-      curUser.error = req.session.error;
-      req.session.destroy();
-  } else {
-      // Get the logged in user's username
-      curUser.username = req.session.user;
-  }
-  // Return the user data
-  return curUser;
-};
+// Function to parse the logged in user's name and attempt to find their school and website URL
+module.exports.parseURL = function(req, cas) {
+    let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
+    let nameURL = nameArr[0] + '-' + nameArr[nameArr.length - 1];
 
-
-// Function to create a new user
-module.exports.createUser = function(req, cas) {
-
+    if (stringIsAValidUrl('https://www.marist.edu/communication-arts/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/communication-arts/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/computer-science-math/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/computer-science-math/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/liberal-arts/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/liberal-arts/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/management/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/management/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/science/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/science/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/social-behavioral-science/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/social-behavioral-science/faculty/' + nameURL);
+    }
+    if (stringIsAValidUrl('https://www.marist.edu/professional-programs/faculty/' + nameURL)) {
+        return ('https://www.marist.edu/professional-programs/faculty/' + nameURL);
+    }
+    return 'No valid URL found';
 }
+
+
+// Helper function for above
+const stringIsAValidUrl = (s) => {
+  try {
+    new URL(s);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
