@@ -24,8 +24,6 @@ sequelize.authenticate().then(() => {
 });
 
 module.exports = {
-    // Get a specific user based on CWID
-    getAUser: async (key) => User.findByPk(key),
     // Gets the users with given options
-    getUsers: async (options = {}) => User.findAll(options)
+    getUsers: async (options = {}) => User.findAll(options),
 }

@@ -10,6 +10,7 @@ var connection = require('./database');
 
 //model import
 const User = require('./models/userModel');
+const { name } = require('ejs');
 
 const app = express();
 
@@ -69,31 +70,47 @@ app.get('/', (req, res) => {
 });
 
 app.get('/authenticate', cas.bounce, async (req, res) => {
-    //Initialize cookie for user
-    req.session.isUserAuthenticated = true;
 
     //first checks if a user is faculty. If they are not, sends a 401 and exits.
     if (!util.userIsFaculty(req, cas)) {
-        res.sendStatus(401);
-        return 0;
+        return res.sendStatus(401);
+    } else {
+        req.session.isUserAuthenticated = true;
     }
+
+    let reqCWID, reqFirst, reqLast;
+    reqCWID = parseInt(req.session[cas.session_info].maristcwid);
+
+    let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
+
+    reqFirst = nameArr[0];
+    reqLast = nameArr[nameArr.length - 1];
 
     //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
-    var cas_cwid = parseInt(req.session[ cas.session_info ].maristcwid);
-    const db_cwid = await User.findByPk(cas_cwid);
-    if (db_cwid === null) {
-        console.log("not found");
-    }
+    const user = await User.findOrCreate({
+        where: { CWID: reqCWID},
+        defaults: {
+            RecActive: 'Y',
+            First_Name: reqFirst,
+            Last_Name: reqLast,
+        }
+    });
+    console.log("User found/created");
 
 
-    res.redirect('/:user/profile');
+    res.redirect(`/user/${reqCWID}`);
 });
 
 app.get('/logout', cas.logout);
 
 // Profile view GET handler
-app.get('/:user/profile', ensureAuthenticated, (req, res) => {
-    res.render('profile_view', {});
+app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
+    const reqUser = await connection.getUsers({
+        where: {
+            CWID: parseInt(req.params.userID)
+        }
+    });
+    res.render('profile_view', {user: reqUser[0]});
 });
 
 // Profile view POST handler
