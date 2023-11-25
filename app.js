@@ -5,8 +5,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
-const util = require('util');
+const util = require('./util');
 var connection = require('./database');
+
+//model import
+const User = require('./models/userModel');
 
 const app = express();
 
@@ -36,7 +39,7 @@ var cas = new CASAuthentication({
     dev_mode_info: { 
         displayname: "John P Smith",
         maristmailpref: "John.Smith@marist.edu",
-        cn: "Nicholas A Fiore",
+        cn: "John P Smith",
         employeetype: "FACULTY",
         udc_identifier: "12345678@marist.edu",
         maristcwid: "12345678"
@@ -65,32 +68,40 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
-app.get('/authenticate', cas.bounce, (req, res) => {
+app.get('/authenticate', cas.bounce, async (req, res) => {
     //Initialize cookie for user
     req.session.isUserAuthenticated = true;
-    res.redirect('profile_view');
+
+    //first checks if a user is faculty. If they are not, sends a 401 and exits.
+    if (!util.userIsFaculty(req, cas)) {
+        res.sendStatus(401);
+        return 0;
+    }
+
+    //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
+    var cas_cwid = parseInt(req.session[ cas.session_info ].maristcwid);
+    const db_cwid = await User.findByPk(cas_cwid);
+    if (db_cwid === null) {
+        console.log("not found");
+    }
+
+
+    res.redirect('/:user/profile');
 });
 
 app.get('/logout', cas.logout);
 
-//junk code
-// app.get('/authenticate', (req, res) => {
-//     req.session.isUserAuthenticated = true;
-//     req.session.user = cas.cas_user;
-//     res.redirect('profile_view');
-// });
-
-
 // Profile view GET handler
-app.get('/profile_view', ensureAuthenticated, (req, res) => {
-    res.render('profile_view');
+app.get('/:user/profile', ensureAuthenticated, (req, res) => {
+    res.render('profile_view', {});
 });
 
 // Profile view POST handler
-app.post('/profile_view', (req, res) => {
-    req.session.isUserAuthenticated = true; 
-    res.render('profile_view');
-});
+//defunct code
+// app.post('/profile_view', (req, res) => {
+//     req.session.isUserAuthenticated = true; 
+//     res.render('profile_view');
+// });
 
 // Name and Picture
 app.get('/name_and_picture', ensureAuthenticated, (req, res) => {
