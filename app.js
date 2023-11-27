@@ -122,29 +122,32 @@ app.post('/admin_authenticate', (req, res) => {
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         req.session.isAdmin = true;
-        res.redirect('/admin_view');
+        res.redirect('/admin/admin_view');
     } else {
         res.send('Incorrect username or password');
     }
 });
 
-// Admin view page (profile search) with middleware to check if user is admin
-app.get('/admin_view', ensureAdmin, async(req, res) => {
-    const reqSchools = await connection.getSchools();
-    const reqCommittees = await connection.getCommittees();
-    const reqUser = await connection.getUsers();
-    res.render('admin_view', {schools: reqSchools, committees: reqCommittees, faculty: reqUser});
-});
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/admin', adminRoutes);
 
-// Admin View and Manage
-app.get('/view_and_manage', (req, res) => {
-    res.render('view_and_manage');
-});
+// // Admin view page (profile search) with middleware to check if user is admin
+// app.get('/admin_view', ensureAdmin, async(req, res) => {
+//     const reqSchools = await connection.getSchools();
+//     const reqCommittees = await connection.getCommittees();
+//     const reqUser = await connection.getUsers();
+//     res.render('admin_view', {schools: reqSchools, committees: reqCommittees, faculty: reqUser});
+// });
 
-// Admin Query Preview
-app.get('/query_preview', (req, res) => {
-    res.render('query_preview');
-});
+// // Admin View and Manage
+// app.get('/view_and_manage', (req, res) => {
+//     res.render('view_and_manage');
+// });
+
+// // Admin Query Preview
+// app.get('/query_preview', (req, res) => {
+//     res.render('query_preview');
+// });
 
 app.post('/admin_getFacultyData', (req, res) => {
     connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{

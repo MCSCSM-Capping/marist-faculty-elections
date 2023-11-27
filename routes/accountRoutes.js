@@ -43,7 +43,7 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
     let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
 
     reqFirst = nameArr[0].slice(1);//removes open quote
-    reqLast = nameArr[nameArr.length - 1].slice(0, nameArr[nameArr.length - 1].length); //removes close quote
+    reqLast = nameArr[nameArr.length - 1].slice(0, (nameArr[nameArr.length - 1].length - 1)); //removes close quote
 
     //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
     const user = await User.findOrCreate({
