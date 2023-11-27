@@ -170,7 +170,8 @@ app.post('/admin_authenticate', (req, res) => {
 app.get('/admin_view', ensureAdmin, async(req, res) => {
     const reqSchools = await connection.getSchools();
     const reqCommittees = await connection.getCommittees();
-    res.render('admin_view', {schools: reqSchools, committees: reqCommittees});
+    const reqUser = await connection.getUsers();
+    res.render('admin_view', {schools: reqSchools, committees: reqCommittees, faculty: reqUser});
 });
 
 // Admin View and Manage
@@ -182,34 +183,6 @@ app.get('/view_and_manage', (req, res) => {
 app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
-
-//app.post('/admin_getData', async (req, res) => {
-app.post('/admin_getSchools', (req, res) => {
-    connection.query("SELECT School_Name FROM Schools;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-            //console.log(JSON.stringify(result));
-        }
-    });
-});
-
-
-app.post('/admin_getCommittees', (req, res) => {
-    connection.query("SELECT Committee_Name FROM Committees;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
-
 
 app.post('/admin_getFacultyData', (req, res) => {
     connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{

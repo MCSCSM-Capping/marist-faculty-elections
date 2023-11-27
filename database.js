@@ -12,6 +12,7 @@ const mysql = require('mysql2');
 const User = require('./models/userModel');
 const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
+const Faculty = require('./models/facultyModel');
 
 //Connect to database
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
