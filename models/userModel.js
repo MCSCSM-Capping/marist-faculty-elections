@@ -51,7 +51,9 @@ const User = sequelize.define("User", {
 
 }, {
     //delibrate table name used in Database
-    tableName: "Faculty"
+    tableName: "Faculty",
+
+    timestamps: false
 });
 
 module.exports = User;

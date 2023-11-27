@@ -10,7 +10,13 @@ const mysql = require('mysql2');
 
 //Import models
 const User = require('./models/userModel');
+<<<<<<< HEAD
 const School = require('./models/schoolModel')
+=======
+const School = require('./models/schoolModel');
+const Committee = require('./models/committeeModel');
+const Faculty = require('./models/facultyModel');
+>>>>>>> dev-hanna
 
 //Connect to database
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
@@ -27,5 +33,12 @@ sequelize.authenticate().then(() => {
 module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
+<<<<<<< HEAD
     getSchools: async (options = {}) => School.findAll(options)
+=======
+
+    getSchools: async (options = {}) => School.findAll(options),
+
+    getCommittees: async (options = {}) => Committee.findAll(options)
+>>>>>>> dev-hanna
 }
