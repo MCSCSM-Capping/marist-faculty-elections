@@ -5,7 +5,12 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const CASAuthentication = require('express-cas-authentication');
-const util = require('util');
+const util = require('./util');
+var connection = require('./database');
+
+//model import
+const User = require('./models/userModel');
+const { name } = require('ejs');
 
 const app = express();
 
@@ -35,12 +40,13 @@ var cas = new CASAuthentication({
     dev_mode_info: { 
         displayname: "John P Smith",
         maristmailpref: "John.Smith@marist.edu",
-        cn: "Nicholas A Fiore",
+        cn: "John P Smith",
         employeetype: "FACULTY",
         udc_identifier: "12345678@marist.edu",
         maristcwid: "12345678"
     }
 });
+
 
 // Middleware to ensure user authentication
 const ensureAuthenticated = (req, res, next) => {
@@ -63,32 +69,65 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
-app.get('/authenticate', cas.bounce, (req, res) => {
-    //Initialize cookie for user
-    req.session.isUserAuthenticated = true;
-    res.redirect('profile_view');
+app.get('/authenticate', cas.bounce, async (req, res) => {
+
+    //first checks if a user is faculty. If they are not, sends a 401 and exits.
+    if (!util.userIsFaculty(req, cas)) {
+        return res.sendStatus(401);
+    } else {
+        req.session.isUserAuthenticated = true;
+    }
+
+    let reqCWID, reqFirst, reqLast;
+    reqCWID = parseInt(req.session[cas.session_info].maristcwid);
+
+    let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
+
+    reqFirst = nameArr[0];
+    reqLast = nameArr[nameArr.length - 1];
+
+    //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
+    const user = await User.findOrCreate({
+        where: { CWID: reqCWID },
+        defaults: {
+            RecActive: 'Y',
+            First_Name: reqFirst,
+            Last_Name: reqLast,
+        }
+    });
+
+    //updates the URL if applicable
+    if (user.Website_URL === null) {
+        User.update({Website_URL: util.parseURL(req, res)}, {
+            where: {
+                CWID: reqCWID,
+                Website_URL: null
+            }
+        })
+    }
+
+
+    res.redirect(`/user/${reqCWID}`);
 });
 
 app.get('/logout', cas.logout);
 
-//junk code
-// app.get('/authenticate', (req, res) => {
-//     req.session.isUserAuthenticated = true;
-//     req.session.user = cas.cas_user;
-//     res.redirect('profile_view');
-// });
-
-
 // Profile view GET handler
-app.get('/profile_view', ensureAuthenticated, (req, res) => {
-    res.render('profile_view');
+app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
+    const reqUser = await connection.getUsers({
+        where: {
+            CWID: parseInt(req.params.userID)
+        }
+    });
+    res.render('profile_view', {user: reqUser[0]});
 });
 
 // Profile view POST handler
-app.post('/profile_view', (req, res) => {
-    req.session.isUserAuthenticated = true; 
-    res.render('profile_view');
-});
+//defunct code
+// app.post('/profile_view', (req, res) => {
+//     req.session.isUserAuthenticated = true; 
+//     res.render('profile_view');
+// });
 
 // Name and Picture
 app.get('/name_and_picture', ensureAuthenticated, (req, res) => {
@@ -140,7 +179,114 @@ app.get('/query_preview', (req, res) => {
     res.render('query_preview');
 });
 
+//app.post('/admin_getData', async (req, res) => {
+app.post('/admin_getSchools', (req, res) => {
+    connection.query("SELECT School_Name FROM Schools;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+            //console.log(JSON.stringify(result));
+        }
+    });
+});
+
+
+app.post('/admin_getCommittees', (req, res) => {
+    connection.query("SELECT Committee_Name FROM Committees;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/admin_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/profile_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name , F.Service_Statement, F.Candidate_Statement, F.Is_On_Committee, F.Website_URL FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post('/nameAndPicture_getFacultyData', (req, res) => {
+    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, F.Website_URL FROM Faculty F, Schools S WHERE F.School_ID = S.School_ID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/statements_getStatements', (req, res) => {
+    connection.query("SELECT F.Service_Statement, F.Candidate_Statement FROM Faculty F;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post('/committees_getCommittees', (req, res) => {
+    connection.query("SELECT F.Is_On_Committee, C.Committee_Name FROM Faculty F, Committees C , Faculty_Committees FC WHERE C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+
+app.post('/sql', (req, res) => {
+    console.log("At /SQL");
+    connection.query("SELECT School_Name FROM Schools;", (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).send(null);
+            throw err;
+        } else {
+            res.status(200).send(JSON.stringify(result[0]));
+            console.log(result[0]);
+        }
+    });
+    console.log("Past query");
+});
+
 //port app is listening on
 app.listen(3000, () => {
     console.log('App Listening to port 3000');
+
 });
