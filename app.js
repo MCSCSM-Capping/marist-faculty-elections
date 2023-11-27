@@ -129,7 +129,7 @@ app.post('/admin_authenticate', (req, res) => {
 });
 
 const adminRoutes = require('./routes/adminRoutes');
-app.use('/admin', adminRoutes);
+app.use('/admin', ensureAdmin, adminRoutes);
 
 // // Admin view page (profile search) with middleware to check if user is admin
 // app.get('/admin_view', ensureAdmin, async(req, res) => {

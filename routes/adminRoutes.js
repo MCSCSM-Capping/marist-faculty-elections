@@ -4,6 +4,14 @@ const router = express.Router();
 const db = require('../database');
 const User = require('../models/userModel');
 
+// Middleware to ensure admin authentication
+const ensureAdmin = (req, res, next) => {
+    if (req.session.isAdmin) {
+        return next();
+    }
+    res.redirect('/admin_login'); // redirect to admin login if not authenticated as admin
+};
+
 // Admin view page (profile search) with middleware to check if user is admin
 router.get('/admin_view', async (req, res) => {
     const reqSchools = await db.getSchools();

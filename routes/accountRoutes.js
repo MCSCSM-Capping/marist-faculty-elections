@@ -9,14 +9,14 @@ const util = require('../util');
 
 var cas = new CASAuthentication({
     cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
-    service_url: 'http://fac_voting.ecrl.marist.edu',
+    service_url: 'http://fac-voting.ecrl.marist.edu',
     cas_version: "2.0",
     renew: false,
 
     session_name: 'cas_user',
     session_info: 'attributes',
 
-    is_dev_mode: true,
+    is_dev_mode: false,
     dev_mode_user: '12345678@marist.edu',
     dev_mode_info: { 
         displayname: "John P Smith",
