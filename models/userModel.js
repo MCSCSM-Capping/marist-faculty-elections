@@ -15,6 +15,7 @@ const User = sequelize.define("User", {
     //Define attributes
     CWID: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false
     },
     RecActive: {

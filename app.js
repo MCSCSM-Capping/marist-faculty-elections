@@ -4,13 +4,13 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const CASAuthentication = require('express-cas-authentication');
-const util = require('./util');
+//const CASAuthentication = require('express-cas-authentication');
+//const util = require('./util');
 var connection = require('./database');
 
 //model import
 const User = require('./models/userModel');
-const { name } = require('ejs');
+const School = require('./models/schoolModel')
 
 const app = express();
 
@@ -26,26 +26,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 app.set('view engine', 'ejs');
 
-var cas = new CASAuthentication({
-    cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
-    service_url: 'http://fac_voting.ecrl.marist.edu',
-    cas_version: "2.0",
-    renew: false,
+// var cas = new CASAuthentication({
+//     cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
+//     service_url: 'http://fac_voting.ecrl.marist.edu',
+//     cas_version: "2.0",
+//     renew: false,
 
-    session_name: 'cas_user',
-    session_info: 'attributes',
+//     session_name: 'cas_user',
+//     session_info: 'attributes',
 
-    is_dev_mode: true,
-    dev_mode_user: '12345678@marist.edu',
-    dev_mode_info: { 
-        displayname: "John P Smith",
-        maristmailpref: "John.Smith@marist.edu",
-        cn: "John P Smith",
-        employeetype: "FACULTY",
-        udc_identifier: "12345678@marist.edu",
-        maristcwid: "12345678"
-    }
-});
+//     is_dev_mode: true,
+//     dev_mode_user: '12345678@marist.edu',
+//     dev_mode_info: { 
+//         displayname: "John P Smith",
+//         maristmailpref: "John.Smith@marist.edu",
+//         cn: "John P Smith",
+//         employeetype: "FACULTY",
+//         udc_identifier: "12345678@marist.edu",
+//         maristcwid: "12345678"
+//     }
+// });
 
 
 // Middleware to ensure user authentication
@@ -69,48 +69,10 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
-app.get('/authenticate', cas.bounce, async (req, res) => {
-
-    //first checks if a user is faculty. If they are not, sends a 401 and exits.
-    if (!util.userIsFaculty(req, cas)) {
-        return res.sendStatus(401);
-    } else {
-        req.session.isUserAuthenticated = true;
-    }
-
-    let reqCWID, reqFirst, reqLast;
-    reqCWID = parseInt(req.session[cas.session_info].maristcwid);
-
-    let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
-
-    reqFirst = nameArr[0];
-    reqLast = nameArr[nameArr.length - 1];
-
-    //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
-    const user = await User.findOrCreate({
-        where: { CWID: reqCWID },
-        defaults: {
-            RecActive: 'Y',
-            First_Name: reqFirst,
-            Last_Name: reqLast,
-        }
-    });
-
-    //updates the URL if applicable
-    if (user.Website_URL === null) {
-        User.update({Website_URL: util.parseURL(req, res)}, {
-            where: {
-                CWID: reqCWID,
-                Website_URL: null
-            }
-        })
-    }
+const accountRoutes = require('./routes/accountRoutes');
+app.use('/', accountRoutes);
 
 
-    res.redirect(`/user/${reqCWID}`);
-});
-
-app.get('/logout', cas.logout);
 
 // Profile view GET handler
 app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
@@ -165,8 +127,9 @@ app.post('/admin_authenticate', (req, res) => {
 });
 
 // Admin view page (profile search) with middleware to check if user is admin
-app.get('/admin_view', ensureAdmin, (req, res) => {
-    res.render('admin_view');
+app.get('/admin_view', ensureAdmin, async (req, res) => {
+    const reqSchools = await connection.getSchools();
+    res.render('admin_view', {schools: reqSchools});
 });
 
 // Admin View and Manage

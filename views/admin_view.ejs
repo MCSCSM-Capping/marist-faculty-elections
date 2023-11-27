@@ -38,8 +38,9 @@
             <label for="schoolFilter">All Schools</label>
             <select class="form-control" id="schoolFilter">
                 <option selected>Select a School</option>
-                <option value="school1">School 1</option>
-                <option value="school2">School 2</option>
+                <% for(let i = 0; i < schools.length; i++) { %>
+                    <option value="<% schools[i].School_ID %>"><%= schools[i].School_Name %></option>
+                <% } %>
                 <!-- ... -->
             </select>
         </div>
