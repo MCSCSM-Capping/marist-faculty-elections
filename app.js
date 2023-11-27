@@ -10,7 +10,9 @@ var connection = require('./database');
 
 //model import
 const User = require('./models/userModel');
-const { name } = require('ejs');
+const School = require('./models/schoolModel');
+const Committee = require('./models/committeeModel');
+//const { name } = require('ejs');
 
 const app = express();
 
@@ -165,8 +167,10 @@ app.post('/admin_authenticate', (req, res) => {
 });
 
 // Admin view page (profile search) with middleware to check if user is admin
-app.get('/admin_view', ensureAdmin, (req, res) => {
-    res.render('admin_view');
+app.get('/admin_view', ensureAdmin, async(req, res) => {
+    const reqSchools = await connection.getSchools();
+    const reqCommittees = await connection.getCommittees();
+    res.render('admin_view', {schools: reqSchools, committees: reqCommittees});
 });
 
 // Admin View and Manage

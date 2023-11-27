@@ -38,8 +38,9 @@
             <label for="schoolFilter">All Schools</label>
             <select class="form-control" id="schoolFilter">
                 <option selected>Select a School</option>
-                <option value="school1">School 1</option>
-                <option value="school2">School 2</option>
+                <% for(let i = 0; i < schools.length; i++) { %>
+                    <option value = "<% schools[i].School_ID %>"><%= schools[i].School_Name %></option>
+                <% } %>
                 <!-- ... -->
             </select>
         </div>
@@ -48,8 +49,9 @@
             <label for="committeeFilter">All Committees</label>
             <select class="form-control" id="committeeFilter">
                 <option selected>Select a Committee</option>
-                <option value="committee1">Committee 1</option>
-                <option value="committee2">Committee 2</option>
+                <% for(let i = 0; i < committees.length; i++) { %>
+                    <option value = "<% committees[i].Committee_ID %>"><%= committees[i].Committee_Name %></option>
+                <% } %>
                 <!-- ... -->
             </select>
         </div>
