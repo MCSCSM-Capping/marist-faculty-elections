@@ -16,7 +16,7 @@ var cas = new CASAuthentication({
     session_name: 'cas_user',
     session_info: 'attributes',
 
-    is_dev_mode: false,
+    is_dev_mode: true,
     dev_mode_user: '12345678@marist.edu',
     dev_mode_info: { 
         displayname: "John P Smith",
@@ -68,5 +68,25 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
 });
 
 router.get('/logout', cas.logout);
+
+// Admin login page
+router.get('/admin_login', (req, res) => {
+    res.render('admin_login');
+});
+
+// Admin login POST handler
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "password123";  // PLEASE change this to something more secure, even for testing
+
+router.post('/admin_authenticate', (req, res) => {
+    const { username, password } = req.body; 
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        req.session.isAdmin = true;
+        res.redirect('/admin/admin_view');
+    } else {
+        res.send('Incorrect username or password');
+    }
+});
 
 module.exports = router;

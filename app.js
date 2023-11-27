@@ -74,7 +74,8 @@ app.get('/', (req, res) => {
 const accountRoutes = require('./routes/accountRoutes');
 app.use('/', accountRoutes);
 
-
+const userRoutes = require('./routes/userRoutes');
+app.use('/user', ensureAuthenticated, userRoutes);
 
 // Profile view GET handler
 app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
@@ -85,13 +86,6 @@ app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
     });
     res.render('profile_view', {user: reqUser[0]});
 });
-
-// Profile view POST handler
-//defunct code
-// app.post('/profile_view', (req, res) => {
-//     req.session.isUserAuthenticated = true; 
-//     res.render('profile_view');
-// });
 
 // Name and Picture
 app.get('/name_and_picture', ensureAuthenticated, (req, res) => {
@@ -106,26 +100,6 @@ app.get('/statement', ensureAuthenticated, (req, res) => {
 // Committees
 app.get('/committees', ensureAuthenticated, (req, res) => {
     res.render('committees');
-});
-
-// Admin login page
-app.get('/admin_login', (req, res) => {
-    res.render('admin_login');
-});
-
-// Admin login POST handler
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "password123";  // PLEASE change this to something more secure, even for testing
-
-app.post('/admin_authenticate', (req, res) => {
-    const { username, password } = req.body; 
-
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        req.session.isAdmin = true;
-        res.redirect('/admin/admin_view');
-    } else {
-        res.send('Incorrect username or password');
-    }
 });
 
 const adminRoutes = require('./routes/adminRoutes');
