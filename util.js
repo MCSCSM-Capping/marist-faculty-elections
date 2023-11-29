@@ -3,10 +3,10 @@ const URL = require("url").URL;
 
 // Function to check if user logging in is not a student
 module.exports.userIsFaculty = function(req, cas) {
-    if (req.session[ cas.session_info ].employeetype === "STUDENT") {
-        return false;
-    } else {
+    if (JSON.stringify(req.session[ cas.session_info ].employeetype).includes("FACULTY")) {
         return true;
+    } else {
+        return false;
     }
 }
 
