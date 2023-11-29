@@ -15,6 +15,7 @@ const User = sequelize.define("User", {
     //Define attributes
     CWID: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false
     },
     RecActive: {
@@ -50,7 +51,9 @@ const User = sequelize.define("User", {
 
 }, {
     //delibrate table name used in Database
-    tableName: "Faculty"
+    tableName: "Faculty",
+
+    timestamps: false
 });
 
 module.exports = User;

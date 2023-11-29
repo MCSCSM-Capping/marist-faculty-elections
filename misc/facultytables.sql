@@ -21,8 +21,7 @@ Website_URL VARCHAR(150) );
 --Select * From Faculty;
 
 CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_Name TEXT);
---INSERT INTO Committees VALUES ();
---Select * From Committees;
+INSERT INTO Committees VALUES (0, "Test Committee 1");
 
 CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name ENUM("School of Communication and the Arts", 
 "School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
