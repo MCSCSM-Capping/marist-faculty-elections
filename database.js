@@ -15,7 +15,7 @@ const Committee = require('./models/committeeModel');
 
 //Connect to database
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
-    host:'172.18.0.3',
+    host:'db',
     dialect: 'mysql'
 });
 
