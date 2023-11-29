@@ -14,25 +14,15 @@ Last_Name VARCHAR(50),
 Preferred_Name VARCHAR(100), 
 Service_Statement VARCHAR(255) DEFAULT "Faculty member has not written a statement of service.", 
 Candidate_Statement VARCHAR(800) DEFAULT "Not Available.", 
-School_ID INT,
+School_Name ENUM("School of Communication and the Arts", 
+"School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
+"School of Social and Behavioural Sciences", "School of Professional Programs"),
 Is_On_Committee BOOLEAN,
 Website_URL VARCHAR(150) );
---INSERT INTO Faculty VALUES ();
---Select * From Faculty;
+INSERT INTO Faculty VALUES (0, "Y", "Test", "User", "Test User 1", DEFAULT, DEFAULT, 0, False, "https://www.marist.edu");
 
 CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_Name TEXT);
 INSERT INTO Committees VALUES (0, "Test Committee 1");
-
-CREATE TABLE IF NOT EXISTS Schools (School_ID INT PRIMARY KEY, School_Name ENUM("School of Communication and the Arts", 
-"School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
-"School of Social and Behavioural Sciences", "School of Professional Programs"));
-INSERT INTO Schools VALUES (0, "School of Communication and the Arts");
-INSERT INTO Schools VALUES (1, "School of Computer Science and Mathematics");
-INSERT INTO Schools VALUES (2, "School of Liberal Arts");
-INSERT INTO Schools VALUES (3, "School of Management");
-INSERT INTO Schools VALUES (4, "School of Science");
-INSERT INTO Schools VALUES (5, "School of Social and Behavioural Sciences");
-INSERT INTO Schools VALUES (6, "School of Professional Programs");
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 

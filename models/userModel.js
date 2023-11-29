@@ -39,8 +39,10 @@ const User = sequelize.define("User", {
     Candidate_Statement: {
         type: DataTypes.STRING
     },
-    School_ID: {
-        type: DataTypes.INTEGER
+    School_Name: {
+        type: DataTypes.ENUM("School of Communication and the Arts", 
+        "School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
+        "School of Social and Behavioural Sciences", "School of Professional Programs")
     },
     Is_On_Committee: {
         type: DataTypes.BOOLEAN
