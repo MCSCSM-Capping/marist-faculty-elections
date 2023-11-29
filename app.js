@@ -77,33 +77,45 @@ app.use('/', accountRoutes);
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', ensureAuthenticated, userRoutes);
 
-// Profile view GET handler
-app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
-    const reqUser = await connection.getUsers({
-        where: {
-            CWID: parseInt(req.params.userID)
-        }
-    });
-    res.render('profile_view', {user: reqUser[0]});
-});
+// // Profile view GET handler
+// app.get('/user/:userID', ensureAuthenticated, async (req, res) => {
+//     const reqUser = await connection.getUsers({
+//         where: {
+//             CWID: parseInt(req.params.userID)
+//         }
+//     });
+//     res.render('profile_view', {user: reqUser[0]});
+// });
 
-// Name and Picture
-app.get('/name_and_picture', ensureAuthenticated, (req, res) => {
-    res.render('name_and_picture');
-});
+// // Name and Picture
+// app.get('/name_and_picture', ensureAuthenticated, (req, res) => {
+//     res.render('name_and_picture');
+// });
 
-// Statement
-app.get('/statement', ensureAuthenticated, (req, res) => {
-    res.render('statement');
-});
+// // Statement
+// app.get('/statement', ensureAuthenticated, (req, res) => {
+//     res.render('statement');
+// });
 
-// Committees
-app.get('/committees', ensureAuthenticated, (req, res) => {
-    res.render('committees');
-});
+// // Committees
+// app.get('/committees', ensureAuthenticated, (req, res) => {
+//     res.render('committees');
+// });
 
 const adminRoutes = require('./routes/adminRoutes');
 app.use('/admin', ensureAdmin, adminRoutes);
+
+//use custom 404 page
+app.use((req, res) => {
+    res.status(404);
+    res.render('404');
+})
+
+//use custom 401 page
+app.use((req, res) => {
+    res.status(401);
+    res.render('401');
+})
 
 // // Admin view page (profile search) with middleware to check if user is admin
 // app.get('/admin_view', ensureAdmin, async(req, res) => {

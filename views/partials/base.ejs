@@ -27,16 +27,16 @@
             <a class="nav-link" href="/home">Home</a>
         </li> -->
         <li class="nav-item">
-            <a class="nav-link" href="<% user.CWID %>/profile_view">Profile View</a>
+            <a class="nav-link" href=<%= `/user/${user.CWID}` %>>Profile View</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<% user.CWID %>/name_and_picture">Name and Picture</a>
+            <a class="nav-link" href=<%= `/user/${user.CWID}/name_and_picture` %>>Name and Picture</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<% user.CWID %>/statement">Statement</a>
+            <a class="nav-link" href=<%= `/user/${user.CWID}/statement` %>>Statement</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<% user.CWID %>/committees">Committees</a>
+            <a class="nav-link" href=<%= `/user/${user.CWID}/committees` %>>Committees</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
