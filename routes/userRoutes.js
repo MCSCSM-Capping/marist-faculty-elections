@@ -11,7 +11,7 @@ router.get('/:userID', async (req, res) => {
             CWID: parseInt(req.params.userID)
         }
     });
-    res.render('profile_view', {user: reqUser[0]});
+    res.render('profile_view', {user: reqUser[0], school: User.getAttributes().school.values});
 });
 
 // Name and Picture
