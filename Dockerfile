@@ -8,8 +8,12 @@ ARG NODE_VERSION=18.18.0
 
 FROM node:${NODE_VERSION}-alpine
 
-# Use production node environment by default.
-ENV NODE_ENV production
+# Use the Dockerize environment, also define the node environment
+ENV DOCKERIZE_VERSION=v0.2.0 \
+    NODE_ENV=production
+
+RUN wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
 
 
 WORKDIR /usr/src/app
@@ -29,8 +33,9 @@ USER node
 # Copy the rest of the source files into the image.
 COPY . .
 
+# Enter the entry point to wait for the MySQL server
+ENTRYPOINT ./docker-entrypoint.sh
+
 # Expose the port that the application listens on.
 EXPOSE 3000
 
-# Run the application.
-CMD npm start
