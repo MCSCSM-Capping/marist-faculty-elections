@@ -140,7 +140,7 @@ app.use((req, res) => {
 
 //ssl handling
 var privateKey = fs.readFileSync('/etc/ssl/private/pkey_facvoting.key');
-var certificate = fs.readFileSync('/etc/ssl/certs/fac-voting_ecrl_marist_edu_cert.cer');
+var certificate = fs.readFileSync('/etc/ssl/certificates/fac-voting_ecrl_marist_edu_cert.cer');
 
 https.createServer({
     key: privateKey,

@@ -17,8 +17,10 @@ services:
         restart: true
     environment:
       NODE_ENV: production
+    volumes:
+      - "/etc/ssl:/etc/ssl"
     ports:
-      - 3000:3000
+      - 443:3000
 
   db:
     image: mysql
