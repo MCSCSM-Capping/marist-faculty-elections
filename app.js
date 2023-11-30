@@ -16,6 +16,9 @@ const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
 //const { name } = require('ejs');
 
+//environment setup
+require('dotenv').config();
+
 const app = express();
 
 // Session data and cookie setup for users
@@ -137,19 +140,19 @@ app.use((req, res) => {
 //     res.render('query_preview');
 // });
 
+if (process.env.STATUS === 'production') {
+    //ssl handling
+    var privateKey = fs.readFileSync(`${process.env.KEY_PATH}`);
+    var certificate = fs.readFileSync(`${process.env.CERT_PATH}`);
 
-//ssl handling
-var privateKey = fs.readFileSync('/etc/ssl/private/pkey_facvoting.key');
-var certificate = fs.readFileSync('/etc/ssl/certificates/fac-voting_ecrl_marist_edu_cert.cer');
-
-https.createServer({
-    key: privateKey,
-    cert:certificate
-}, app).listen(3000);
-
-
+    https.createServer({
+        key: privateKey,
+        cert:certificate
+    }, app).listen(3000);
+} else {
 //port app is listening on
-// app.listen(3000, () => {
-//     console.log('App Listening to port 3000');
+    app.listen(3000, () => {
+        console.log('App Listening to port 3000');
 
-// });
+    });
+}

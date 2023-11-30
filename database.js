@@ -1,13 +1,6 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2');
 
-// var pool = mysql.createPool({
-//     host: "db",
-//     user: "root",
-//     password: "example",
-//     database: "FacultyElectionsDB",
-// });
-
 //Import models
 const User = require('./models/userModel');
 const School = require('./models/schoolModel');
