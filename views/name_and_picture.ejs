@@ -11,6 +11,7 @@
 
                 <br>
                 <br>
+
                 <!-- Image Upload -->
                 <div class="form-group">
                     <label for="profilePicture">Profile Picture:</label>
@@ -21,13 +22,15 @@
                 <!-- Name Input -->
                 <div class="form-group">
                     <label for="username">Name:</label>
-                    <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Enter your name">
+                    <input type="text" class="form-control" id="user_name" name="user_name"
+                        placeholder="Enter your name">
                 </div>
 
                 <!-- Preferred Name Input -->
                 <div class="form-group">
                     <label for="preferredName">Preferred Name:</label>
-                    <input type="text" class="form-control" id="preferredName" name="preferredName" placeholder="Enter your preferred name">
+                    <input type="text" class="form-control" id="preferredName" name="preferredName"
+                        placeholder="Enter your preferred name">
                 </div>
 
                 <!-- School Input -->
@@ -35,6 +38,43 @@
                     <label for="school">School:</label>
                     <input type="text" class="form-control" id="school" name="school" placeholder="Enter your school">
                 </div>
+
+                <!-- Committees Dropdown -->
+                <div class="form-group">
+                    <label for="committees">Committees:</label>
+                    <select class="form-control" id="committeeDropdown" name="committeeDropdown">
+                        <option value="" disabled selected>Select your option</option>
+                        <option value="Math">Math</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Art">Art</option>
+                        <option value="History">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="otherCommittee" placeholder="Enter Other Committee">
+                    <br>
+                    <button type="button" id="addOtherCommittee" class="btn btn-secondary">Add</button>
+                </div>
+                <div class="form-group">
+                    <div class="selected-committees" id="selectedCommittees">
+                        <!-- Selected committees will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Candidate Statement Input -->
+                <div class="form-group">
+                    <label for="candidateStatement">Candidate Statement:</label>
+                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6"
+                        placeholder="Enter your candidate statement"></textarea>
+                </div>
+
+                <!-- Service Statement Input -->
+                <div class="form-group">
+                    <label for="serviceStatement">Service Statement:</label>
+                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6"
+                        placeholder="Enter your service statement"></textarea>
+                </div>
+
                 <br>
                 <br>
                 <br>
@@ -43,5 +83,59 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const committeeDropdown = document.getElementById("committeeDropdown");
+        const otherCommitteeInput = document.getElementById("otherCommittee");
+        const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
+        const selectedCommittees = document.getElementById("selectedCommittees");
+        const selectedSet = new Set(); // To keep track of selected committees
+
+        // Sort the dropdown options alphabetically
+        const dropdownOptions = Array.from(committeeDropdown.options);
+        dropdownOptions.sort((a, b) => a.text.localeCompare(b.text));
+        committeeDropdown.innerHTML = ''; // Clear the dropdown
+        dropdownOptions.forEach(option => {
+            committeeDropdown.appendChild(option);
+        });
+
+        // Dropdown change
+        committeeDropdown.addEventListener("change", function () {
+            const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
+
+            if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
+                const committeeName = selectedOption.value;
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span>${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                selectedSet.add(committeeName); // Add to selected set
+            }
+        });
+
+        addOtherCommitteeButton.addEventListener("click", function () {
+            const committeeName = otherCommitteeInput.value.trim();
+            if (committeeName && !selectedSet.has(committeeName)) {
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span>${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                otherCommitteeInput.value = "";
+                selectedSet.add(committeeName); // Add to selected set
+            }
+        });
+
+        function removeCommittee(button) {
+            const listItem = button.parentElement;
+            const committeeName = listItem.querySelector("span").textContent;
+            selectedSet.delete(committeeName); // Remove from selected set
+            selectedCommittees.removeChild(listItem);
+            committeeDropdown.selectedIndex = -1;
+        }
+    </script>
 
     <%- include('./partials/footer.ejs') %>
