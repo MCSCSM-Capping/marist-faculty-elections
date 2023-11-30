@@ -153,6 +153,5 @@ if (process.env.STATUS === 'production') {
 //port app is listening on
     app.listen(3000, () => {
         console.log('App Listening to port 3000');
-
     });
 }

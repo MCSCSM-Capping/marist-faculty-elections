@@ -23,7 +23,7 @@ module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
 
-    getSchools: async (options = {}) => School.findAll(options),
+    //getSchools: async (options = {}) => School.findAll(options),
 
     getCommittees: async (options = {}) => Committee.findAll(options),
 
