@@ -1,4 +1,5 @@
 // Import required Node modules
+const https = require('https');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -7,6 +8,7 @@ const cookieParser = require('cookie-parser');
 //const CASAuthentication = require('express-cas-authentication');
 //const util = require('./util');
 var connection = require('./database');
+const fs = require('fs');
 
 //model import
 const User = require('./models/userModel');
@@ -135,86 +137,19 @@ app.use((req, res) => {
 //     res.render('query_preview');
 // });
 
-app.post('/admin_getFacultyData', (req, res) => {
-    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
 
+//ssl handling
+var privateKey = fs.readFileSync('/etc/ssl/private/pkey_facvoting.key');
+var certificate = fs.readFileSync('/etc/ssl/certs/fac-voting_ecrl_marist_edu_cert.cer');
 
-app.post('/profile_getFacultyData', (req, res) => {
-    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, C.Committee_Name , F.Service_Statement, F.Candidate_Statement, F.Is_On_Committee, F.Website_URL FROM Faculty F, Schools S, Committees C , Faculty_Committees FC WHERE F.School_ID = S.School_ID AND C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
+https.createServer({
+    key: privateKey,
+    cert:certificate
+}, app).listen(3000);
 
-app.post('/nameAndPicture_getFacultyData', (req, res) => {
-    connection.query("SELECT F.Last_Name, F.First_Name, F.Preferred_Name, S.School_Name, F.Website_URL FROM Faculty F, Schools S WHERE F.School_ID = S.School_ID;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
-
-
-app.post('/statements_getStatements', (req, res) => {
-    connection.query("SELECT F.Service_Statement, F.Candidate_Statement FROM Faculty F;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
-
-app.post('/committees_getCommittees', (req, res) => {
-    connection.query("SELECT F.Is_On_Committee, C.Committee_Name FROM Faculty F, Committees C , Faculty_Committees FC WHERE C.Committee_ID = FC.Committee_ID AND FC.CWID = F.CWID;", (err, result) =>{
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
-
-
-app.post('/sql', (req, res) => {
-    console.log("At /SQL");
-    connection.query("SELECT School_Name FROM Schools;", (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(500).send(null);
-            throw err;
-        } else {
-            res.status(200).send(JSON.stringify(result[0]));
-            console.log(result[0]);
-        }
-    });
-    console.log("Past query");
-});
 
 //port app is listening on
-app.listen(3000, () => {
-    console.log('App Listening to port 3000');
+// app.listen(3000, () => {
+//     console.log('App Listening to port 3000');
 
-});
+// });

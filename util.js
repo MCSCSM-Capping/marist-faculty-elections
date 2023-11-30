@@ -1,5 +1,5 @@
 const URL = require("url").URL;
-
+const crypto = require('crypto');
 
 // Function to check if user logging in is not a student
 module.exports.userIsFaculty = function(req, cas) {
@@ -49,3 +49,13 @@ const stringIsAValidUrl = (s) => {
     return false;
   }
 };
+
+module.exports.generateSalt = function(length = 16) {
+    return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
+}
+  
+module.exports.hashPassword = function(password, salt) {
+    const sha256Hash = crypto.createHash('sha256');
+    sha256Hash.update(password + salt);
+    return sha256Hash.digest('hex');
+}

@@ -12,6 +12,7 @@ const mysql = require('mysql2');
 const User = require('./models/userModel');
 const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
+const Admin = require('./models/adminModel');
 
 //Connect to database
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
@@ -31,5 +32,7 @@ module.exports = {
 
     getSchools: async (options = {}) => School.findAll(options),
 
-    getCommittees: async (options = {}) => Committee.findAll(options)
+    getCommittees: async (options = {}) => Committee.findAll(options),
+
+    getCredentials: async (options = {}) => Admin.findAll(options)
 }
