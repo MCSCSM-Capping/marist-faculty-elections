@@ -4,7 +4,7 @@
 
     <div class="container">
         <div class="form-card">
-            <form action=<%= `/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data">
+            <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data">
                 <!-- Display profile image -->
                 <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
                     class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
@@ -19,11 +19,18 @@
                         accept="image/*">
                 </div>
 
-                <!-- Name Input -->
+                <!-- First Name -->
                 <div class="form-group">
-                    <label for="username">Name:</label>
-                    <input type="text" class="form-control" id="user_name" name="user_name"
-                        placeholder="Enter your name" required>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName"
+                        placeholder="Enter your first name">
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName"
+                        placeholder="Enter your last name">
                 </div>
 
                 <!-- Preferred Name Input -->
@@ -37,14 +44,18 @@
                 <div class="form-group">
                     <label for="school">School:</label>
                     <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
-                        <% if (user.School_Name)  {%>
-                            <option selected><% `${user.School_Name}` %></option>
-                        <% } else { %>
-                            <option></option>
-                        <% } %>
-                        <% for(let i = 0; i < schools.length; i++) { %>
-                            <option value = "<%= schools[i] %>"><%= schools[i] %></option>
-                        <% } %>
+                        <% if (user.School_Name) {%>
+                            <option selected>
+                                <% `${user.School_Name}` %>
+                            </option>
+                            <% } else { %>
+                                <option></option>
+                                <% } %>
+                                    <% for(let i=0; i < schools.length; i++) { %>
+                                        <option value="<%= schools[i] %>">
+                                            <%= schools[i] %>
+                                        </option>
+                                        <% } %>
                     </select>
 
                 </div>
@@ -65,6 +76,7 @@
                     <br>
                     <button type="button" id="addOtherCommittee" class="btn btn-secondary">Add</button>
                 </div>
+                <input type="hidden" id="selectedCommitteesInput" name="selectedCommittees" value="">
                 <div class="form-group">
                     <div class="selected-committees" id="selectedCommittees">
                         <!-- Selected committees will be displayed here -->
@@ -109,6 +121,11 @@
             committeeDropdown.appendChild(option);
         });
 
+        function updateSelectedCommitteesInput() {
+            const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
+            selectedCommitteesInput.value = Array.from(selectedSet).join(',');
+        }
+
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
@@ -123,6 +140,8 @@
                 selectedCommittees.appendChild(listItem);
                 selectedSet.add(committeeName); // Add to selected set
             }
+
+            updateSelectedCommitteesInput();
         });
 
         addOtherCommitteeButton.addEventListener("click", function () {
@@ -137,6 +156,8 @@
                 otherCommitteeInput.value = "";
                 selectedSet.add(committeeName); // Add to selected set
             }
+
+            updateSelectedCommitteesInput();
         });
 
         function removeCommittee(button) {
@@ -145,7 +166,10 @@
             selectedSet.delete(committeeName); // Remove from selected set
             selectedCommittees.removeChild(listItem);
             committeeDropdown.selectedIndex = -1;
+            updateSelectedCommitteesInput();
         }
+
+
     </script>
 
     <%- include('./partials/footer.ejs') %>
