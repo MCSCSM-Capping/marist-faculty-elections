@@ -1,12 +1,13 @@
 const URL = require("url").URL;
-
+const crypto = require('crypto');
+const multer = require('multer');
 
 // Function to check if user logging in is not a student
 module.exports.userIsFaculty = function(req, cas) {
-    if (req.session[ cas.session_info ].employeetype === "STUDENT") {
-        return false;
-    } else {
+    if (JSON.stringify(req.session[ cas.session_info ].employeetype).includes("FACULTY")) {
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -49,3 +50,27 @@ const stringIsAValidUrl = (s) => {
     return false;
   }
 };
+
+module.exports.generateSalt = function(length = 16) {
+    return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
+}
+  
+module.exports.hashPassword = function(password, salt) {
+    const sha256Hash = crypto.createHash('sha256');
+    sha256Hash.update(password + salt);
+    return sha256Hash.digest('hex');
+}
+
+// Set up the system for storing the files when uploaded
+const storage = multer.diskStorage({
+    // Set the upload destination to the uploads 
+    destination: function(req, file, cb) {
+        cb(null, './public/data/uploads');
+    },
+    // Fix the file name to remove spaces
+    filename: function(req, file, cb) {
+        cb(null, file.originalname.replace(/\s/g, '-'));
+    }
+});
+const upload = multer({storage: storage});
+module.exports.upload = upload;

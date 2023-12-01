@@ -6,10 +6,9 @@ const User = require('../models/userModel');
 
 // Admin view page (profile search) with middleware to check if user is admin
 router.get('/admin_view', async (req, res) => {
-    const reqSchools = await db.getSchools();
     const reqCommittees = await db.getCommittees();
     const reqUser = await db.getUsers();
-    res.render('admin_view', {schools: reqSchools, committees: reqCommittees, faculty: reqUser});
+    res.render('admin_view', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser});
 });
 
 // Admin View and Manage
