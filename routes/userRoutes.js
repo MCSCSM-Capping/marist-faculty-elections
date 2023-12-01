@@ -36,7 +36,30 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
         candidateStatement,
         serviceStatement 
     } = req.body;
-    res.send(req.body);
+
+    const userID = parseInt(req.params.userID);
+    
+    const reqUser = await db.getUsers({
+        where: {
+            CWID: userID
+        }
+    });
+
+    //Updating basic info
+    await User.update({
+        //First_Name: TODO,
+        //Last_Name: TODO,
+        Preferred_Name: preferredName,
+        School_Name: schoolDropdown,
+        Candidate_Statement: candidateStatement,
+        Service_Statement: serviceStatement
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+
+    res.redirect(`/user/${userID}`);
 });
 
 // // Statement
