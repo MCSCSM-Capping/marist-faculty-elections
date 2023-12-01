@@ -3,13 +3,14 @@ const router = express.Router();
 
 const db = require('../database');
 const User = require('../models/userModel');
+const Admin = require('../models/adminModel');
 
 const CASAuthentication = require('express-cas-authentication');
 const util = require('../util');
 
 var cas = new CASAuthentication({
     cas_url: 'https://auth.it.marist.edu/idp/profile/cas',
-    service_url: 'http://fac-voting.ecrl.marist.edu',
+    service_url: 'https://fac-voting.ecrl.marist.edu',
     cas_version: "2.0",
     renew: false,
 
@@ -25,7 +26,8 @@ var cas = new CASAuthentication({
         employeetype: "FACULTY",
         udc_identifier: "12345678@marist.edu",
         maristcwid: "12345678"
-    }
+    },
+    destroy_session: true
 });
 
 router.get('/authenticate', cas.bounce, async (req, res) => {
@@ -37,13 +39,15 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
         req.session.isUserAuthenticated = true;
     }
 
-    let reqCWID, reqFirst, reqLast;
+    let reqCWID, reqFirst, reqLast; //first and last name from CAS object
     reqCWID = parseInt(req.session[cas.session_info].maristcwid);
 
-    let nameArr = JSON.stringify(req.session[cas.session_info].cn).split(' ');
+    console.log(req.session[cas.session_info].cn);
 
-    reqFirst = nameArr[0].slice(1);//removes open quote
-    reqLast = nameArr[nameArr.length - 1].slice(0, (nameArr[nameArr.length - 1].length - 1)); //removes close quote
+    let nameArr = (req.session[cas.session_info].cn).split(' ');
+
+    reqFirst = nameArr[0];//removes open quote
+    reqLast = nameArr[nameArr.length - 1]; //removes close quote
 
     //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
     const user = await User.findOrCreate({
@@ -75,13 +79,23 @@ router.get('/admin_login', (req, res) => {
 });
 
 // Admin login POST handler
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "password123";  // PLEASE change this to something more secure, even for testing
-
-router.post('/admin_authenticate', (req, res) => {
+router.post('/admin_authenticate', async (req, res) => {
     const { username, password } = req.body; 
 
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    reqCredentials = await db.getCredentials({
+        where: {
+            Username: username
+        }
+    });
+
+    //easier access for variables
+    reqUsername = reqCredentials[0].Username;
+    reqPassword = reqCredentials[0].Admin_Password;
+    reqSalt = reqCredentials[0].Salt;
+
+    passwordHash = util.hashPassword(password, reqSalt);
+
+    if (passwordHash === reqPassword) {
         req.session.isAdmin = true;
         res.redirect('/admin/admin_view');
     } else {

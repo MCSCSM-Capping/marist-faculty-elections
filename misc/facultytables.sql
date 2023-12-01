@@ -8,7 +8,7 @@ Drop TABLE IF EXISTS Faculty_Committees;
 DROP TABLE IF EXISTS Admin_Login;
 
 CREATE TABLE IF NOT EXISTS Faculty (CWID INT PRIMARY KEY, 
-RecActive ENUM("Y","N") DEFAULT "Y", --change to "N" when deleted
+RecActive ENUM("Y","N") DEFAULT "Y",
 First_Name VARCHAR(50), 
 Last_Name VARCHAR(50), 
 Preferred_Name VARCHAR(100), 
@@ -26,4 +26,4 @@ INSERT INTO Committees VALUES (0, "Test Committee 1");
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
-CREATE TABLE IF NOT EXISTS Admin_Login (Username INT PRIMARY KEY, Admin_Password VARCHAR(100)); --password may change type
+CREATE TABLE IF NOT EXISTS Admin_Login (Username VARCHAR(50) PRIMARY KEY, Admin_Password VARCHAR(100), Salt VARCHAR(20));

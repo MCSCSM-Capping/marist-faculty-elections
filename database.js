@@ -1,17 +1,11 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2');
 
-// var pool = mysql.createPool({
-//     host: "db",
-//     user: "root",
-//     password: "example",
-//     database: "FacultyElectionsDB",
-// });
-
 //Import models
 const User = require('./models/userModel');
 const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
+const Admin = require('./models/adminModel');
 
 //Connect to database
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
@@ -29,7 +23,9 @@ module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
 
-    getSchools: async (options = {}) => School.findAll(options),
+    //getSchools: async (options = {}) => School.findAll(options),
 
-    getCommittees: async (options = {}) => Committee.findAll(options)
+    getCommittees: async (options = {}) => Committee.findAll(options),
+
+    getCredentials: async (options = {}) => Admin.findAll(options)
 }
