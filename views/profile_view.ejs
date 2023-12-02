@@ -10,16 +10,25 @@
     <h1 class="mt-3"><%= `${user.First_Name} ${user.Last_Name}` %></h1>
 
     <!-- Display Preferred Name -->
-    <h4 class="mt-3"><%= `Preferred Name: ${user.Preferred_Name}`%></h4>
+    <% if (user.Preferred_Name) { %>
+        <h4 class="mt-3"><%= `Preferred Name: ${user.Preferred_Name}`%></h4>
+    <% } %>
+    
 
     <!-- Display School -->
-    <h4 class="mt-3">School: {{ school }}</h4>
+    <h4 class="mt-3">School:
+        <% if (user.School_Name) { %>
+            <%= `${user.School_Name}` %>
+        <% } else { %>
+            N/A
+        <% } %>
+    </h4>
     
     <hr>  <!-- Horizontal Line -->
 
     <!-- Display Committees -->
     <h5>Committees:</h5>
-    <h6>
+    <p>
         <% if (user.Is_On_Committee) { %>
             <ul>
                 <% userCommittees.forEach(element => { %>
@@ -30,19 +39,31 @@
           None
         <% } %>
         
-    </h6>
+    </p>
     
     <hr>  <!-- Horizontal Line -->
     
     <!-- Display Service Statement -->
     <h5>Service Statement:</h5>
-    <p>{{ service_statement }}</p>
+    <p>
+        <% if (user.Service_Statement) { %>
+            <%= `${user.Service_Statement}` %>
+        <% } else { %>
+            N/A
+        <% } %>
+    </p>
 
     <hr>  <!-- Horizontal Line -->
 
     <!-- Display Candidate Statement -->
     <h5>Candidate Statement:</h5>
-    <p>{{ candidate_statement }}</p>
+    <p>
+        <% if (user.Candidate_Statement) { %>
+            <%= `${user.Candidate_Statement}` %>
+        <% } else { %>
+            N/A
+        <% } %></p>
+    </p>
 
     <!-- Placeholder for more content or other sections -->
     <h5>Marist Page</h5>
