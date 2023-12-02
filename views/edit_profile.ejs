@@ -8,7 +8,7 @@
                 <!-- Display profile image -->
                 <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
                     class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
-
+router
                 <br>
                 <br>
 
@@ -23,21 +23,30 @@
                 <div class="form-group">
                     <label for="firstName">First Name:</label>
                     <input type="text" class="form-control" id="firstName" name="firstName"
-                        placeholder="Enter your first name">
+                        placeholder="Enter your first name" required
+                        <% if (user.First_Name) { %>
+                            value=<%= `${user.First_Name}` %>
+                        <% } %>>
                 </div>
 
                 <!-- Last Name -->
                 <div class="form-group">
                     <label for="lastName">Last Name:</label>
                     <input type="text" class="form-control" id="lastName" name="lastName"
-                        placeholder="Enter your last name">
+                        placeholder="Enter your last name" required
+                        <% if (user.Last_Name) { %>
+                            value=<%= `${user.Last_Name}` %>
+                        <% } %>>
                 </div>
 
                 <!-- Preferred Name Input -->
                 <div class="form-group">
                     <label for="preferredName">Preferred Name:</label>
                     <input type="text" class="form-control" id="preferredName" name="preferredName"
-                        placeholder="Enter your preferred name">
+                        placeholder="Enter your preferred name"
+                        <% if (user.Preferred_Name) { %>
+                            value=<%= `${user.Preferred_Name}` %>
+                        <% } %>>
                 </div>
 
                 <!-- School Input -->
@@ -48,14 +57,14 @@
                             <option selected>
                                 <% `${user.School_Name}` %>
                             </option>
-                            <% } else { %>
-                                <option></option>
-                                <% } %>
-                                    <% for(let i=0; i < schools.length; i++) { %>
-                                        <option value="<%= schools[i] %>">
-                                            <%= schools[i] %>
-                                        </option>
-                                        <% } %>
+                        <% } else { %>
+                            <option></option>
+                        <% } %>
+                        <% for(let i=0; i < schools.length; i++) { %>
+                            <option value="<%= schools[i] %>">
+                                <%= schools[i] %>
+                            </option>
+                        <% } %>
                     </select>
 
                 </div>
@@ -65,10 +74,11 @@
                     <label for="committees">Committees:</label>
                     <select class="form-control" id="committeeDropdown">
                         <option value="" disabled selected>Select your option</option>
-                        <option value="Math">Math</option>
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Art">Art</option>
-                        <option value="History">History</option>
+                        <% for( let i = 0; i < committees.length; i++ ) { %>
+                            <option value="<%= committees[i].Committee_ID %>">
+                                <%= committees[i].Committee_Name %>
+                            </option>
+                        <% } %>
                     </select>
                 </div>
                 <div class="form-group">
@@ -131,21 +141,22 @@
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
 
             if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
-                const committeeName = selectedOption.value;
+                const committeeName = selectedOption.text;
+                const committeeID = selectedOption.value;
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `
                     <span>${committeeName}</span>
                     <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                 `;
                 selectedCommittees.appendChild(listItem);
-                selectedSet.add(committeeName); // Add to selected set
+                selectedSet.add(committeeID); // Add to selected set
             }
 
             updateSelectedCommitteesInput();
         });
 
         addOtherCommitteeButton.addEventListener("click", function () {
-            const committeeName = otherCommitteeInput.value.trim();
+            const committeeName = otherCommitteeInput.text.trim();
             if (committeeName && !selectedSet.has(committeeName)) {
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `

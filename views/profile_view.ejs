@@ -18,7 +18,19 @@
     <hr>  <!-- Horizontal Line -->
 
     <!-- Display Committees -->
-    <h5>Committees: {{ committees }}</h5>
+    <h5>Committees:</h5>
+    <h6>
+        <% if (user.Is_On_Committee) { %>
+            <ul>
+                <% userCommittees.forEach(element => { %>
+                    <li><%= `${element.Committee_Name}` %></li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+          None
+        <% } %>
+        
+    </h6>
     
     <hr>  <!-- Horizontal Line -->
     

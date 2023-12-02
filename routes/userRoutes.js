@@ -5,15 +5,24 @@ const util = require('../util');
 
 const db = require('../database');
 const User = require('../models/userModel');
+const FacComMap = require('../models/facultyCommitteeJunction')
 
 // Profile view GET handler
 router.get('/:userID', async (req, res) => {
+    userID = parseInt(req.params.userID);
     const reqUser = await db.getUsers({
         where: {
-            CWID: parseInt(req.params.userID)
-        }
+            CWID: userID
+        }, 
     });
-    res.render('profile_view', {user: reqUser[0]});
+    let userCommittees;
+
+    if(reqUser[0].Is_On_Committee) {
+        userCommittees = await db.getFacultyCommittees(userID);
+    } else {
+        userCommittees = null;
+    }
+    res.render('profile_view', {user: reqUser[0], userCommittees: userCommittees});
 });
 
 // Name and Picture
@@ -23,22 +32,44 @@ router.get('/:userID/edit', async (req, res) => {
             CWID: parseInt(req.params.userID)
         }
     });
-    res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values});
+    const reqCommittees = await db.getCommittees();
+    res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees});
 });
 
 router.post('/:userID/save', util.upload.single('profilePicture'), async (req, res) => {
     const { 
-        profilePicture, 
-        user_name, 
+        firstName,
+        lastName, 
         preferredName, 
         schoolDropdown, 
-        committeeDropdown, 
+        selectedCommittees, 
         candidateStatement,
         serviceStatement 
     } = req.body;
 
     const userID = parseInt(req.params.userID);
-    
+
+    let hasCommitties;
+
+    let committeeArray;
+
+    console.log(selectedCommittees);
+
+    //Formatting out the open and end quotes
+    committeeString = JSON.stringify(selectedCommittees);
+    committeeString = committeeString.substring(1, (committeeString.length - 1))
+
+
+    console.log(committeeString);
+
+    //if empty
+    if (JSON.stringify(selectedCommittees) === ""){
+        hasCommitties = false;
+    } else {
+        committeeArray = committeeString.split(',');
+        hasCommitties = true;
+    }
+
     const reqUser = await db.getUsers({
         where: {
             CWID: userID
@@ -47,8 +78,8 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
 
     //Updating basic info
     await User.update({
-        //First_Name: TODO,
-        //Last_Name: TODO,
+        First_Name: firstName,
+        Last_Name: lastName,
         Preferred_Name: preferredName,
         School_Name: schoolDropdown,
         Candidate_Statement: candidateStatement,
@@ -58,6 +89,40 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
             CWID: userID
         }
     });
+
+    //Update committees
+    //only updates committees if there were committees selected by the user
+    if (hasCommitties) {
+        //remove all mappings of the committees for this user first
+        FacComMap.destroy({
+            where: {
+                CWID: userID
+            }
+        });
+
+        committeeArray.forEach((e) => {
+            let committeeID = parseInt(e);
+            //creates a new mapping
+            FacComMap.create({
+                CWID: userID,
+                Committee_ID: committeeID
+            });
+        });
+
+        //updates that the user is on a committee
+        await User.update({ Is_On_Committee: true }, {
+            where: {
+                CWID: userID
+            }
+        });
+    } else { //if no committees, set that the faculty is not on a committee
+        await User.update({ Is_On_Committee: false }, {
+            where: {
+                CWID: userID
+            }
+        });
+    }
+
 
     res.redirect(`/user/${userID}`);
 });
