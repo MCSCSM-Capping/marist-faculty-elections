@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, QueryTypes } = require('sequelize');
 const mysql = require('mysql2');
 
 //Import models
@@ -38,6 +38,5 @@ module.exports = {
     FROM Committees
     JOIN Faculty_Committees ON (Faculty_Committees.Committee_ID = Committees.Committee_ID)
     JOIN Faculty ON (Faculty_Committees.CWID = Faculty.CWID)
-    WHERE Faculty.CWID = ${CWID}
-    `)
+    WHERE Faculty.CWID = ${CWID}`, {type: QueryTypes.SELECT})
 }

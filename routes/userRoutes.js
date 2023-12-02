@@ -22,6 +22,7 @@ router.get('/:userID', async (req, res) => {
     } else {
         userCommittees = null;
     }
+
     res.render('profile_view', {user: reqUser[0], userCommittees: userCommittees});
 });
 
@@ -115,6 +116,7 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
                 CWID: userID
             }
         });
+
     } else { //if no committees, set that the faculty is not on a committee
         await User.update({ Is_On_Committee: false }, {
             where: {
