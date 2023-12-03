@@ -22,9 +22,7 @@ sequelize.authenticate().then(() => {
 module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
-
-    //getSchools: async (options = {}) => School.findAll(options),
-
+    
     getCommittees: async (options = {}) => Committee.findAll(options),
 
     getCredentials: async (options = {}) => Admin.findAll(options)

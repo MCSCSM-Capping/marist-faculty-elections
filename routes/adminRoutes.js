@@ -12,8 +12,14 @@ router.get('/admin_view', async (req, res) => {
 });
 
 // Admin View and Manage
-router.get('/view_and_manage', (req, res) => {
-    res.render('view_and_manage');
+router.get('/view_and_manage/:userID', async (req, res) => {
+    const reqCommittees = await db.getCommittees();
+    const reqUser = await db.getUsers({
+        where: {
+            CWID: parseInt(req.params.userID)
+        }
+    });
+    res.render('view_and_manage', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser[0]});
 });
 
 // Admin Query Preview
