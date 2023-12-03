@@ -8,7 +8,6 @@
                 <!-- Display profile image -->
                 <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
                     class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
-router
                 <br>
                 <br>
 
@@ -55,10 +54,10 @@ router
                     <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
                         <% if (user.School_Name) {%>
                             <option selected>
-                                <% `${user.School_Name}` %>
+                                <%= `${user.School_Name}` %>
                             </option>
                         <% } else { %>
-                            <option></option>
+                            <option selected></option>
                         <% } %>
                         <% for(let i=0; i < schools.length; i++) { %>
                             <option value="<%= schools[i] %>">
@@ -73,7 +72,7 @@ router
                 <div class="form-group">
                     <label for="committees">Committees:</label>
                     <select class="form-control" id="committeeDropdown">
-                        <option value="" disabled selected>Select your option</option>
+                        <option value="" disabled selected>Select a Committee</option>
                         <% for( let i = 0; i < committees.length; i++ ) { %>
                             <option value="<%= committees[i].Committee_ID %>">
                                 <%= committees[i].Committee_Name %>
@@ -93,19 +92,19 @@ router
                     </div>
                 </div>
 
-                <!-- Candidate Statement Input -->
-                <div class="form-group">
-                    <label for="candidateStatement">Candidate Statement:</label>
-                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6"
-                        placeholder="Enter your candidate statement"></textarea>
-                </div>
-
                 <!-- Service Statement Input -->
                 <div class="form-group">
                     <label for="serviceStatement">Service Statement:</label>
-                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6"
-                        placeholder="Enter your service statement"></textarea>
+                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6" maxlength="250"
+                        placeholder="Enter your service statement"><% if (user.Service_Statement) { %><%= `${user.Service_Statement}` %><% } %></textarea>
                 </div>
+
+                <!-- Candidate Statement Input -->
+                <div class="form-group">
+                    <label for="candidateStatement">Candidate Statement:</label>
+                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6" maxlength="750"
+                        placeholder="Enter your candidate statement"><% if (user.Candidate_Statement) { %><%= `${user.Candidate_Statement}` %><% } %></textarea>
+                </div>                
 
                 <br>
                 <br>
@@ -116,12 +115,17 @@ router
         </div>
     </div>
 
+
+
     <script>
+        const currCommittees = <%- userCommittees %>;
         const committeeDropdown = document.getElementById("committeeDropdown");
         const otherCommitteeInput = document.getElementById("otherCommittee");
         const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
         const selectedCommittees = document.getElementById("selectedCommittees");
         const selectedSet = new Set(); // To keep track of selected committees
+
+        console.log(<%= `${user.School_Name}` %>);
 
         // Sort the dropdown options alphabetically
         const dropdownOptions = Array.from(committeeDropdown.options);
@@ -135,6 +139,22 @@ router
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
             selectedCommitteesInput.value = Array.from(selectedSet).join(',');
         }
+
+        console.log(currCommittees);
+
+        // add saved committees to list first
+        currCommittees.forEach((e) => {
+            const committeeName = e.Committee_Name;
+            const committeeID = e.Committee_ID;
+            const listItem = document.createElement("div");
+            listItem.innerHTML = `
+                <span>${committeeName}</span>
+                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+            `;
+            selectedCommittees.appendChild(listItem);
+            selectedSet.add(committeeID); // Add to selected set
+            updateSelectedCommitteesInput();
+        });
 
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {

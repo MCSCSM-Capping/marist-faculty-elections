@@ -15,6 +15,7 @@ router.get('/:userID', async (req, res) => {
             CWID: userID
         }, 
     });
+    
     let userCommittees;
 
     if(reqUser[0].Is_On_Committee) {
@@ -22,7 +23,6 @@ router.get('/:userID', async (req, res) => {
     } else {
         userCommittees = null;
     }
-
     res.render('profile_view', {user: reqUser[0], userCommittees: userCommittees});
 });
 
@@ -34,7 +34,14 @@ router.get('/:userID/edit', async (req, res) => {
         }
     });
     const reqCommittees = await db.getCommittees();
-    res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees});
+    let userCommittees;
+
+    if(reqUser[0].Is_On_Committee) {
+        userCommittees = await db.getFacultyCommittees(userID);
+    } else {
+        userCommittees = null;
+    }
+    res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees, userCommittees: JSON.stringify(userCommittees)});
 });
 
 router.post('/:userID/save', util.upload.single('profilePicture'), async (req, res) => {
@@ -71,11 +78,11 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
         hasCommitties = true;
     }
 
-    const reqUser = await db.getUsers({
-        where: {
-            CWID: userID
-        }
-    });
+    // const reqUser = await db.getUsers({
+    //     where: {
+    //         CWID: userID
+    //     }
+    // });
 
     //Updating basic info
     await User.update({

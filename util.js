@@ -1,6 +1,7 @@
 const URL = require("url").URL;
 const crypto = require('crypto');
 const multer = require('multer');
+const path = require('path');
 
 // Function to check if user logging in is not a student
 module.exports.userIsFaculty = function(req, cas) {
@@ -65,11 +66,11 @@ module.exports.hashPassword = function(password, salt) {
 const storage = multer.diskStorage({
     // Set the upload destination to the uploads 
     destination: function(req, file, cb) {
-        cb(null, './public/data/uploads');
+        cb(null, path.join('./uploads'));
     },
-    // Fix the file name to remove spaces
+    // Rename the image to the CWID of the user
     filename: function(req, file, cb) {
-        cb(null, file.originalname.replace(/\s/g, '-'));
+        cb(null, file.originalname.replace(`${req.params.userID}`));
     }
 });
 const upload = multer({storage: storage});
