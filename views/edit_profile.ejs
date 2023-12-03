@@ -52,15 +52,9 @@
                 <div class="form-group">
                     <label for="school">School:</label>
                     <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
-                        <% if (user.School_Name) {%>
-                            <option selected>
-                                <%= `${user.School_Name}` %>
-                            </option>
-                        <% } else { %>
-                            <option selected></option>
-                        <% } %>
+                        <option></option>
                         <% for(let i=0; i < schools.length; i++) { %>
-                            <option value="<%= schools[i] %>">
+                            <option value="<%= schools[i] %>" <% if (schools[i] === user.School_Name) { %> selected <% } %>>
                                 <%= schools[i] %>
                             </option>
                         <% } %>
