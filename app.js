@@ -55,7 +55,6 @@ app.set('view engine', 'ejs');
 //     }
 // });
 
-
 // Middleware to ensure user authentication
 const ensureAuthenticated = (req, res, next) => {
     if (req.session.isUserAuthenticated) {

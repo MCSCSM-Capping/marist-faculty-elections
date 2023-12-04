@@ -32,17 +32,17 @@ var cas = new CASAuthentication({
 
 router.get('/authenticate', cas.bounce, async (req, res) => {
 
+    let reqCWID = parseInt(req.session[cas.session_info].maristcwid);
+
     //first checks if a user is faculty. If they are not, sends a 401 and exits.
     if (!util.userIsFaculty(req, cas)) {
         return res.sendStatus(401);
     } else {
         req.session.isUserAuthenticated = true;
+        req.session.user = reqCWID;
     }
-
-    let reqCWID, reqFirst, reqLast; //first and last name from CAS object
-    reqCWID = parseInt(req.session[cas.session_info].maristcwid);
-
-    console.log(req.session[cas.session_info].cn);
+    
+    let reqFirst, reqLast; //first and last name from CAS object
 
     let nameArr = (req.session[cas.session_info].cn).split(' ');
 
@@ -92,7 +92,7 @@ router.post('/admin_authenticate', async (req, res) => {
     reqUsername = reqCredentials[0].Username;
     reqPassword = reqCredentials[0].Admin_Password;
     reqSalt = reqCredentials[0].Salt;
-
+    console.log(reqUsername + " " + reqPassword + " " + reqSalt)
     passwordHash = util.hashPassword(password, reqSalt);
 
     if (passwordHash === reqPassword) {
