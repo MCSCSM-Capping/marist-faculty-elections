@@ -1,4 +1,4 @@
-<%- include('./partials/adminbase.ejs') %>
+<%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +54,7 @@
             <button class="btn btn-danger btn-block">Build a Ballot</button>
         </div>
         <div class="col-md-3 mb-3">
-            <button class="btn btn-danger btn-block">View Profile</button>
+            <button class="btn btn-danger btn-block">View and Manage Profile</button>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
                         <th>First Name</th>
                         <th>Preferred Name</th>
                         <th>School</th>
-                        <th>Committee(s)</th>
+                        <th>View Profile</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,28 +91,18 @@
                     </tr>
                     -->
                     <% for(let i = 0; i < faculty.length; i++) { %>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td><%=faculty[i].CWID %></td>
-                            <td><%=faculty[i].Last_Name %></td>
-                            <td><%=faculty[i].First_Name %></td>
-                            <td><%=faculty[i].Preferred_Name %></td>
-                            <td><%=faculty[i].School_Name %></td>
-                            <td><%=faculty[i].Is_On_Committee %></td>
-                        </tr>
+                        <% if (faculty[i].RecActive == "Y"){ %>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><%=faculty[i].CWID %></td>
+                                <td><%=faculty[i].Last_Name %></td>
+                                <td><%=faculty[i].First_Name %></td>
+                                <td><%=faculty[i].Preferred_Name %></td>
+                                <td><%=faculty[i].School_Name %></td>
+                                <td><a class="nav-link" href=<%= `/admin/view_and_manage/${faculty[i].CWID}` %>>View & Manage Profiles</a></td>
+                            </tr>
+                        <% } %>
                     <% } %>
-
-                    <!-- Blank rows for illustration purposes -->
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td></td>
-                        <td>Left</td>
-                        <td>Blank</td>
-                        <td>On Purpose</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <!-- You can add as many blank rows as you need -->
 
                 </tbody>
             </table>
