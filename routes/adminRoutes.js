@@ -47,10 +47,35 @@ router.get('/query_preview', (req, res) => {
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {
     const {schoolDropdown} = req.body;
     const userID = parseInt(req.params.userID);
-    console.log("schoolDropdown: " ,  schoolDropdown , "userID" , userID, "req.params.userID", parseInt(req.params.userID));
     
     await User.update({
         School_Name: schoolDropdown
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+    res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
+router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
+    const userID = parseInt(req.params.userID);
+    
+    await User.update({
+        RecActive: "N"
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+    res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
+router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
+    const userID = parseInt(req.params.userID);
+    
+    await User.update({
+        RecActive: "Y"
     }, {
         where: {
             CWID: userID

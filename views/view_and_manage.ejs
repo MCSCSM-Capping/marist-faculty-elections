@@ -12,14 +12,24 @@
         <hr>
 
         <div class="row mt-4 justify-content-center">
+            <% if (faculty.RecActive == "Y"){ %>
             <div class="col-md-3 mb-3">
                 <button class="btn btn-danger btn-block">Add to Ballot</button>
             </div>
             <div class="col-md-3 mb-3">
-                <button class="btn btn-primary btn-block">Delete Profile</button>
+                <form action=<%=`/admin/view_and_manage/${faculty.CWID}/delete_profile`%> method="POST">
+                <button class="btn btn-primary btn-block" type="submit" >Delete Profile</button>
+                </form>
             </div>
+            <% }else{ %>
+                <div class="text-center">
+                    <h1 class="text-center" >User Inactive</h1>
+                    <form action=<%=`/admin/view_and_manage/${faculty.CWID}/activate_profile`%> method="POST">
+                    <button class="btn btn-danger btn-block" type="submit" >Activate Profile</button>
+                    </form>
+                </div>
+            <% }%>
         </div>
-
     <div class="profile-container text-center mt-5">
         <!-- Profile code for Tab 1 -->
         <h1 class="mt-3">Name: <%=faculty.First_Name %> <%=faculty.Last_Name %></h1>
