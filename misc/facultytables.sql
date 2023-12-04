@@ -23,6 +23,10 @@ INSERT INTO Faculty VALUES (0, "Y", "Test", "User", "Test User 1", DEFAULT, DEFA
 
 CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_Name TEXT);
 INSERT INTO Committees VALUES (0, "Test Committee 1");
+INSERT INTO Committees VALUES (1, "Computer Science");
+INSERT INTO Committees VALUES (2, "Art");
+INSERT INTO Committees VALUES (3, "Math");
+INSERT INTO Committees VALUES (4, "History");
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 

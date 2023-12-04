@@ -19,6 +19,7 @@
   "homepage": "https://github.com/nicholasfiore/marist-faculty-elections#readme",
   "dependencies": {
     "bootstrap": "^5.3.2",
+    "connect-session-sequelize": "^7.1.7",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
