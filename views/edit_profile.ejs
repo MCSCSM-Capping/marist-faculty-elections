@@ -119,8 +119,6 @@
         const selectedCommittees = document.getElementById("selectedCommittees");
         const selectedSet = new Set(); // To keep track of selected committees
 
-        console.log(<%= `${user.School_Name}` %>);
-
         // Sort the dropdown options alphabetically
         const dropdownOptions = Array.from(committeeDropdown.options);
         dropdownOptions.sort((a, b) => a.text.localeCompare(b.text));
@@ -134,21 +132,21 @@
             selectedCommitteesInput.value = Array.from(selectedSet).join(',');
         }
 
-        console.log(currCommittees);
-
         // add saved committees to list first
-        currCommittees.forEach((e) => {
-            const committeeName = e.Committee_Name;
-            const committeeID = e.Committee_ID;
-            const listItem = document.createElement("div");
-            listItem.innerHTML = `
-                <span>${committeeName}</span>
-                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
-            `;
-            selectedCommittees.appendChild(listItem);
-            selectedSet.add(committeeID); // Add to selected set
-            updateSelectedCommitteesInput();
-        });
+        if (currCommittees != null) {
+            currCommittees.forEach((e) => {
+                const committeeName = e.Committee_Name;
+                const committeeID = e.Committee_ID;
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span id="${committeeID}">${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                selectedSet.add(committeeID); // Add to selected set
+                updateSelectedCommitteesInput();
+            });
+        }
 
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {
@@ -188,7 +186,10 @@
         function removeCommittee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
-            selectedSet.delete(committeeName); // Remove from selected set
+            const committeeID = parseInt(listItem.querySelector("span").id);
+            console.log(committeeID);
+            console.log(selectedSet);
+            selectedSet.delete(committeeID); // Remove from selected set
             selectedCommittees.removeChild(listItem);
             committeeDropdown.selectedIndex = -1;
             updateSelectedCommitteesInput();
