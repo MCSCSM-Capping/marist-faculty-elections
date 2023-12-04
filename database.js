@@ -3,7 +3,6 @@ const mysql = require('mysql2');
 
 //Import models
 const User = require('./models/userModel');
-const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
 const Admin = require('./models/adminModel');
 
@@ -22,7 +21,7 @@ sequelize.authenticate().then(() => {
 module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
-    
+
     getCommittees: async (options = {}) => Committee.findAll(options),
 
     getCredentials: async (options = {}) => Admin.findAll(options)
