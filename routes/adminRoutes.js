@@ -44,4 +44,19 @@ router.get('/query_preview', (req, res) => {
     res.render('query_preview', {selectedUser: req.session.selectedUser});
 });
 
+router.post('/view_and_manage/:userID/change_school', async (req, res) => {
+    console.log("inside admin post")
+    const schoolDropdown = req.body;
+
+    const userID = parseInt(req.params.userID);
+
+    await User.update({
+        School_Name: schoolDropdown
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+});
+
 module.exports = router;
