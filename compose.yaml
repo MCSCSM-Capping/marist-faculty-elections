@@ -17,6 +17,7 @@ services:
         restart: true
     environment:
       NODE_ENV: production
+    env_file: .env
     volumes:
       - "/etc/ssl:/etc/ssl"
     ports:

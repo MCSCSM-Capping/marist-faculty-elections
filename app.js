@@ -17,7 +17,9 @@ const Committee = require('./models/committeeModel');
 //const { name } = require('ejs');
 
 //environment setup
-require('dotenv').config({ path: './.env'});
+require('dotenv').config();
+
+console.log("Current status: " + process.env.STATUS);
 
 const app = express();
 
