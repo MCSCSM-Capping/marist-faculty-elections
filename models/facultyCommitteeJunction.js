@@ -11,17 +11,17 @@ sequelize.authenticate().then(() => {
     console.error('Unable to connect to the database:', error);
 });
 
-const School = sequelize.define('School', {
-    School_ID: {
-        type: DataTypes.STRING,
-        primaryKey: true,
+const FacultyCommitteeJunction = sequelize.define('Faculty_Committees', {
+    CWID: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    School_Name: {
-        type: DataTypes.STRING
+    Committee_ID: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     timestamps: false
 });
 
-module.exports = School;
+module.exports = FacultyCommitteeJunction;

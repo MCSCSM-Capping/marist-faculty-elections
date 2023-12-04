@@ -12,12 +12,13 @@ const fs = require('fs');
 
 //model import
 const User = require('./models/userModel');
-const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
 //const { name } = require('ejs');
 
 //environment setup
 require('dotenv').config();
+
+console.log("Current status: " + process.env.STATUS);
 
 const app = express();
 
@@ -148,7 +149,9 @@ if (process.env.STATUS === 'production') {
     https.createServer({
         key: privateKey,
         cert:certificate
-    }, app).listen(3000);
+    }, app).listen(3000, () => {
+        console.log('HTTPS Listening on port 3000 (internal), mapped to port 443 (external)');
+    });
 } else {
 //port app is listening on
     app.listen(3000, () => {

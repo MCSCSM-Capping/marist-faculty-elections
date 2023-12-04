@@ -4,11 +4,10 @@
 
     <div class="container">
         <div class="form-card">
-            <form action=<%= `/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data">
+            <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data">
                 <!-- Display profile image -->
                 <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
                     class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
-
                 <br>
                 <br>
 
@@ -19,31 +18,45 @@
                         accept="image/*">
                 </div>
 
-                <!-- Name Input -->
+                <!-- First Name -->
                 <div class="form-group">
-                    <label for="username">Name:</label>
-                    <input type="text" class="form-control" id="user_name" name="user_name"
-                        placeholder="Enter your name" required>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName"
+                        placeholder="Enter your first name" required
+                        <% if (user.First_Name) { %>
+                            value=<%= `${user.First_Name}` %>
+                        <% } %>>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName"
+                        placeholder="Enter your last name" required
+                        <% if (user.Last_Name) { %>
+                            value=<%= `${user.Last_Name}` %>
+                        <% } %>>
                 </div>
 
                 <!-- Preferred Name Input -->
                 <div class="form-group">
                     <label for="preferredName">Preferred Name:</label>
                     <input type="text" class="form-control" id="preferredName" name="preferredName"
-                        placeholder="Enter your preferred name">
+                        placeholder="Enter your preferred name"
+                        <% if (user.Preferred_Name) { %>
+                            value=<%= `${user.Preferred_Name}` %>
+                        <% } %>>
                 </div>
 
                 <!-- School Input -->
                 <div class="form-group">
                     <label for="school">School:</label>
                     <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
-                        <% if (user.School_Name)  {%>
-                            <option selected><% `${user.School_Name}` %></option>
-                        <% } else { %>
-                            <option></option>
-                        <% } %>
-                        <% for(let i = 0; i < schools.length; i++) { %>
-                            <option value = "<%= schools[i] %>"><%= schools[i] %></option>
+                        <option></option>
+                        <% for(let i=0; i < schools.length; i++) { %>
+                            <option value="<%= schools[i] %>" <% if (schools[i] === user.School_Name) { %> selected <% } %>>
+                                <%= schools[i] %>
+                            </option>
                         <% } %>
                     </select>
 
@@ -53,11 +66,12 @@
                 <div class="form-group">
                     <label for="committees">Committees:</label>
                     <select class="form-control" id="committeeDropdown">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="Math">Math</option>
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Art">Art</option>
-                        <option value="History">History</option>
+                        <option value="" disabled selected>Select a Committee</option>
+                        <% for( let i = 0; i < committees.length; i++ ) { %>
+                            <option value="<%= committees[i].Committee_ID %>">
+                                <%= committees[i].Committee_Name %>
+                            </option>
+                        <% } %>
                     </select>
                 </div>
                 <div class="form-group">
@@ -65,25 +79,26 @@
                     <br>
                     <button type="button" id="addOtherCommittee" class="btn btn-secondary">Add</button>
                 </div>
+                <input type="hidden" id="selectedCommitteesInput" name="selectedCommittees" value="">
                 <div class="form-group">
                     <div class="selected-committees" id="selectedCommittees">
                         <!-- Selected committees will be displayed here -->
                     </div>
                 </div>
 
-                <!-- Candidate Statement Input -->
-                <div class="form-group">
-                    <label for="candidateStatement">Candidate Statement:</label>
-                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6"
-                        placeholder="Enter your candidate statement"></textarea>
-                </div>
-
                 <!-- Service Statement Input -->
                 <div class="form-group">
                     <label for="serviceStatement">Service Statement:</label>
-                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6"
-                        placeholder="Enter your service statement"></textarea>
+                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6" maxlength="250"
+                        placeholder="Enter your service statement"><% if (user.Service_Statement) { %><%= `${user.Service_Statement}` %><% } %></textarea>
                 </div>
+
+                <!-- Candidate Statement Input -->
+                <div class="form-group">
+                    <label for="candidateStatement">Candidate Statement:</label>
+                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6" maxlength="750"
+                        placeholder="Enter your candidate statement"><% if (user.Candidate_Statement) { %><%= `${user.Candidate_Statement}` %><% } %></textarea>
+                </div>                
 
                 <br>
                 <br>
@@ -94,7 +109,10 @@
         </div>
     </div>
 
+
+
     <script>
+        const currCommittees = <%- userCommittees %>;
         const committeeDropdown = document.getElementById("committeeDropdown");
         const otherCommitteeInput = document.getElementById("otherCommittee");
         const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
@@ -109,24 +127,48 @@
             committeeDropdown.appendChild(option);
         });
 
+        function updateSelectedCommitteesInput() {
+            const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
+            selectedCommitteesInput.value = Array.from(selectedSet).join(',');
+        }
+
+        // add saved committees to list first
+        if (currCommittees != null) {
+            currCommittees.forEach((e) => {
+                const committeeName = e.Committee_Name;
+                const committeeID = e.Committee_ID;
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span id="${committeeID}">${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                selectedSet.add(committeeID); // Add to selected set
+                updateSelectedCommitteesInput();
+            });
+        }
+
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
 
             if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
-                const committeeName = selectedOption.value;
+                const committeeName = selectedOption.text;
+                const committeeID = selectedOption.value;
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `
                     <span>${committeeName}</span>
                     <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                 `;
                 selectedCommittees.appendChild(listItem);
-                selectedSet.add(committeeName); // Add to selected set
+                selectedSet.add(committeeID); // Add to selected set
             }
+
+            updateSelectedCommitteesInput();
         });
 
         addOtherCommitteeButton.addEventListener("click", function () {
-            const committeeName = otherCommitteeInput.value.trim();
+            const committeeName = otherCommitteeInput.text.trim();
             if (committeeName && !selectedSet.has(committeeName)) {
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `
@@ -137,15 +179,23 @@
                 otherCommitteeInput.value = "";
                 selectedSet.add(committeeName); // Add to selected set
             }
+
+            updateSelectedCommitteesInput();
         });
 
         function removeCommittee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
-            selectedSet.delete(committeeName); // Remove from selected set
+            const committeeID = parseInt(listItem.querySelector("span").id);
+            console.log(committeeID);
+            console.log(selectedSet);
+            selectedSet.delete(committeeID); // Remove from selected set
             selectedCommittees.removeChild(listItem);
             committeeDropdown.selectedIndex = -1;
+            updateSelectedCommitteesInput();
         }
+
+
     </script>
 
     <%- include('./partials/footer.ejs') %>
