@@ -45,11 +45,10 @@ router.get('/query_preview', (req, res) => {
 });
 
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {
-    console.log("inside admin post")
-    const schoolDropdown = req.body;
-
+    const {schoolDropdown} = req.body;
     const userID = parseInt(req.params.userID);
-
+    console.log("schoolDropdown: " ,  schoolDropdown , "userID" , userID, "req.params.userID", parseInt(req.params.userID));
+    
     await User.update({
         School_Name: schoolDropdown
     }, {
