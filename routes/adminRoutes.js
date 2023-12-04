@@ -56,6 +56,7 @@ router.post('/view_and_manage/:userID/change_school', async (req, res) => {
             CWID: userID
         }
     });
+    res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
 module.exports = router;
