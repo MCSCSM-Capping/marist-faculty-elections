@@ -18,6 +18,8 @@ const Committee = require('./models/committeeModel');
 //environment setup
 require('dotenv').config();
 
+console.log("Current status: " + process.env.STATUS);
+
 const app = express();
 
 // Session data and cookie setup for users
@@ -147,7 +149,9 @@ if (process.env.STATUS === 'production') {
     https.createServer({
         key: privateKey,
         cert:certificate
-    }, app).listen(3000);
+    }, app).listen(3000, () => {
+        console.log('HTTPS Listening on port 3000 (internal), mapped to port 443 (external)');
+    });
 } else {
 //port app is listening on
     app.listen(3000, () => {
