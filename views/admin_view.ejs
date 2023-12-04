@@ -91,15 +91,17 @@
                     </tr>
                     -->
                     <% for(let i = 0; i < faculty.length; i++) { %>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td><%=faculty[i].CWID %></td>
-                            <td><%=faculty[i].Last_Name %></td>
-                            <td><%=faculty[i].First_Name %></td>
-                            <td><%=faculty[i].Preferred_Name %></td>
-                            <td><%=faculty[i].School_Name %></td>
-                            <td><a class="nav-link" href=<%= `/admin/view_and_manage/${faculty[i].CWID}` %>>View & Manage Profiles</a></td>
-                        </tr>
+                        <% if (faculty[i].RecActive == "Y"){ %>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><%=faculty[i].CWID %></td>
+                                <td><%=faculty[i].Last_Name %></td>
+                                <td><%=faculty[i].First_Name %></td>
+                                <td><%=faculty[i].Preferred_Name %></td>
+                                <td><%=faculty[i].School_Name %></td>
+                                <td><a class="nav-link" href=<%= `/admin/view_and_manage/${faculty[i].CWID}` %>>View & Manage Profiles</a></td>
+                            </tr>
+                        <% } %>
                     <% } %>
 
                 </tbody>

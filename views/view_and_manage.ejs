@@ -31,7 +31,19 @@
         <h4 class="mt-3">Preferred Name: <%=faculty.Preferred_Name %></h4>
         <h4 class="mt-3">School: <%=faculty.School_Name %></h4>
         <hr>
-        <h5>Committees: {{ committees }}</h5>
+        <h5>Committees:</h5>
+        <p>
+            <% if (faculty.Is_On_Committee) { %>
+                <ul>
+                    <% userCommittees.forEach(element => { %>
+                        <li><%= `${element.Committee_Name}` %></li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+              None
+            <% } %>
+            
+        </p>
         <hr>
         <h5>Service Statement:</h5>
         <p><%=faculty.Service_Statement %></p>
