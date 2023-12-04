@@ -12,7 +12,6 @@ const fs = require('fs');
 
 //model import
 const User = require('./models/userModel');
-const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
 //const { name } = require('ejs');
 

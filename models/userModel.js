@@ -19,7 +19,7 @@ const User = sequelize.define("User", {
         allowNull: false
     },
     RecActive: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("Y", "N"),
         allowNull: false
     },
     First_Name: {

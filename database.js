@@ -3,7 +3,6 @@ const mysql = require('mysql2');
 
 //Import models
 const User = require('./models/userModel');
-const School = require('./models/schoolModel');
 const Committee = require('./models/committeeModel');
 const FacultyCommitteeJunction = require('./models/facultyCommitteeJunction')
 const Admin = require('./models/adminModel');
@@ -26,8 +25,6 @@ Committee.belongsToMany(User, {through: FacultyCommitteeJunction, foreignKey: 'C
 module.exports = {
     // Gets the users with given options
     getUsers: async (options = {}) => User.findAll(options),
-
-    //getSchools: async (options = {}) => School.findAll(options),
 
     getCommittees: async (options = {}) => Committee.findAll(options),
 
