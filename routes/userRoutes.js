@@ -15,7 +15,7 @@ router.get('/:userID', async (req, res) => {
             CWID: userID
         }, 
     });
-    
+
     let userCommittees;
 
     if(reqUser[0].Is_On_Committee) {
@@ -61,23 +61,20 @@ router.post('/:userID/save', util.upload.single('profilePicture'), async (req, r
 
     let committeeArray;
 
-    console.log(selectedCommittees);
-
     //Formatting out the open and end quotes
     committeeString = JSON.stringify(selectedCommittees);
-    committeeString = committeeString.substring(1, (committeeString.length - 1))
+    committeeString = committeeString.substring(1, (committeeString.length - 1));
 
-
-    console.log(committeeString);
 
     //if empty
-    if (JSON.stringify(selectedCommittees) === ""){
+    if (committeeString.length === 0){
         hasCommitties = false;
+        console.log("I'm in here!")
     } else {
         committeeArray = committeeString.split(',');
         hasCommitties = true;
+        console.log("here");
     }
-
     // const reqUser = await db.getUsers({
     //     where: {
     //         CWID: userID
