@@ -9,10 +9,11 @@ const FacComMap = require('../models/facultyCommitteeJunction');
 router.get('/admin_view', async (req, res) => {
     const reqCommittees = await db.getCommittees();
     const reqUser = await db.getUsers();
+    const reqUsersCommittees = await db.getFullFacultyCommittees();
     if (req.session.selectedUser == null){
         req.session.selectedUser = reqUser[0].CWID;
     }
-    res.render('admin_view', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser, selectedUser: req.session.selectedUser});
+    res.render('admin_view', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser, selectedUser: req.session.selectedUser, usersCommittees: reqUsersCommittees});
 });
 
 // Admin View and Manage

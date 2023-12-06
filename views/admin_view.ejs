@@ -101,7 +101,7 @@
                             <% for(let i=0; i < faculty.length; i++) { %>
                                 <% if (faculty[i].RecActive=="Y" ){ %>
                                     <tr class="faculty-row" data-school="<%=faculty[i].School_Name %>"
-                                        data-committee="<%=faculty[i].Committee_Name %>">
+                                        data-committee="<%=usersCommittees[i] %>">
                                         <td><input type="checkbox"></td>
                                         <td>
                                             <%=faculty[i].CWID %>
@@ -233,7 +233,14 @@
 
                     console.log("Committee:" + committee, "Committee Filter:" + committeeFilter);
                     var schoolMatch = schoolFilter == 'Select a School' || school == schoolFilter;
-                    var committeeMatch = committeeFilter == 'Select a Committee' || committee == committeeFilter;
+                    var committeeMatch = false;
+
+                    
+                    committee.forEach(element => {
+                        if (committeeFilter == 'Select a Committee' || committee == committeeFilter){
+                            committeeMatch = true;
+                        }
+                    })
 
                     console.log(committeeMatch);
                     // Show/hide rows based on filter conditions
