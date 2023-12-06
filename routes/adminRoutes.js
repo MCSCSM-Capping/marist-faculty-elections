@@ -44,4 +44,44 @@ router.get('/query_preview', (req, res) => {
     res.render('query_preview', {selectedUser: req.session.selectedUser});
 });
 
+router.post('/view_and_manage/:userID/change_school', async (req, res) => {
+    const {schoolDropdown} = req.body;
+    const userID = parseInt(req.params.userID);
+    
+    await User.update({
+        School_Name: schoolDropdown
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+    res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
+router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
+    const userID = parseInt(req.params.userID);
+    
+    await User.update({
+        RecActive: "N"
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+    res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
+router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
+    const userID = parseInt(req.params.userID);
+    
+    await User.update({
+        RecActive: "Y"
+    }, {
+        where: {
+            CWID: userID
+        }
+    });
+    res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
 module.exports = router;
