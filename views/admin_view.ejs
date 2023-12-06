@@ -44,10 +44,10 @@
 
                 <div class="col-md-3 mb-3">
                     <label for="committeeFilter">All Committees</label>
-                    <select class="form-control" id="committeeFilter">
+                    <select class="form-control" id="committeeFilter" onchange="filterTable()">
                         <option selected>Select a Committee</option>
                         <% for(let i=0; i < committees.length; i++) { %>
-                            <option value="<%= committees[i].Committee_ID %>">
+                            <option value="<%= committees[i].Committee_Name %>">
                                 <%= committees[i].Committee_Name %>
                             </option>
                             <% } %>
@@ -58,10 +58,11 @@
             <!-- Buttons for "Add to Query" and "View Profile" -->
             <div class="row mt-3 justify-content-center">
                 <div class="col-md-3 mb-3">
-                    <button class="btn btn-danger btn-block">Build a Ballot</button>
+                    <button class="btn btn-danger btn-block" onclick="addToQuery()">Build a Ballot</button>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <button class="btn btn-danger btn-block">View and Manage Profile</button>
+                    <button class="btn btn-danger btn-block" onclick="viewAndManageProfile()">View and Manage
+                        Profile</button>
                 </div>
             </div>
 
@@ -74,7 +75,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th><input type="checkbox" id="selectAllCheckbox"></th>
                                 <th>CWID</th>
                                 <th>Last Name</th>
                                 <th>First Name</th>
@@ -122,7 +123,6 @@
                                     </tr>
                                     <% } %>
                                         <% } %>
-
                         </tbody>
                     </table>
                 </div>
@@ -135,6 +135,88 @@
 
         <!-- Add this script at the end of your HTML file -->
         <script>
+            // Function to handle "Select All" checkbox
+            document.getElementById('selectAllCheckbox').addEventListener('click', function () {
+                var checkboxes = document.querySelectorAll('#facultyTableBody input[type="checkbox"]');
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = document.getElementById('selectAllCheckbox').checked;
+                });
+            });
+
+            // Function to handle individual checkboxes
+            function handleCheckboxChange() {
+                var checkboxes = document.querySelectorAll('#facultyTableBody input[type="checkbox"]');
+                var allChecked = true;
+
+                checkboxes.forEach(function (checkbox) {
+                    if (!checkbox.checked) {
+                        allChecked = false;
+                    }
+                });
+
+                document.getElementById('selectAllCheckbox').checked = allChecked;
+            }
+
+            // Attach the handleCheckboxChange function to the change event of individual checkboxes
+            var checkboxes = document.querySelectorAll('#facultyTableBody input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', handleCheckboxChange);
+            });
+
+            // Function to get selected users
+            function getSelectedUsers() {
+                var selectedUsers = [];
+                var checkboxes = document.querySelectorAll('#facultyTableBody input[type="checkbox"]:checked');
+
+                checkboxes.forEach(function (checkbox) {
+                    var user = {
+                        CWID: checkbox.closest('.faculty-row').querySelector('td:nth-child(2)').innerText,
+                        Last_Name: checkbox.closest('.faculty-row').querySelector('td:nth-child(3)').innerText,
+                        First_Name: checkbox.closest('.faculty-row').querySelector('td:nth-child(4)').innerText,
+                        Preferred_Name: checkbox.closest('.faculty-row').querySelector('td:nth-child(5)').innerText,
+                        School_Name: checkbox.closest('.faculty-row').getAttribute('data-school'),
+                        Committee_Name: checkbox.closest('.faculty-row').getAttribute('data-committee')
+                    };
+                    selectedUsers.push(user);
+                });
+
+                return selectedUsers;
+            }
+
+            // Function to handle the redirection to query_preview page
+            function buildBallot() {
+                // Retrieve previously selected users from session storage
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                // Retrieve newly selected users
+                var newSelectedUsers = getSelectedUsers();
+
+                // Filter out duplicates
+                newSelectedUsers = newSelectedUsers.filter(function (newUser) {
+                    return !selectedUsers.some(function (existingUser) {
+                        return newUser.CWID === existingUser.CWID;
+                    });
+                });
+
+                // Retrieve selected users and store them in session storage
+                selectedUsers = selectedUsers.concat(newSelectedUsers);
+                sessionStorage.setItem('selectedUsers', JSON.stringify(selectedUsers));
+                // Redirect to the query_preview page
+                window.location.href = '/admin/query_preview';
+            }
+            document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', buildBallot);
+
+            // Function to navigate to the view_and_manage page
+            function viewAndManageProfile() {
+                // Retrieve the selected user information
+                var selectedUser = getSelectedUser();
+
+                // Store the selected user information in sessionStorage
+                sessionStorage.setItem('selectedUser', JSON.stringify(selectedUser));
+                window.location.href = '/admin/view_and_manage'; // Adjust the URL as needed
+            }
+            document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', viewAndManageProfile);
+
             // Function to filter the table based on selected filters
             function filterTable() {
                 var schoolFilter = document.getElementById('schoolFilter').value;
@@ -149,9 +231,11 @@
                     var school = rows[i].getAttribute('data-school');
                     var committee = rows[i].getAttribute('data-committee');
 
+                    console.log("Committee:" + committee, "Committee Filter:" + committeeFilter);
                     var schoolMatch = schoolFilter == 'Select a School' || school == schoolFilter;
                     var committeeMatch = committeeFilter == 'Select a Committee' || committee == committeeFilter;
 
+                    console.log(committeeMatch);
                     // Show/hide rows based on filter conditions
                     if (schoolMatch && committeeMatch) {
                         rows[i].style.display = '';
@@ -159,13 +243,44 @@
                         rows[i].style.display = 'none';
                     }
                 }
+                // Update "Select All" checkbox status based on filtered checkboxes
+                handleCheckboxChange();
             }
 
             // Attach the filterTable function to the change event of the filter elements
             document.getElementById('schoolFilter').addEventListener('change', filterTable);
             document.getElementById('committeeFilter').addEventListener('change', filterTable);
-        </script>
 
+            // Function to handle the search
+            function performSearch() {
+                var searchInput = document.getElementById('profileSearch').value.toLowerCase();
+                var rows = document.getElementsByClassName('faculty-row');
+
+                for (var i = 0; i < rows.length; i++) {
+                    var cwid = rows[i].querySelector('td:nth-child(2)').innerText.toLowerCase();
+                    var firstName = rows[i].querySelector('td:nth-child(4)').innerText.toLowerCase();
+                    var lastName = rows[i].querySelector('td:nth-child(3)').innerText.toLowerCase();
+                    var preferredName = rows[i].querySelector('td:nth-child(5)').innerText.toLowerCase();
+                    var school = rows[i].getAttribute('data-school').toLowerCase();
+
+                    // Show/hide rows based on search conditions
+                    if (cwid.includes(searchInput) ||
+                        firstName.includes(searchInput) ||
+                        lastName.includes(searchInput) ||
+                        preferredName.includes(searchInput) ||
+                        school.includes(searchInput)) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+                // Update "Select All" checkbox status based on filtered checkboxes
+                handleCheckboxChange();
+            }
+
+            // Attach the performSearch function to the click event of the search button
+            document.getElementById('button-addon2').addEventListener('click', performSearch);
+        </script>
 
 
     </body>

@@ -1,50 +1,51 @@
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ballot Preview</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<div class="container mt-5">
-    <h1 class="text-center">Ballot Preview</h1>
-    <hr>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ballot Preview</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-    <!-- Buttons "Delete all from query" and "Export to CSV" -->
-    <div class="row mt-4 justify-content-center">
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-danger btn-block">Delete all from query</button>
-        </div>
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-primary btn-block">Export to CSV</button>
-        </div>
-    </div>
+    <body>
 
-    <!-- Display results -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h3>Results</h3>
-            
-            <!-- Table to display results -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Preferred Name</th>
-                        <th>School</th>
-                        <th>Committee(s)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Add dynamic content here to populate the table rows -->
-                    <!-- Example: 
+        <div class="container mt-5">
+            <h1 class="text-center">Ballot Preview</h1>
+            <hr>
+
+            <!-- Buttons "Delete all from query" and "Export to CSV" -->
+            <div class="row mt-4 justify-content-center">
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-danger btn-block">Delete all from query</button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-primary btn-block">Export to CSV</button>
+                </div>
+            </div>
+
+            <!-- Display results -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3>Results</h3>
+
+                    <!-- Table to display results -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Preferred Name</th>
+                                <th>School</th>
+                                <th>Committee(s)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Add dynamic content here to populate the table rows -->
+                            <!-- Example: 
                     <tr>
                         <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
                         <td>Doe</td>
@@ -55,16 +56,60 @@
                         <td><a href="#">View</a></td>
                     </tr>
                     -->
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            // ... your existing code ...
 
-</body>
-</html>
+            // Function to populate the results table with selected users
+            function populateResultsTable() {
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                var resultsTableBody = document.getElementById('resultsTableBody');
+
+                // Clear existing rows
+                resultsTableBody.innerHTML = '';
+
+                // Add rows for selected users
+                selectedUsers.forEach(function (user) {
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.Last_Name}</td>
+                        <td>${user.First_Name}</td>
+                        <td>${user.Preferred_Name}</td>
+                        <td>${user.School_Name}</td>
+                        <td>${user.Committee_Name}</td>
+                        <td><a href="#">View</a></td>
+                    `;
+                    resultsTableBody.appendChild(row);
+                });
+            }
+
+            // Populate the results table when the page loads
+            window.onload = function () {
+                populateResultsTable();
+            };
+
+            // Function to handle "Delete all from query" button
+            function deleteAllFromQuery() {
+                // Clear the selected users from session storage
+                sessionStorage.removeItem('selectedUsers');
+
+                // Repopulate the results table to reflect the changes
+                populateResultsTable();
+            }
+            // Attach the deleteAllFromQuery function to the click event of "Delete all from query" button
+            document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', deleteAllFromQuery);
+        </script>
+    </body>
+
+    </html>
