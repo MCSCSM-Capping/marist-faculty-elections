@@ -1,84 +1,90 @@
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Begin Balloting</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<div class="container mt-5">
-    <h1 class="text-center">Begin Balloting</h1>
-    <hr>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Begin Balloting</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-8">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter profile name or details..." aria-label="Profile search" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-danger" type="button" id="button-addon2">Search</button>
+    <body>
+
+        <div class="container mt-5">
+            <h1 class="text-center">Begin Balloting</h1>
+            <hr>
+
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter profile name or details..."
+                            aria-label="Profile search" aria-describedby="button-addon2" id="profileSearch">
+                        <div class="input-group-append">
+                            <button class="btn btn-danger" type="button" id="button-addon2">Search</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Filter dropdown boxes -->
-    <div class="row mt-3 justify-content-center">
-        <div class="col-md-3 mb-3">
-            <label for="schoolFilter">All Schools</label>
-            <select class="form-control" id="schoolFilter">
-                <option selected>Select a School</option>
-                <% for(let i = 0; i < schools.length; i++) { %>
-                    <option value = "<% schools[i] %>"><%= schools[i] %></option>
-                <% } %>
-            </select>
-        </div>
-        
-        <div class="col-md-3 mb-3">
-            <label for="committeeFilter">All Committees</label>
-            <select class="form-control" id="committeeFilter">
-                <option selected>Select a Committee</option>
-                <% for(let i = 0; i < committees.length; i++) { %>
-                    <option value = "<% committees[i].Committee_ID %>"><%= committees[i].Committee_Name %></option>
-                <% } %>
-            </select>
-        </div>
-    </div>
+            <!-- Filter dropdown boxes -->
+            <div class="row mt-3 justify-content-center">
+                <div class="col-md-3 mb-3">
+                    <label for="schoolFilter">All Schools</label>
+                    <select class="form-control" id="schoolFilter" onchange="filterTable()">
+                        <option selected>Select a School</option>
+                        <% for(let i=0; i < schools.length; i++) { %>
+                            <option value="<%= schools[i] %>">
+                                <%= schools[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
 
-    <!-- Buttons for "Add to Query" and "View Profile" -->
-    <div class="row mt-3 justify-content-center">
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-danger btn-block">Build a Ballot</button>
-        </div>
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-danger btn-block">View and Manage Profile</button>
-        </div>
-    </div>
+                <div class="col-md-3 mb-3">
+                    <label for="committeeFilter">All Committees</label>
+                    <select class="form-control" id="committeeFilter">
+                        <option selected>Select a Committee</option>
+                        <% for(let i=0; i < committees.length; i++) { %>
+                            <option value="<%= committees[i].Committee_ID %>">
+                                <%= committees[i].Committee_Name %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+            </div>
 
-    <!-- Display search results -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h3>Search Results</h3>
-            
-            <!-- Table to display search results -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>CWID</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Preferred Name</th>
-                        <th>School</th>
-                        <th>View Profile</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Add dynamic content here to populate the table rows -->
-                    <!-- Example: 
+            <!-- Buttons for "Add to Query" and "View Profile" -->
+            <div class="row mt-3 justify-content-center">
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-danger btn-block">Build a Ballot</button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-danger btn-block">View and Manage Profile</button>
+                </div>
+            </div>
+
+            <!-- Display search results -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3>Search Results</h3>
+
+                    <!-- Table to display search results -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>CWID</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Preferred Name</th>
+                                <th>School</th>
+                                <th>View Profile</th>
+                            </tr>
+                        </thead>
+                        <!-- Add dynamic content here to populate the table rows -->
+                        <!-- Example: 
                     <tr>
                         <td><input type="checkbox"></td>
                         <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
@@ -90,29 +96,78 @@
                         <td><a href="#">View</a></td>
                     </tr>
                     -->
-                    <% for(let i = 0; i < faculty.length; i++) { %>
-                        <% if (faculty[i].RecActive == "Y"){ %>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td><%=faculty[i].CWID %></td>
-                                <td><%=faculty[i].Last_Name %></td>
-                                <td><%=faculty[i].First_Name %></td>
-                                <td><%=faculty[i].Preferred_Name %></td>
-                                <td><%=faculty[i].School_Name %></td>
-                                <td><a class="nav-link" href=<%= `/admin/view_and_manage/${faculty[i].CWID}` %>>View & Manage Profiles</a></td>
-                            </tr>
-                        <% } %>
-                    <% } %>
+                        <tbody id="facultyTableBody">
+                            <% for(let i=0; i < faculty.length; i++) { %>
+                                <% if (faculty[i].RecActive=="Y" ){ %>
+                                    <tr class="faculty-row" data-school="<%=faculty[i].School_Name %>"
+                                        data-committee="<%=faculty[i].Committee_Name %>">
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <%=faculty[i].CWID %>
+                                        </td>
+                                        <td>
+                                            <%=faculty[i].Last_Name %>
+                                        </td>
+                                        <td>
+                                            <%=faculty[i].First_Name %>
+                                        </td>
+                                        <td>
+                                            <%=faculty[i].Preferred_Name %>
+                                        </td>
+                                        <td>
+                                            <%=faculty[i].School_Name %>
+                                        </td>
+                                        <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">
+                                                View & Manage Profiles</a></td>
+                                    </tr>
+                                    <% } %>
+                                        <% } %>
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-</body>
-</html>
+        <!-- Add this script at the end of your HTML file -->
+        <script>
+            // Function to filter the table based on selected filters
+            function filterTable() {
+                var schoolFilter = document.getElementById('schoolFilter').value;
+                var committeeFilter = document.getElementById('committeeFilter').value;
+
+                var rows = document.getElementsByClassName('faculty-row');
+
+                console.log('School Filter:', schoolFilter);
+                console.log('Committee Filter:', committeeFilter);
+
+                for (var i = 0; i < rows.length; i++) {
+                    var school = rows[i].getAttribute('data-school');
+                    var committee = rows[i].getAttribute('data-committee');
+
+                    var schoolMatch = schoolFilter == 'Select a School' || school == schoolFilter;
+                    var committeeMatch = committeeFilter == 'Select a Committee' || committee == committeeFilter;
+
+                    // Show/hide rows based on filter conditions
+                    if (schoolMatch && committeeMatch) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+
+            // Attach the filterTable function to the change event of the filter elements
+            document.getElementById('schoolFilter').addEventListener('change', filterTable);
+            document.getElementById('committeeFilter').addEventListener('change', filterTable);
+        </script>
+
+
+
+    </body>
+
+    </html>
