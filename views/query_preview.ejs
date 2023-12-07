@@ -80,6 +80,7 @@
 
                 // Add rows for selected users
                 selectedUsers.forEach(function (user) {
+                    console.log("selectedUser.CWID: ", user.CWID);
                     var row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${user.Last_Name}</td>
@@ -87,7 +88,7 @@
                         <td>${user.Preferred_Name}</td>
                         <td>${user.School_Name}</td>
                         <td>
-                            <a href="/view_and_manage/${user.CWID}">View & Manage Profile</a>
+                            <a href="/admin/view_and_manage/${user.CWID}">View & Manage Profile</a>
                             | 
                             <a href="#" class="remove-link" data-cwid="${user.CWID}">Remove</a>
                         </td>
