@@ -16,6 +16,15 @@
             <h1 class="text-center">Ballot Preview</h1>
             <hr>
 
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter Name of Election..."
+                            aria-label="Ballot Name" aria-describedby="button-addon2" id="ballotName">
+                    </div>
+                </div>
+            </div>
+
             <!-- Buttons "Delete all from query" and "Export to CSV" -->
             <div class="row mt-4 justify-content-center">
                 <div class="col-md-3 mb-3">
@@ -80,7 +89,7 @@
 
                 // Add rows for selected users
                 selectedUsers.forEach(function (user) {
-                    console.log("selectedUser.CWID: ", user.CWID);
+                    console.log("selectedUsers.CWID: ", user.CWID);
                     var row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${user.Last_Name}</td>
@@ -139,12 +148,14 @@
             document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', deleteAllFromQuery);
 
             // Function to convert data to CSV format
-            function convertToCSV(data) {
+            function convertToCSV(data, ballotTitle) {
                 var csvContent = "data:text/csv;charset=utf-8,";
+                console.log("csv data b4 adding data: ", csvContent);
                 data.forEach(function (row) {
                     csvContent += Object.values(row).join(",") + "\n";
                 });
                 return encodeURI(csvContent);
+                
             }
 
             // Function to download CSV file
@@ -162,17 +173,22 @@
                     };
                 });
 
-                // Convert data to CSV format
-                var csvContent = convertToCSV([Object.keys(csvData[0])].concat(csvData));
+                var title = document.getElementById("ballotName").value;
+                if (title == "" || title == null){
+                    window.alert("Must enter a Ballot Name");
+                }else{
+                    // Convert data to CSV format
+                    var csvContent = convertToCSV([Object.keys(csvData[0])].concat(csvData), title);
 
-                // Create a link element
-                var link = document.createElement("a");
-                link.href = csvContent;
-                link.target = "_blank";
-                link.download = "ballot_data.csv";
+                    // Create a link element
+                    var link = document.createElement("a");
+                    link.href = csvContent;
+                    link.target = "_blank";
+                    link.download = title + ".csv";
 
-                // Trigger the download
-                link.click();
+                    // Trigger the download
+                    link.click();
+                }
             }
 
             // Attach the downloadCSV function to the click event of "Export to CSV" button

@@ -39,10 +39,11 @@ router.get('/view_and_manage/:userID', async (req, res) => {
 
 // Admin Query Preview
 router.get('/query_preview', async (req, res) => {
-    if (req.session.selectedUser = null){
-         req.session.selectedUser = User[0].CWID;
-    }
     const reqUser = await db.getUsers();
+    console.log("reqUser: ", reqUser);
+    if (req.session.selectedUser == null){
+         req.session.selectedUser = reqUser[0].CWID;
+    }
     res.render('query_preview', {faculty: reqUser, selectedUser: req.session.selectedUser});
 });
 
