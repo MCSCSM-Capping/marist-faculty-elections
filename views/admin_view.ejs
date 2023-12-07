@@ -95,9 +95,9 @@
                                                 <% individualUserCommittees.push(`None`) %>
                                             <% } %> <!--if individualUserCommittees empty-->
                                         <% }) %> <!--forEach usersCommittees-->
-                                    <% }else{ %> <!--if faculty is on committee-->
+                                    <% }else{ %> 
                                         <% individualUserCommittees.push(`None`) %>
-                                    <% } %>
+                                    <% } %> <!--if faculty is on committee-->
                                     <tr class="faculty-row" data-school="<%= faculty[i].School_Name %>"
                                         data-committee='<%= JSON.stringify(individualUserCommittees) %>'>
                                         <td><input type="checkbox"></td>
@@ -237,12 +237,12 @@
                     var committeeMatch = false;
                     
                     committee.forEach(element => {
-                        if (committeeFilter == 'Select a Committee' || `${element.Committee_Name}` == committeeFilter){
+                        if (committeeFilter == 'Select a Committee' || `${element}` == committeeFilter){
                             committeeMatch = true;
                         }
                     })
 
-                    console.log(committeeMatch);
+                    console.log("filter: ", committeeFilter, "match: ", committeeMatch, "user: ", i);
                     // Show/hide rows based on filter conditions
                     if (schoolMatch && committeeMatch) {
                         rows[i].style.display = '';
