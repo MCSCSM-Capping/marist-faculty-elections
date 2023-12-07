@@ -57,20 +57,20 @@
             </form>
             <hr>
             <h5>Committees:</h5>
+            <ul class="list-unstyled text-center">
             <p>
                 <% if (faculty.Is_On_Committee) { %>
-                    <ul>
                         <% userCommittees.forEach(element=> { %>
-                            <li>
+                            <li class="mx-auto">
+                                <span class="mr-2">&#8226;</span>
                                 <%= `${element.Committee_Name}` %>
                             </li>
                             <% }) %>
-                    </ul>
                     <% } else { %>
                         None
                         <% } %>
-
             </p>
+            </ul>
             <hr>
             <h5>Service Statement:</h5>
             <p>
