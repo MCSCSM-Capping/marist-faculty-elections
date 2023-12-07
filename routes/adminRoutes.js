@@ -38,11 +38,12 @@ router.get('/view_and_manage/:userID', async (req, res) => {
 });
 
 // Admin Query Preview
-router.get('/query_preview', (req, res) => {
+router.get('/query_preview', async (req, res) => {
     if (req.session.selectedUser = null){
-        req.session.selectedUser = User[0].CWID;
+         req.session.selectedUser = User[0].CWID;
     }
-    res.render('query_preview', {selectedUser: req.session.selectedUser});
+    const reqUser = await db.getUsers();
+    res.render('query_preview', {faculty: reqUser, selectedUser: req.session.selectedUser});
 });
 
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {
