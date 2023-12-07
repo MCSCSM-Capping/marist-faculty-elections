@@ -60,10 +60,6 @@
                 <div class="col-md-3 mb-3">
                     <button class="btn btn-danger btn-block" onclick="addToQuery()">Build a Ballot</button>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <button class="btn btn-danger btn-block" onclick="viewAndManageProfile()">View and Manage
-                        Profile</button>
-                </div>
             </div>
 
             <!-- Display search results -->
@@ -100,8 +96,8 @@
                         <tbody id="facultyTableBody">
                             <% for(let i=0; i < faculty.length; i++) { %>
                                 <% if (faculty[i].RecActive=="Y" ){ %>
-                                    <tr class="faculty-row" data-school="<%=faculty[i].School_Name %>"
-                                        data-committee="<%=faculty[i].Committee_Name %>">
+                                    <tr class="faculty-row" data-school="<%= faculty[i].School_Name %>"
+                                        data-committee="<%= faculty[i].Committee_ID %>">
                                         <td><input type="checkbox"></td>
                                         <td>
                                             <%=faculty[i].CWID %>
@@ -119,7 +115,7 @@
                                             <%=faculty[i].School_Name %>
                                         </td>
                                         <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">
-                                                View & Manage Profiles</a></td>
+                                                View & Manage Profile</a></td>
                                     </tr>
                                     <% } %>
                                         <% } %>
