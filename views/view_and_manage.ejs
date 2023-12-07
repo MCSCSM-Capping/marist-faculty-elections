@@ -41,7 +41,7 @@
             </h4>
             <form action=<%=`/admin/view_and_manage/${faculty.CWID}/change_school` %> method="POST">
                 <div class="form-group">
-                    <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
+                    <select style="width: 400px;" class="form-control mx-auto" id="schoolDropdown" name="schoolDropdown" required>
                         <option></option>
                         <% for(let i=0; i < schools.length; i++) { %>
                             <option value="<%= schools[i] %>" <% if (schools[i]===faculty.School_Name) { %> selected <%
@@ -51,7 +51,7 @@
                             <% } %>
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-3 mx-auto mb-3">
                     <button class="btn btn-primary btn-block" type="submit">Change School</button>
                 </div>
             </form>
