@@ -80,24 +80,26 @@
                                 <th>View Profile</th>
                             </tr>
                         </thead>
-                        <!-- Add dynamic content here to populate the table rows -->
-                        <!-- Example: 
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
-                        <td>Doe</td>
-                        <td>John</td>
-                        <td>Johnny</td>
-                        <td>School 1</td>
-                        <td>Committee 1</td>
-                        <td><a href="#">View</a></td>
-                    </tr>
-                    -->
+                        
                         <tbody id="facultyTableBody">
                             <% for(let i=0; i < faculty.length; i++) { %>
                                 <% if (faculty[i].RecActive=="Y" ){ %>
+                                    <% let individualUserCommittees = []; %>
+                                    <!-- Get committees of faculty -->
+                                    <% if (faculty[i].Is_On_Committee){ %>
+                                        <% usersCommittees.forEach(element => { %>
+                                            <% if (faculty[i].CWID == element.CWID){ %>
+                                                <% individualUserCommittees.push(`${element.Committee_Name}`) %>
+                                            <% } %> <!--if CWID==CWID-->
+                                            <% if (individualUserCommittees[0] == null){ %>
+                                                <% individualUserCommittees.push(`None`) %>
+                                            <% } %> <!--if individualUserCommittees empty-->
+                                        <% }) %> <!--forEach usersCommittees-->
+                                    <% }else{ %> <!--if faculty is on committee-->
+                                        <% individualUserCommittees.push(`None`) %>
+                                    <% } %>
                                     <tr class="faculty-row" data-school="<%= faculty[i].School_Name %>"
-                                        data-committee="<%= faculty[i].Committee_ID %>">
+                                        data-committee='<%= JSON.stringify(individualUserCommittees) %>'>
                                         <td><input type="checkbox"></td>
                                         <td>
                                             <%=faculty[i].CWID %>
@@ -114,11 +116,12 @@
                                         <td>
                                             <%=faculty[i].School_Name %>
                                         </td>
-                                        <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">
-                                                View & Manage Profile</a></td>
+                                        <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">View & Manage Profile</a>
+                                        </td>
                                     </tr>
-                                    <% } %>
-                                        <% } %>
+                                    <% console.log("individualUserCommittees: ", individualUserCommittees); %>
+                                <% } %> <!-- if faculty record is active -->
+                            <% } %> <!-- for i -->
                         </tbody>
                     </table>
                 </div>
@@ -171,7 +174,7 @@
                         First_Name: checkbox.closest('.faculty-row').querySelector('td:nth-child(4)').innerText,
                         Preferred_Name: checkbox.closest('.faculty-row').querySelector('td:nth-child(5)').innerText,
                         School_Name: checkbox.closest('.faculty-row').getAttribute('data-school'),
-                        Committee_Name: checkbox.closest('.faculty-row').getAttribute('data-committee')
+                        // Committee_Name: checkbox.closest('.faculty-row').getAttribute('data-committee')
                     };
                     selectedUsers.push(user);
                 });
@@ -220,20 +223,21 @@
 
                 var rows = document.getElementsByClassName('faculty-row');
 
-                console.log('School Filter:', schoolFilter);
-                console.log('Committee Filter:', committeeFilter);
-
+                // console.log('School Filter:', schoolFilter);
+                // console.log('Committee Filter:', committeeFilter);
+                
                 for (var i = 0; i < rows.length; i++) {
                     var school = rows[i].getAttribute('data-school');
-                    var committee = rows[i].getAttribute('data-committee');
+                    // var committee = rows[i].getAttribute('data-committee');
+                    var committee = JSON.parse(rows[i].getAttribute('data-committee'));
 
-                    console.log("Committee:" + committee, "Committee Filter:" + committeeFilter);
+                    console.log("Committee(s?): " + committee, "Committee Filter: " + committeeFilter);
+
                     var schoolMatch = schoolFilter == 'Select a School' || school == schoolFilter;
                     var committeeMatch = false;
-
                     
                     committee.forEach(element => {
-                        if (committeeFilter == 'Select a Committee' || committee == committeeFilter){
+                        if (committeeFilter == 'Select a Committee' || `${element.Committee_Name}` == committeeFilter){
                             committeeMatch = true;
                         }
                     })

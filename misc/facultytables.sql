@@ -33,3 +33,5 @@ INSERT INTO Committees VALUES (4, "History");
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
 CREATE TABLE IF NOT EXISTS Admin_Login (Username VARCHAR(50) PRIMARY KEY, Admin_Password VARCHAR(100), Salt VARCHAR(20));
+
+DELETE FROM Faculty_Committees WHERE CWID = 0 AND Committee_ID = 3;

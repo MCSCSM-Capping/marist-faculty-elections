@@ -38,7 +38,7 @@ module.exports = {
     WHERE Faculty.CWID = ${CWID}`, {type: QueryTypes.SELECT}),
 
     getFullFacultyCommittees: async (CWID) => sequelize.query(`
-    SELECT Committees.Committee_ID, Committees.Committee_Name
+    SELECT Faculty.CWID, Committees.Committee_ID, Committees.Committee_Name
     FROM Committees
     JOIN Faculty_Committees ON (Faculty_Committees.Committee_ID = Committees.Committee_ID)
     JOIN Faculty ON (Faculty_Committees.CWID = Faculty.CWID)
