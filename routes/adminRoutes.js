@@ -19,7 +19,6 @@ router.get('/admin_view', async (req, res) => {
 // Admin View and Manage
 router.get('/view_and_manage/:userID', async (req, res) => {
     const reqCommittees = await db.getCommittees();
-    console.log(req.params.userID)
     const reqUser = await db.getUsers({
         where: {
             CWID: parseInt(req.params.userID)
@@ -40,7 +39,6 @@ router.get('/view_and_manage/:userID', async (req, res) => {
 // Admin Query Preview
 router.get('/query_preview', async (req, res) => {
     const reqUser = await db.getUsers();
-    console.log("reqUser: ", reqUser);
     if (req.session.selectedUser == null){
          req.session.selectedUser = reqUser[0].CWID;
     }
