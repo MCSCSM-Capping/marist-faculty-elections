@@ -4,7 +4,7 @@
 
     <div class="container">
         <div class="form-card">
-            <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data">
+            <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data"> 
 
                 <!-- Display profile image -->
                 <!-- <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
@@ -108,10 +108,8 @@
         </div>
     </div>
 
-
-
     <script>
-        const currCommittees = <% - userCommittees %>;
+        const currCommittees = <%- userCommittees %>;
         const committeeDropdown = document.getElementById("committeeDropdown");
         const otherCommitteeInput = document.getElementById("otherCommittee");
         const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
