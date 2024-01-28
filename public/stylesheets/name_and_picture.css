@@ -6,13 +6,6 @@
     /* Padding to ensure content doesn't touch the edge at smaller screens */
 }
 
-.img-thumbnail {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
 /* Form Card Styles */
 .form-card {
     background-color: #ffffff;
@@ -39,10 +32,9 @@ label {
 
 /* Input and Textarea Styles */
 .form-control {
-    border-radius: 5px;
     border: 1px solid #ecf0f1;
     padding: 15px;
-    font-size: 16px;
+    font-size: 15px;
     transition: border-color .2s, box-shadow .2s;
     width: 100%;
 }
@@ -79,10 +71,17 @@ label {
 
 /* Spacing and Layout */
 .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+#schoolDropdown {
+    padding: 3px 2px;
+    width: 100%;
+    font-size: 15px;
 }
 
 #committeeDropdown {
+    padding: 3px 2px;
     z-index: 1;
     width: 300;
 }

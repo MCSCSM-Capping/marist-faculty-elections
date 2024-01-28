@@ -9,16 +9,16 @@ const FacComMap = require('../models/facultyCommitteeJunction');
 router.get('/admin_view', async (req, res) => {
     const reqCommittees = await db.getCommittees();
     const reqUser = await db.getUsers();
+    const reqUsersCommittees = await db.getFullFacultyCommittees();
     if (req.session.selectedUser == null){
         req.session.selectedUser = reqUser[0].CWID;
     }
-    res.render('admin_view', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser, selectedUser: req.session.selectedUser});
+    res.render('admin_view', {schools: User.getAttributes().School_Name.values, committees: reqCommittees, faculty: reqUser, selectedUser: req.session.selectedUser, usersCommittees: reqUsersCommittees});
 });
 
 // Admin View and Manage
 router.get('/view_and_manage/:userID', async (req, res) => {
     const reqCommittees = await db.getCommittees();
-    console.log(req.params.userID)
     const reqUser = await db.getUsers({
         where: {
             CWID: parseInt(req.params.userID)
@@ -37,11 +37,12 @@ router.get('/view_and_manage/:userID', async (req, res) => {
 });
 
 // Admin Query Preview
-router.get('/query_preview', (req, res) => {
-    if (req.session.selectedUser = null){
-        req.session.selectedUser = User[0].CWID;
+router.get('/query_preview', async (req, res) => {
+    const reqUser = await db.getUsers();
+    if (req.session.selectedUser == null){
+         req.session.selectedUser = reqUser[0].CWID;
     }
-    res.render('query_preview', {selectedUser: req.session.selectedUser});
+    res.render('query_preview', {faculty: reqUser, selectedUser: req.session.selectedUser});
 });
 
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {

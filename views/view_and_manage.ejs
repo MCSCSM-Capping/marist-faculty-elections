@@ -12,65 +12,116 @@
         <hr>
 
         <div class="row mt-4 justify-content-center">
-            <% if (faculty.RecActive == "Y"){ %>
-            <div class="col-md-3 mb-3">
-                <button class="btn btn-danger btn-block">Add to Ballot</button>
-            </div>
-            <div class="col-md-3 mb-3">
-                <form action=<%=`/admin/view_and_manage/${faculty.CWID}/delete_profile`%> method="POST">
-                <button class="btn btn-primary btn-block" type="submit" >Delete Profile</button>
-                </form>
-            </div>
-            <% }else{ %>
-                <div class="text-center">
-                    <h1 class="text-center" >User Inactive</h1>
-                    <form action=<%=`/admin/view_and_manage/${faculty.CWID}/activate_profile`%> method="POST">
-                    <button class="btn btn-danger btn-block" type="submit" >Activate Profile</button>
+            <% if (faculty.RecActive=="Y" ){ %>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-danger btn-block" id="addToBallotBtn">Add to Ballot</button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <form action=<%=`/admin/view_and_manage/${faculty.CWID}/delete_profile`%> method="POST">
+                        <button class="btn btn-primary btn-block" type="submit">Delete Profile</button>
                     </form>
                 </div>
-            <% }%>
+                <% }else{ %>
+                    <div class="text-center">
+                        <h1 class="text-center">User Inactive</h1>
+                        <form action=<%=`/admin/view_and_manage/${faculty.CWID}/activate_profile`%> method="POST">
+                            <button class="btn btn-danger btn-block" type="submit">Activate Profile</button>
+                        </form>
+                    </div>
+                    <% }%>
         </div>
-    <div class="profile-container text-center mt-5">
-        <!-- Profile code for Tab 1 -->
-        <h1 class="mt-3">Name: <%=faculty.First_Name %> <%=faculty.Last_Name %></h1>
-        <h4 class="mt-3">Preferred Name: <%=faculty.Preferred_Name %></h4>
-        <h4 class="mt-3">School: <%=faculty.School_Name %></h4>
-        <form action=<%=`/admin/view_and_manage/${faculty.CWID}/change_school` %> method="POST">
-        <div class="form-group">
-            <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
-                <option></option>
-                <% for(let i=0; i < schools.length; i++) { %>
-                    <option value="<%= schools[i] %>" <% if (schools[i] === faculty.School_Name) { %> selected <% } %>>
-                        <%= schools[i] %>
-                    </option>
-                <% } %>
-            </select>
+        <div class="profile-container text-center mt-5">
+            <!-- Profile code for Tab 1 -->
+            <h1 class="mt-3">Name: <%=faculty.First_Name %>
+                    <%=faculty.Last_Name %>
+            </h1>
+            <h4 class="mt-3">Preferred Name: <%=faculty.Preferred_Name %>
+            </h4>
+            <h4 class="mt-3">School: <%=faculty.School_Name %>
+            </h4>
+            <form action=<%=`/admin/view_and_manage/${faculty.CWID}/change_school` %> method="POST">
+                <div class="form-group">
+                    <select style="width: 400px;" class="form-control mx-auto" id="schoolDropdown" name="schoolDropdown" required>
+                        <option></option>
+                        <% for(let i=0; i < schools.length; i++) { %>
+                            <option value="<%= schools[i] %>" <% if (schools[i]===faculty.School_Name) { %> selected <%
+                                    } %>>
+                                    <%= schools[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="col-md-3 mx-auto mb-3">
+                    <button class="btn btn-primary btn-block" type="submit">Change School</button>
+                </div>
+            </form>
+            <hr>
+            <h5>Committees:</h5>
+            <ul class="list-unstyled text-center">
+            <p>
+                <% if (faculty.Is_On_Committee) { %>
+                        <% userCommittees.forEach(element=> { %>
+                            <li class="mx-auto">
+                                <span class="mr-2">&#8226;</span>
+                                <%= `${element.Committee_Name}` %>
+                            </li>
+                            <% }) %>
+                    <% } else { %>
+                        None
+                        <% } %>
+            </p>
+            </ul>
+            <hr>
+            <h5>Service Statement:</h5>
+            <p>
+                <%=faculty.Service_Statement %>
+            </p>
+            <h5>Candidate Statement:</h5>
+            <p>
+                <%=faculty.Candidate_Statement %>
+            </p>
         </div>
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-primary btn-block" type="submit">Change School</button>
-        </div>
-        </form>
-        <hr>
-        <h5>Committees:</h5>
-        <p>
-            <% if (faculty.Is_On_Committee) { %>
-                <ul>
-                    <% userCommittees.forEach(element => { %>
-                        <li><%= `${element.Committee_Name}` %></li>
-                    <% }) %>
-                </ul>
-            <% } else { %>
-              None
-            <% } %>
-            
-        </p>
-        <hr>
-        <h5>Service Statement:</h5>
-        <p><%=faculty.Service_Statement %></p>
-        <h5>Candidate Statement:</h5>
-        <p><%=faculty.Candidate_Statement %></p>
-    </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            // Function to handle "Add to Ballot" button
+            document.getElementById('addToBallotBtn').addEventListener('click', addToBallot);
+
+            // Function to add the user to the ballot in query_preview
+            function addToBallot() {
+                // Retrieve user information from the page
+                var user = {
+                    CWID: '<%= faculty.CWID %>',
+                    Last_Name: '<%= faculty.Last_Name %>',
+                    First_Name: '<%= faculty.First_Name %>',
+                    Preferred_Name: '<%= faculty.Preferred_Name %>',
+                    School_Name: '<%= faculty.School_Name %>',
+                };
+
+                // Retrieve previously selected users from session storage in query_preview
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                // Check if the user is already in the ballot
+                var userExists = selectedUsers.some(function (existingUser) {
+                    return user.CWID === existingUser.CWID;
+                });
+
+                // Add the user to the ballot if not already added
+                if (!userExists) {
+                    selectedUsers.push(user);
+
+                    // Update the session storage in query_preview
+                    sessionStorage.setItem('selectedUsers', JSON.stringify(selectedUsers));
+
+                    // Redirect to the query_preview page
+                    window.location.href = '/admin/query_preview';
+                }
+                else {
+                    // Provide visual feedback or perform any other necessary actions
+                    alert('User is already in the ballot!');
+                }
+            }
+        </script>
