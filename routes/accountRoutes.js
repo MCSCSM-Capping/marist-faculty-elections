@@ -87,19 +87,22 @@ router.post('/admin_authenticate', async (req, res) => {
             Username: username
         }
     });
-
-    //easier access for variables
-    reqUsername = reqCredentials[0].Username;
-    reqPassword = reqCredentials[0].Admin_Password;
-    reqSalt = reqCredentials[0].Salt;
-
-    passwordHash = util.hashPassword(password, reqSalt);
-
-    if (passwordHash === reqPassword) {
-        req.session.isAdmin = true;
-        res.redirect('/admin/admin_view');
-    } else {
+    if (reqCredentials[0] == null){ //if no account with that username exists, the username is incorrect
         res.send('Incorrect username or password');
+    }else{ //account with that username is found
+        //easier access for variables
+        reqUsername = reqCredentials[0].Username;
+        reqPassword = reqCredentials[0].Admin_Password;
+        reqSalt = reqCredentials[0].Salt;
+    
+        passwordHash = util.hashPassword(password, reqSalt);
+    
+        if (passwordHash === reqPassword) {
+            req.session.isAdmin = true;
+            res.redirect('/admin/admin_view');
+        } else {
+            res.send('Incorrect username or password');
+        }
     }
 });
 
