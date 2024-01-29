@@ -24,11 +24,22 @@ INSERT INTO Faculty VALUES (1, "Y", "Test1", "User1", "Test User 2", DEFAULT, DE
 INSERT INTO Faculty VALUES (2, "Y", "Test2", "User2", "Test User 3", DEFAULT, DEFAULT, "School of Liberal Arts", True, "https://www.marist.edu");
 
 CREATE TABLE IF NOT EXISTS Committees (Committee_ID INT PRIMARY KEY, Committee_Name TEXT);
-INSERT INTO Committees VALUES (0, "Test Committee 1");
-INSERT INTO Committees VALUES (1, "Computer Science");
-INSERT INTO Committees VALUES (2, "Art");
-INSERT INTO Committees VALUES (3, "Math");
-INSERT INTO Committees VALUES (4, "History");
+INSERT INTO Committees VALUES (0, "Faculty Affairs Committee");
+INSERT INTO Committees VALUES (1, "Academic Affairs Committee");
+INSERT INTO Committees VALUES (2, "Online Distance Education Committee");
+INSERT INTO Committees VALUES (3, "Budget Review Committee");
+INSERT INTO Committees VALUES (4, "Rank and Tenure Committee");
+INSERT INTO Committees VALUES (5, "Academic Standards Committee");
+INSERT INTO Committees VALUES (6, "Curriculum Committee");
+INSERT INTO Committees VALUES (7, "Faculty/Student Affairs Committee");
+INSERT INTO Committees VALUES (8, "Grievance Committee");
+INSERT INTO Committees VALUES (9, "Graduate Council");
+INSERT INTO Committees VALUES (10, "Library Development Committee");
+INSERT INTO Committees VALUES (11, "Faculty Research & Sabbaticals Committee");
+INSERT INTO Committees VALUES (12, "Core and Liberal Studies");
+INSERT INTO Committees VALUES (13, "Integrative Major Committee");
+INSERT INTO Committees VALUES (14, "Priorities and Resources Committee");
+INSERT INTO Committees VALUES (15, "Honors Council");
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
