@@ -184,8 +184,8 @@
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
             const committeeID = parseInt(listItem.querySelector("span").id);
-            console.log(committeeID);
-            console.log(selectedSet);
+            //console.log(committeeID);
+            //console.log(selectedSet);
             selectedSet.delete(committeeID); // Remove from selected set
             selectedCommittees.removeChild(listItem);
             committeeDropdown.selectedIndex = -1;
