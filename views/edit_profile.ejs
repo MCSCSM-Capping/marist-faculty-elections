@@ -169,10 +169,23 @@
 
         addOtherCommitteeButton.addEventListener("click", function () { // get rid of if statement condition; committeeID needs to come from actual list of committees, not just the selected set; make condition where if there are no selected committees, the first other committee is first ID
             const committeeName = otherCommitteeInput.value.trim();
-            if (committeeName && !selectedSet.has(committeeName)) {
-                const lastCommitteeElement = selectedCommittees.lastElementChild; // takes last ID of last committee
+            if (selectedSet.has(committeeName)) {
+                const committeesList = committeeDropdown.options;
+                const lastCommitteeElement = committeesList.lastElementChild;
                 const lastCommitteeID = lastCommitteeElement.querySelector("span").id; // parses ID
                 const committeeID = parseInt(lastCommitteeID) + 1;
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span id="${committeeID}">${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                otherCommitteeInput.value = "";
+                selectedSet.add(committeeName); // Add to selected set
+                selectedSet.add(committeeID);
+            }
+            else {
+                const committeeID = 0;
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `
                     <span id="${committeeID}">${committeeName}</span>
