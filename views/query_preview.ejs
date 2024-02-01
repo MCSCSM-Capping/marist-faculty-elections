@@ -1,50 +1,59 @@
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ballot Preview</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<div class="container mt-5">
-    <h1 class="text-center">Ballot Preview</h1>
-    <hr>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ballot Preview</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-    <!-- Buttons "Delete all from query" and "Export to CSV" -->
-    <div class="row mt-4 justify-content-center">
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-danger btn-block">Delete all from query</button>
-        </div>
-        <div class="col-md-3 mb-3">
-            <button class="btn btn-primary btn-block">Export to CSV</button>
-        </div>
-    </div>
+    <body>
 
-    <!-- Display results -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h3>Results</h3>
-            
-            <!-- Table to display results -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Preferred Name</th>
-                        <th>School</th>
-                        <th>Committee(s)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Add dynamic content here to populate the table rows -->
-                    <!-- Example: 
+        <div class="container mt-5">
+            <h1 class="text-center">Ballot Preview</h1>
+            <hr>
+
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter Name of Election..."
+                            aria-label="Ballot Name" aria-describedby="button-addon2" id="ballotName">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons "Delete all from query" and "Export to CSV" -->
+            <div class="row mt-4 justify-content-center">
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-danger btn-block">Delete All from Query</button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-primary btn-block">Export to CSV</button>
+                </div>
+            </div>
+
+            <!-- Display results -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3>Results</h3>
+
+                    <!-- Table to display results -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Preferred Name</th>
+                                <th>School</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Add dynamic content here to populate the table rows -->
+                            <!-- Example: 
                     <tr>
                         <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
                         <td>Doe</td>
@@ -55,16 +64,142 @@
                         <td><a href="#">View</a></td>
                     </tr>
                     -->
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            // ... your existing code ...
 
-</body>
-</html>
+            // Function to populate the results table with selected users
+            function populateResultsTable() {
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                var resultsTableBody = document.getElementById('resultsTableBody');
+
+                // Clear existing rows
+                resultsTableBody.innerHTML = '';
+
+                // Add rows for selected users
+                selectedUsers.forEach(function (user) {
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.Last_Name}</td>
+                        <td>${user.First_Name}</td>
+                        <td>${user.Preferred_Name}</td>
+                        <td>${user.School_Name}</td>
+                        <td>
+                            <a href="/admin/view_and_manage/${user.CWID}">View & Manage Profile</a>
+                            | 
+                            <a href="#" class="remove-link" data-cwid="${user.CWID}">Remove</a>
+                        </td>
+                        `;
+                    resultsTableBody.appendChild(row);
+                });
+
+                // Attach click event to "Remove" links
+                document.querySelectorAll('.remove-link').forEach(function (removeLink) {
+                    removeLink.addEventListener('click', function () {
+                        var cwidToRemove = this.getAttribute('data-cwid');
+                        removeUserFromBallot(cwidToRemove);
+                    });
+                });
+            }
+
+            // Function to remove a user from the ballot
+            function removeUserFromBallot(cwidToRemove) {
+                // Retrieve selected users from session storage
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                // Filter out the user to be removed
+                var updatedUsers = selectedUsers.filter(function (user) {
+                    return user.CWID !== cwidToRemove;
+                });
+
+                // Update session storage with the modified user list
+                sessionStorage.setItem('selectedUsers', JSON.stringify(updatedUsers));
+
+                // Repopulate the results table to reflect the changes
+                populateResultsTable();
+            }
+
+            // Populate the results table when the page loads
+            window.onload = function () {
+                populateResultsTable();
+            };
+
+            // Function to handle "Delete all from query" button
+            function deleteAllFromQuery() {
+                // Clear the selected users from session storage
+                sessionStorage.removeItem('selectedUsers');
+
+                // Repopulate the results table to reflect the changes
+                populateResultsTable();
+            }
+            // Attach the deleteAllFromQuery function to the click event of "Delete all from query" button
+            document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', deleteAllFromQuery);
+
+            // Function to convert data to CSV format
+            function convertToCSV(data, ballotTitle) {
+                var csvContent = "data:text/csv;charset=utf-8,";
+                console.log("csv data b4 adding data: ", csvContent);
+                data.forEach(function (row) {
+                    csvContent += Object.values(row).join(",") + "\n";
+                });
+                return encodeURI(csvContent);
+                
+            }
+
+            // Function to download CSV file
+            function downloadCSV() {
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+
+                var title = document.getElementById("ballotName").value;
+
+                if (title == "" || title == null){
+                    window.alert("Must enter a Ballot Name");
+                }else{
+                    // Prepare data for CSV
+                    var csvData = selectedUsers.map(function (user) {
+                        var name = user.First_Name + " "
+                        if (user.Preferred_Name != "" && user.Preferred_Name != null){
+                            name += "(" + user.Preferred_Name + ") ";
+                        }
+                        name += user.Last_Name;
+                        return {
+                            "question": title,
+                            "title": name,
+                            "short_description": "Click the \"i\" for a link to their Bio on the Marist Website",
+                            "description": "<a href=\"WEBSITE\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
+                            "photo": "",
+                            "sort": ""
+                        };
+                    });
+
+                    // Convert data to CSV format
+                    var csvContent = convertToCSV([Object.keys(csvData[0])].concat(csvData), title);
+
+                    // Create a link element
+                    var link = document.createElement("a");
+                    link.href = csvContent;
+                    link.target = "_blank";
+                    link.download = title + ".csv";
+
+                    // Trigger the download
+                    link.click();
+                }
+            }
+
+            // Attach the downloadCSV function to the click event of "Export to CSV" button
+            document.querySelector('.btn.btn-primary.btn-block').addEventListener('click', downloadCSV);
+        </script>
+    </body>
+
+    </html>
