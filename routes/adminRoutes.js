@@ -85,4 +85,18 @@ router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+router.get('/logout_admin', (req, res) => {
+    //https://stackoverflow.com/questions/51430267/logout-in-nodejs
+    if (req.session) {
+        // delete session object
+        req.session.destroy(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
+});
+
 module.exports = router;

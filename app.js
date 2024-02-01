@@ -73,6 +73,9 @@ const ensureAdmin = (req, res, next) => {
 
 // Landing/Homepage
 app.get('/', (req, res) => {
+    if (req.session.isAdmin) {
+        res.redirect('/admin/admin_view');
+    }
     res.render('landing');
 });
 
