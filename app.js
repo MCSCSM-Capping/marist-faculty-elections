@@ -73,8 +73,11 @@ const ensureAdmin = (req, res, next) => {
 
 // Landing/Homepage
 app.get('/', (req, res) => {
+    //first check to ensure the session is not already logged in, admin or otherwise
     if (req.session.isAdmin) {
         res.redirect('/admin/admin_view');
+    } else if (req.session.user != null) {
+        res.redirect(`/user/${req.session.user}`);
     }
     res.render('landing');
 });

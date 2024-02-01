@@ -31,6 +31,12 @@ var cas = new CASAuthentication({
 });
 
 router.get('/authenticate', cas.bounce, async (req, res) => {
+    //first check to ensure the session is not already logged in
+    if (req.session.isAdmin) {
+        res.redirect('/admin/admin_view');
+    } else if (req.session.user != null) {
+        res.redirect(`/user/${req.session.user}`);
+    }
 
     let reqCWID = parseInt(req.session[cas.session_info].maristcwid);
 
@@ -80,6 +86,12 @@ router.get('/admin_login', (req, res) => {
 
 // Admin login POST handler
 router.post('/admin_authenticate', async (req, res) => {
+    //first check to ensure the session is not already logged in, admin or otherwise
+    if (req.session.isAdmin) {
+        res.redirect('/admin/admin_view');
+    } else if (req.session.user != null) {
+        res.redirect(`/user/${req.session.user}`);
+    }
     const { username, password } = req.body; 
 
     reqCredentials = await db.getCredentials({
@@ -99,6 +111,7 @@ router.post('/admin_authenticate', async (req, res) => {
     
         if (passwordHash === reqPassword) {
             req.session.isAdmin = true;
+            req.session.user = 'admin';
             res.redirect('/admin/admin_view');
         } else {
             res.send('Incorrect username or password');
