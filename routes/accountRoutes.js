@@ -5,6 +5,8 @@ const db = require('../database');
 const User = require('../models/userModel');
 const Admin = require('../models/adminModel');
 
+const url = require('url');
+
 const CASAuthentication = require('express-cas-authentication');
 const util = require('../util');
 
@@ -81,7 +83,11 @@ router.get('/logout', cas.logout);
 
 // Admin login page
 router.get('/admin_login', (req, res) => {
-    res.render('admin_login');
+    if (req.params.error) {
+        res.render('admin_login');
+    } else {
+        res.render('admin_login');
+    }
 });
 
 // Admin login POST handler
@@ -99,8 +105,16 @@ router.post('/admin_authenticate', async (req, res) => {
             Username: username
         }
     });
+
+    var errorURL = url.format({
+        pathname:"/admin_login",
+        query: {
+            "error":true
+        }
+    })
+
     if (reqCredentials[0] == null){ //if no account with that username exists, the username is incorrect
-        res.send('Incorrect username or password');
+        res.redirect(errorURL);
     }else{ //account with that username is found
         //easier access for variables
         reqUsername = reqCredentials[0].Username;
@@ -114,7 +128,7 @@ router.post('/admin_authenticate', async (req, res) => {
             req.session.user = 'admin';
             res.redirect('/admin/admin_view');
         } else {
-            res.send('Incorrect username or password');
+            res.redirect(errorURL);
         }
     }
 });
