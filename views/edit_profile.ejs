@@ -174,36 +174,21 @@
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
             const selectedOptionText = selectedOption.text;
             //console.log(selectedOptionText);
-            if (selectedSet.has(selectedOptionText)) { // if there is existing committee in list
-                const lastCommitteeID = dropdownOptions.length - 1;
-                //console.log(lastCommitteeID);
-                const committeeID = lastCommitteeID + 1;
-                const listItem = document.createElement("div");
-                listItem.innerHTML = `
-                    <span id="${committeeID}">${committeeName}</span>
-                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
-                `;
-                selectedCommittees.appendChild(listItem);
-                otherCommitteeInput.value = "";
-                dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
-                selectedSet.add(committeeName); // Add to selected set
-                selectedSet.add(committeeID);
-                console.log(committeeID);
-            }
-            else {
-                let committeeID = 0;
-                const listItem = document.createElement("div");
-                listItem.innerHTML = `
-                    <span id="${committeeID}">${committeeName}</span>
-                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
-                `;
-                selectedCommittees.appendChild(listItem);
-                otherCommitteeInput.value = "";
-                selectedSet.add(committeeName); // Add to selected set
-                selectedSet.add(committeeID);
-                committeeID++;
-                console.log(committeeID);
-            }
+            // if there is existing committee in list
+            const lastCommitteeID = dropdownOptions.length - 1;
+            console.log(lastCommitteeID);
+            const committeeID = lastCommitteeID + 1;
+            const listItem = document.createElement("div");
+            listItem.innerHTML = `
+                <span id="${committeeID}">${committeeName}</span>
+                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+            `;
+            selectedCommittees.appendChild(listItem);
+            otherCommitteeInput.value = "";
+            dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
+            selectedSet.add(committeeName); // Add to selected set
+            selectedSet.add(committeeID);
+            console.log(committeeID);
 
             updateSelectedCommitteesInput();
         });
