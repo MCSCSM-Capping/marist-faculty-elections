@@ -151,6 +151,9 @@
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
+            if (committeeName === committeeName) {
+                return;
+            }
 
             if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
                 const committeeName = selectedOption.text;
@@ -170,6 +173,9 @@
 
         addOtherCommitteeButton.addEventListener("click", function () { // get rid of if statement condition; committeeID needs to come from actual list of committees, not just the selected set; make condition where if there are no selected committees, the first other committee is first ID
             const committeeName = otherCommitteeInput.value.trim();
+            if (committeeName === committeeName) {
+                return;
+            }
             //console.log(committeeName);
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
             const selectedOptionText = selectedOption.text;
@@ -188,7 +194,8 @@
             dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
             selectedSet.add(committeeName); // Add to selected set
             selectedSet.add(committeeID);
-            console.log(committeeID);
+
+            //console.log(committeeID);
 
             updateSelectedCommitteesInput();
         });
