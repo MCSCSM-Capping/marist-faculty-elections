@@ -151,21 +151,21 @@
         // Dropdown change
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
-            if (committeeName === committeeName) {
-                return;
-            }
 
             if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
                 const committeeName = selectedOption.text;
                 const committeeID = selectedOption.value;
-                const listItem = document.createElement("div");
-                listItem.innerHTML = `
-                    <span>${committeeName}</span>
-                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
-                `;
-                selectedCommittees.appendChild(listItem);
-                selectedSet.add(committeeName);
-                selectedSet.add(committeeID); // Add to selected set
+
+                if (!selectedSet.has(committeeName)) {
+                    const listItem = document.createElement("div");
+                    listItem.innerHTML = `
+                        <span>${committeeName}</span>
+                        <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                    `;
+                    selectedCommittees.appendChild(listItem);
+                    selectedSet.add(committeeName);
+                    selectedSet.add(committeeID); // Add to selected set
+                }
             }
 
             updateSelectedCommitteesInput();
@@ -173,7 +173,7 @@
 
         addOtherCommitteeButton.addEventListener("click", function () { // get rid of if statement condition; committeeID needs to come from actual list of committees, not just the selected set; make condition where if there are no selected committees, the first other committee is first ID
             const committeeName = otherCommitteeInput.value.trim();
-            if (committeeName === committeeName) {
+            if (selectedSet.has(committeeName)) {
                 return;
             }
             //console.log(committeeName);
