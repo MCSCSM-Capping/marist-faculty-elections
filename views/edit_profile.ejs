@@ -173,7 +173,7 @@
 
         addOtherCommitteeButton.addEventListener("click", function () { // get rid of if statement condition; committeeID needs to come from actual list of committees, not just the selected set; make condition where if there are no selected committees, the first other committee is first ID
             const committeeName = otherCommitteeInput.value.trim();
-            if (selectedSet.has(committeeName)) {
+            if (selectedSet.has(committeeName) || dropdownOptions.some(option.text === committeeName)) {
                 return;
             }
             //console.log(committeeName);
