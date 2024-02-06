@@ -100,9 +100,10 @@
             // Function to add the user to the ballot in query_preview
             function addToBallot() {
                 // Retrieve user information from the page
-                var user = {
-                    CWID: '<%= faculty.CWID %>'
-                };
+                //var user = {
+                    //CWID: '<%= faculty.CWID %>',
+                    //Last_Name: '<%= faculty.Last_Name %>'
+                //};
 
                 // Retrieve previously selected users from session storage in query_preview
                 var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
@@ -114,7 +115,7 @@
 
                 // Add the user to the ballot if not already added
                 if (!userExists) {
-                    selectedUsers.push(user);
+                    selectedUsers.push({ CWID: cwid });
 
                     // Update the session storage in query_preview
                     sessionStorage.setItem('selectedUsers', JSON.stringify(selectedUsers));
