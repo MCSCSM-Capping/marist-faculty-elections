@@ -179,7 +179,7 @@
             if (selectedOptionText === committeeName || selectedSet.has(committeeName)) { // if there's the same committee in dropdown/typed again in other committee box
                 return;
             }
-            console.log(committeeName);
+            //console.log(committeeName);
             //console.log(selectedOptionText);
             // if there is existing committee in list
             const lastCommitteeID = dropdownOptions.length - 1;
@@ -195,6 +195,8 @@
             dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
             selectedSet.add(committeeName); // Add to selected set
             selectedSet.add(committeeID);
+            //console.log(committeeName);
+            //console.log(committeeID);
 
             //console.log(committeeID);
 
