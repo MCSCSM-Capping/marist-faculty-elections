@@ -44,5 +44,6 @@ INSERT INTO Committees VALUES (15, "Honors Council");
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
 CREATE TABLE IF NOT EXISTS Admin_Login (Username VARCHAR(50) PRIMARY KEY, Admin_Password VARCHAR(100), Salt VARCHAR(20));
+INSERT INTO Admin_Login VALUES ("testadmin", "fad61dcf952d156f39a4ace90174a7744db38a06f86e27b4a5891a1696859b4f", "19ba4b2bd6c33461");
 
 DELETE FROM Faculty_Committees WHERE CWID = 0 AND Committee_ID = 3;

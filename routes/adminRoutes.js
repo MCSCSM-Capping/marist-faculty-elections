@@ -46,9 +46,12 @@ router.get('/query_preview', async (req, res) => {
 });
 
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {
+    //req.body contains school name 
     const {schoolDropdown} = req.body;
+    //req.params.userID comes from route url
     const userID = parseInt(req.params.userID);
-    
+
+    //update Faculty table to change the school for correct CWID 
     await User.update({
         School_Name: schoolDropdown
     }, {
@@ -56,6 +59,7 @@ router.post('/view_and_manage/:userID/change_school', async (req, res) => {
             CWID: userID
         }
     });
+    //send back to view_and_manage
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
@@ -83,6 +87,20 @@ router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
         }
     });
     res.redirect(`/admin/view_and_manage/${userID}`);
+});
+
+router.get('/logout_admin', (req, res) => {
+    //https://stackoverflow.com/questions/51430267/logout-in-nodejs
+    if (req.session) {
+        // delete session object
+        req.session.destroy(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
 });
 
 module.exports = router;

@@ -31,4 +31,14 @@
     </div>
 </div>
 
+<script>
+    const queryStr = window.location.search;
+    const urlParams = new URLSearchParams(queryStr);
+    const invalidUserOrPass = urlParams.get('error');
+
+    if (invalidUserOrPass) {
+        alert("Invalid username or password.");
+    }
+</script>
+
 <%- include('./partials/footer') %>

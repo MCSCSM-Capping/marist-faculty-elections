@@ -5,6 +5,8 @@ const db = require('../database');
 const User = require('../models/userModel');
 const Admin = require('../models/adminModel');
 
+const url = require('url');
+
 const CASAuthentication = require('express-cas-authentication');
 const util = require('../util');
 
@@ -31,18 +33,24 @@ var cas = new CASAuthentication({
 });
 
 router.get('/authenticate', cas.bounce, async (req, res) => {
+    //first check to ensure the session is not already logged in
+    if (req.session.isAdmin) {
+        res.redirect('/admin/admin_view');
+    } else if (req.session.user != null) {
+        res.redirect(`/user/${req.session.user}`);
+    }
+
+    let reqCWID = parseInt(req.session[cas.session_info].maristcwid);
 
     //first checks if a user is faculty. If they are not, sends a 401 and exits.
     if (!util.userIsFaculty(req, cas)) {
         return res.sendStatus(401);
     } else {
         req.session.isUserAuthenticated = true;
+        req.session.user = reqCWID;
     }
-
-    let reqCWID, reqFirst, reqLast; //first and last name from CAS object
-    reqCWID = parseInt(req.session[cas.session_info].maristcwid);
-
-    console.log(req.session[cas.session_info].cn);
+    
+    let reqFirst, reqLast; //first and last name from CAS object
 
     let nameArr = (req.session[cas.session_info].cn).split(' ');
 
@@ -75,11 +83,21 @@ router.get('/logout', cas.logout);
 
 // Admin login page
 router.get('/admin_login', (req, res) => {
-    res.render('admin_login');
+    if (req.params.error) {
+        res.render('admin_login');
+    } else {
+        res.render('admin_login');
+    }
 });
 
 // Admin login POST handler
 router.post('/admin_authenticate', async (req, res) => {
+    //first check to ensure the session is not already logged in, admin or otherwise
+    if (req.session.isAdmin) {
+        res.redirect('/admin/admin_view');
+    } else if (req.session.user != null) {
+        res.redirect(`/user/${req.session.user}`);
+    }
     const { username, password } = req.body; 
 
     reqCredentials = await db.getCredentials({
@@ -87,8 +105,16 @@ router.post('/admin_authenticate', async (req, res) => {
             Username: username
         }
     });
+
+    var errorURL = url.format({
+        pathname:"/admin_login",
+        query: {
+            "error":true
+        }
+    })
+
     if (reqCredentials[0] == null){ //if no account with that username exists, the username is incorrect
-        res.send('Incorrect username or password');
+        res.redirect(errorURL);
     }else{ //account with that username is found
         //easier access for variables
         reqUsername = reqCredentials[0].Username;
@@ -99,9 +125,10 @@ router.post('/admin_authenticate', async (req, res) => {
     
         if (passwordHash === reqPassword) {
             req.session.isAdmin = true;
+            req.session.user = 'admin';
             res.redirect('/admin/admin_view');
         } else {
-            res.send('Incorrect username or password');
+            res.redirect(errorURL);
         }
     }
 });
