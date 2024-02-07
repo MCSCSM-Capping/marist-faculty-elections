@@ -167,20 +167,24 @@
         addOtherCommitteeButton.addEventListener("click", function () {
             const committeeName = otherCommitteeInput.value.trim();
             if (committeeName && !selectedSet.has(committeeName)) {
+                const lastCommitteeElement = selectedCommittees.lastElementChild; // takes last ID of last committee
+                const lastCommitteeID = lastCommitteeElement.querySelector("span").id; // parses ID
+                const committeeID = parseInt(lastCommitteeID) + 1;
                 const listItem = document.createElement("div");
                 listItem.innerHTML = `
-                    <span>${committeeName}</span>
+                    <span id="${committeeID}">${committeeName}</span>
                     <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                 `;
                 selectedCommittees.appendChild(listItem);
                 otherCommitteeInput.value = "";
                 selectedSet.add(committeeName); // Add to selected set
+                selectedSet.add(committeeID);
             }
 
             updateSelectedCommitteesInput();
         });
 
-        function removeCommittee(button) {
+        function removeCommitee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
             const committeeID = parseInt(listItem.querySelector("span").id);
