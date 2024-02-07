@@ -7,6 +7,7 @@ const db = require('../database');
 const User = require('../models/userModel');
 const FacComMap = require('../models/facultyCommitteeJunction');
 const session = require('express-session');
+const Committee = require('../models/committeeModel');
 
 // Middleware to limit users only to their own pages
 const isPageOwner = (req, res, next) => {
@@ -20,6 +21,7 @@ const isPageOwner = (req, res, next) => {
 
     res.redirect(`/user/${req.session.user}`);
 };
+
 
 // Profile view GET handler
 router.get('/:userID', isPageOwner, async (req, res) => {
@@ -79,15 +81,14 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     committeeString = JSON.stringify(selectedCommittees);
     committeeString = committeeString.substring(1, (committeeString.length - 1));
 
+    console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 
     //if empty
     if (committeeString.length === 0){
         hasCommitties = false;
-        console.log("I'm in here!")
     } else {
         committeeArray = committeeString.split(',');
         hasCommitties = true;
-        console.log("here");
     }
     // const reqUser = await db.getUsers({
     //     where: {
@@ -102,7 +103,8 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         Preferred_Name: preferredName,
         School_Name: schoolDropdown,
         Candidate_Statement: candidateStatement,
-        Service_Statement: serviceStatement
+        Service_Statement: serviceStatement,
+        Is_On_Committee: hasCommitties
     }, {
         where: {
             CWID: userID
@@ -119,13 +121,52 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             }
         });
 
-        committeeArray.forEach((e) => {
-            let committeeID = parseInt(e);
+        for (let i = 0; i < committeeArray.length; i+=2) {
+            let committeeID = committeeArray[i+1];
+            let committeeName = committeeArray[i];
+            
+            //create new committee if it doesn't exist
+            console.log(committeeName, " committee number: ", committeeID);
+            const committee = await db.getCommittees({
+                where: {
+                    Committee_ID: committeeID
+                }
+            });
+            if (committee[0] == null){ //if no committee with that id exists, that committee needs to be added
+                console.log("**********YIPPEEEEEE***************");
+                await Committee.findOrCreate({
+                    where: { Committee_ID: committeeID },
+                    defaults: {
+                        Committee_Name: committeeName
+                    }
+                });
+            }
+
             //creates a new mapping
             FacComMap.create({
                 CWID: userID,
                 Committee_ID: committeeID
             });
+        }
+        committeeArray.forEach( async (e, committeeName) => {
+            // //let committeeName = committeeArray;
+            
+            // //create new committee if it doesn't exist
+            // console.log(committeeName, " committee number: ", e);
+            // const committee = await db.getCommittees({
+            //     where: {
+            //         Committee_ID: e
+            //     }
+            // });
+            // if (committee[0] == null){ //if no account with that username exists, the username is incorrect
+            //     console.log("**********YIPPEEEEEE***************");
+            // }
+
+            // //creates a new mapping
+            // FacComMap.create({
+            //     CWID: userID,
+            //     Committee_ID: e
+            // });
         });
 
         //updates that the user is on a committee
