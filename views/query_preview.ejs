@@ -76,9 +76,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <script>
-
+            const faculty = <%- facultyList %>;
             // Function to populate the results table with selected users
             function populateResultsTable() {
+                updateBallotInfo();
                 var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
 
                 var resultsTableBody = document.getElementById('resultsTableBody');
@@ -112,6 +113,23 @@
                 });
             }
 
+            function updateBallotInfo() {
+                var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
+                console.log(sessionStorage.getItem('selectedUsers'));
+                selectedUsers.forEach(e => {
+                    for (let i = 0; i < Object.keys(faculty).length; i++) {
+                        
+                        if (e.CWID === (faculty[i].CWID + "")) {
+                            e.Last_Name = faculty[i].Last_Name;
+                            e.First_Name = faculty[i].First_Name;
+                            e.Preferred_Name = faculty[i].Preferred_Name;
+                            e.School_Name = faculty[i].School_Name;
+                        }
+                    }
+                });
+                sessionStorage.setItem('selectedUsers', JSON.stringify(selectedUsers));
+            }
+
             // Function to remove a user from the ballot
             function removeUserFromBallot(cwidToRemove) {
                 // Retrieve selected users from session storage
@@ -131,6 +149,7 @@
 
             // Populate the results table when the page loads
             window.onload = function () {
+                console.log("Page reloaded");
                 populateResultsTable();
             };
 

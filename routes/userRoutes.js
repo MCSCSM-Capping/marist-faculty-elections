@@ -29,7 +29,7 @@ router.get('/:userID', isPageOwner, async (req, res) => {
     const reqUser = await db.getUsers({
         where: {
             CWID: userID
-        },
+        }
     });
 
     let userCommittees;
