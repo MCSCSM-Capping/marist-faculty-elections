@@ -6,15 +6,30 @@ const util = require('../util');
 const db = require('../database');
 const User = require('../models/userModel');
 const FacComMap = require('../models/facultyCommitteeJunction');
+const session = require('express-session');
 const Committee = require('../models/committeeModel');
 
+// Middleware to limit users only to their own pages
+const isPageOwner = (req, res, next) => {
+    if (req.session.user == req.params.userID) {
+        return next();
+    }
+
+    if (req.session.isAdmin) {
+        return res.redirect("/admin/admin_view");
+    }
+
+    res.redirect(`/user/${req.session.user}`);
+};
+
+
 // Profile view GET handler
-router.get('/:userID', async (req, res) => {
+router.get('/:userID', isPageOwner, async (req, res) => {
     userID = parseInt(req.params.userID);
     const reqUser = await db.getUsers({
         where: {
             CWID: userID
-        }, 
+        }
     });
 
     let userCommittees;
@@ -28,7 +43,7 @@ router.get('/:userID', async (req, res) => {
 });
 
 // Name and Picture
-router.get('/:userID/edit', async (req, res) => {
+router.get('/:userID/edit', isPageOwner, async (req, res) => {
     const reqUser = await db.getUsers({
         where: {
             CWID: parseInt(req.params.userID)
@@ -45,7 +60,7 @@ router.get('/:userID/edit', async (req, res) => {
     res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees, userCommittees: JSON.stringify(userCommittees)});
 });
 
-router.post('/:userID/save', util.upload.single('profilePicture'), async (req, res) => {
+router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), async (req, res) => {
     const { 
         firstName,
         lastName, 
