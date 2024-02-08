@@ -128,6 +128,7 @@
         function updateSelectedCommitteesInput() {
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
             selectedCommitteesInput.value = Array.from(selectedSet).join(',');
+            console.log(selectedSet);
         }
 
         // add saved committees to list first
@@ -206,13 +207,16 @@
         function removeCommittee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
-            const committeeID = parseInt(listItem.querySelector("span").id);
+            const committeeID = parseInt(listItem.querySelector("span").textContent);
             //console.log(committeeID);
             //console.log(selectedSet);
             selectedSet.delete(committeeName);
-            selectedSet.delete(committeeID); // Remove from selected set
+            selectedSet.delete(committeeID);
             selectedCommittees.removeChild(listItem);
             committeeDropdown.selectedIndex = -1;
+            if (committeeDropdown.selectedIndex === -1 && committeeDropdown.options.length > 0) {
+                committeeDropdown.selectedIndex = 0;
+            }
             updateSelectedCommitteesInput();
         }
 
