@@ -136,9 +136,8 @@
 
         function updateSelectedCommitteesInput() {
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
-            selectedCommitteesInput.value = Array.from(selectedSet).join(',');
+            selectedCommitteesInput.value = JSON.stringify(selectedSet);
             //console.log("there:" + selectedSet[0].name);
-            console.log("there" + selectedCommitteesInput.value);
         }
 
         // add saved committees to list first

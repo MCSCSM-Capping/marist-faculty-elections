@@ -77,20 +77,27 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     let hasCommitties;
 
     let committeeArray;
-    console.log("here: " + (selectedCommittees))
     //Formatting out the open and end quotes
-    committeeString = JSON.stringify(selectedCommittees);
+    committeeString = selectedCommittees;
     committeeString = committeeString.substring(1, (committeeString.length - 1));
+
+    committeeArray = JSON.parse(selectedCommittees);
 
     console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 
-    //if empty
-    if (committeeString.length === 0){
-        hasCommitties = false;
-    } else {
-        committeeArray = committeeString.split(',');
+    if (committeeArray.length > 0) {
         hasCommitties = true;
+    } else {
+        hasCommitties = false;
     }
+
+    //if empty
+    // if (committeeString.length === 0){
+    //     hasCommitties = false;
+    // } else {
+    //     committeeArray = committeeString.split(',');
+    //     hasCommitties = true;
+    // }
     // const reqUser = await db.getUsers({
     //     where: {
     //         CWID: userID
@@ -123,9 +130,9 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             }
         });
 
-        for (let i = 0; i < committeeArray.length; i+=2) {
-            let committeeID = committeeArray[i+1];
-            let committeeName = committeeArray[i];
+        committeeArray.forEach(async (e) => {
+            let committeeID = e.id;
+            let committeeName = e.name;
             
             //create new committee if it doesn't exist
             console.log(committeeName, " committee number: ", committeeID);
@@ -149,7 +156,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
                 CWID: userID,
                 Committee_ID: committeeID
             });
-        }
+        });
         committeeArray.forEach( async (e, committeeName) => {
             // //let committeeName = committeeArray;
             
