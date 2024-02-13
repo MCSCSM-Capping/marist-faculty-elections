@@ -157,16 +157,17 @@
                 const committeeName = selectedOption.text;
                 const committeeID = selectedOption.value;
 
-                if (!selectedSet.has(committeeName)) {
+                //if (!selectedSet.has(committeeName)) {
                     const listItem = document.createElement("div");
                     listItem.innerHTML = `
-                        <span>${committeeName}</span>
+                        <span>"${committeeName}</span>
                         <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                     `;
                     selectedCommittees.appendChild(listItem);
                     selectedSet.add(committeeName);
                     selectedSet.add(committeeID); // Add to selected set
-                }
+                    //console.log("beginning: " + committeeID);
+                //}
             }
 
             updateSelectedCommitteesInput();
@@ -207,16 +208,22 @@
         function removeCommittee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
-            const committeeID = parseInt(listItem.querySelector("span").textContent);
+            //const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
+            //const committeeName = selectedOption.text;
+            const committeeID = listItem.querySelector("span").id;
+            //const committeeID = selectedOption[committeeName];
             //console.log(committeeID);
             //console.log(selectedSet);
+            //console.log("Name: " + committeeName);
+            console.log("ID: " + committeeID);
             selectedSet.delete(committeeName);
             selectedSet.delete(committeeID);
             selectedCommittees.removeChild(listItem);
-            committeeDropdown.selectedIndex = -1;
-            if (committeeDropdown.selectedIndex === -1 && committeeDropdown.options.length > 0) {
-                committeeDropdown.selectedIndex = 0;
-            }
+            //committeeDropdown.selectedIndex = -1;
+            //if (committeeDropdown.selectedIndex === -1 && committeeDropdown.options.length > 0) {
+                //committeeDropdown.selectedIndex = 0;
+            //}
+            committeeDropdown.value = "";
             updateSelectedCommitteesInput();
         }
 
