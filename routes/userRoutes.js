@@ -68,7 +68,8 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         schoolDropdown, 
         selectedCommittees, 
         candidateStatement,
-        serviceStatement 
+        serviceStatement,
+        websiteURL
     } = req.body;
 
     const userID = parseInt(req.params.userID);
@@ -104,7 +105,8 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         School_Name: schoolDropdown,
         Candidate_Statement: candidateStatement,
         Service_Statement: serviceStatement,
-        Is_On_Committee: hasCommitties
+        Is_On_Committee: hasCommitties,
+        Website_URL: websiteURL
     }, {
         where: {
             CWID: userID

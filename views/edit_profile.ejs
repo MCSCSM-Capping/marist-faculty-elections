@@ -99,6 +99,15 @@
                         placeholder="Enter your candidate statement"><% if (user.Candidate_Statement) { %><%= `${user.Candidate_Statement}` %><% } %></textarea>
                 </div>
 
+
+                <!--Marist Page URL Input-->
+                <div class="form-group">
+                    <label for="websiteURL">Marist Website:</label>
+                    <textarea class="form-control" id="websiteURL" name="websiteURL" rows="1"
+                        maxlength="750"
+                        placeholder="Enter the correct URL address for your website"><% if (user.Website_URL) { %><%= `${user.Website_URL}`%><% } %></textarea>
+                </div>
+
                 <br>
                 <br>
                 <br>
