@@ -77,7 +77,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     let hasCommitties;
 
     let committeeArray;
-
+    console.log("here: " + (selectedCommittees))
     //Formatting out the open and end quotes
     committeeString = JSON.stringify(selectedCommittees);
     committeeString = committeeString.substring(1, (committeeString.length - 1));

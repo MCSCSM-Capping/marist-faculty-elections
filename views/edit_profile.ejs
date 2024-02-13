@@ -123,7 +123,7 @@
         const otherCommitteeInput = document.getElementById("otherCommittee");
         const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
         const selectedCommittees = document.getElementById("selectedCommittees");
-        const selectedSet = new Set(); // To keep track of selected committees
+        const selectedSet = new Array(); // To keep track of selected committees
 
         // Sort the dropdown options alphabetically
         const dropdownOptions = Array.from(committeeDropdown.options);
@@ -137,7 +137,8 @@
         function updateSelectedCommitteesInput() {
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
             selectedCommitteesInput.value = Array.from(selectedSet).join(',');
-            console.log(selectedSet);
+            //console.log("there:" + selectedSet[0].name);
+            console.log("there" + selectedCommitteesInput.value);
         }
 
         // add saved committees to list first
@@ -151,8 +152,11 @@
                     <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                 `;
                 selectedCommittees.appendChild(listItem);
-                selectedSet.add(committeeName);
-                selectedSet.add(committeeID); // Add to selected set
+                var committee = {
+                    id: Number(committeeID),
+                    name: committeeName
+                }
+                selectedSet.push(committee);
                 
                 updateSelectedCommitteesInput();
             });
@@ -162,21 +166,31 @@
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
 
-            if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
+            if (selectedOption && selectedOption.value) {
                 const committeeName = selectedOption.text;
-                const committeeID = selectedOption.value;
+                const committeeID = Number(selectedOption.value);
 
                 //if (!selectedSet.has(committeeName)) {
+                var committeeExists = false;
+                selectedSet.forEach(e => {
+                    if (e.id === committeeID) {
+                        committeeExists = true;
+                    }
+                })
+                if (!committeeExists) {
                     const listItem = document.createElement("div");
                     listItem.innerHTML = `
-                        <span>"${committeeName}</span>
+                    <span id="${committeeID}">${committeeName}</span>
                         <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
                     `;
                     selectedCommittees.appendChild(listItem);
-                    selectedSet.add(committeeName);
-                    selectedSet.add(committeeID); // Add to selected set
+                    var committee = {
+                        id: Number(committeeID),
+                        name: committeeName
+                    }
+                    selectedSet.push(committee);
                     //console.log("beginning: " + committeeID);
-                //}
+                }
             }
 
             updateSelectedCommitteesInput();
@@ -187,7 +201,7 @@
             //console.log(committeeName);
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
             const selectedOptionText = selectedOption.text;
-            if (selectedOptionText === committeeName || selectedSet.has(committeeName)) { // if there's the same committee in dropdown/typed again in other committee box
+            if (selectedOptionText === committeeName) { // if there's the same committee in dropdown/typed again in other committee box
                 return;
             }
             //console.log(committeeName);
@@ -204,10 +218,12 @@
             selectedCommittees.appendChild(listItem);
             otherCommitteeInput.value = "";
             dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
-            selectedSet.add(committeeName); // Add to selected set
-            selectedSet.add(committeeID);
-            //console.log(committeeName);
-            //console.log(committeeID);
+            var committee = {
+                id: Number(committeeID),
+                name: committeeName
+            }
+            selectedSet.push(committee);
+            
 
             //console.log(committeeID);
 
@@ -222,11 +238,16 @@
             const committeeID = listItem.querySelector("span").id;
             //const committeeID = selectedOption[committeeName];
             //console.log(committeeID);
-            //console.log(selectedSet);
-            //console.log("Name: " + committeeName);
+            console.log(selectedSet);
+            console.log("Name: " + committeeName);
             console.log("ID: " + committeeID);
-            selectedSet.delete(committeeName);
-            selectedSet.delete(committeeID);
+            // selectedSet.delete(committeeName);
+            // selectedSet.delete(committeeID);
+            selectedSet.forEach(function (item, index, object) {
+                if (item.id == committeeID) {
+                    object.splice(index, 1);
+                }
+            });
             selectedCommittees.removeChild(listItem);
             //committeeDropdown.selectedIndex = -1;
             //if (committeeDropdown.selectedIndex === -1 && committeeDropdown.options.length > 0) {
