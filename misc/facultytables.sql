@@ -9,16 +9,16 @@ DROP TABLE IF EXISTS Admin_Login;
 
 CREATE TABLE IF NOT EXISTS Faculty (CWID INT PRIMARY KEY, 
 RecActive ENUM("Y","N") DEFAULT "Y",
-First_Name VARCHAR(50), 
-Last_Name VARCHAR(50), 
-Preferred_Name VARCHAR(100), 
-Service_Statement VARCHAR(255) DEFAULT "Faculty member has not written a statement of service.", 
-Candidate_Statement VARCHAR(800) DEFAULT "Why you should vote for me.", 
+First_Name VARCHAR(63), 
+Last_Name VARCHAR(63), 
+Preferred_Name VARCHAR(127), 
+Service_Statement VARCHAR(4095) DEFAULT "Faculty member has not written a statement of service.", 
+Candidate_Statement VARCHAR(4095) DEFAULT "Why you should vote for me.", 
 School_Name ENUM("School of Communication and the Arts", 
 "School of Computer Science and Mathematics", "School of Liberal Arts", "School of Management", "School of Science", 
 "School of Social and Behavioural Sciences", "School of Professional Programs"),
 Is_On_Committee BOOLEAN,
-Website_URL VARCHAR(150) );
+Website_URL VARCHAR(255) );
 INSERT INTO Faculty VALUES (0, "Y", "Test", "User", "Test User 1", DEFAULT, DEFAULT, "School of Science", True, "https://www.marist.edu");
 INSERT INTO Faculty VALUES (1, "Y", "Test1", "User1", "Test User 2", DEFAULT, DEFAULT, "School of Management", True, "https://www.marist.edu");
 INSERT INTO Faculty VALUES (2, "Y", "Test2", "User2", "Test User 3", DEFAULT, DEFAULT, "School of Liberal Arts", True, "https://www.marist.edu");
