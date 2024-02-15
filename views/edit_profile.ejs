@@ -276,6 +276,12 @@
                 console.log("https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname);
             }
             
+            try {
+                const url = new URL(websiteURL.value);
+            } catch (error) {
+                console.log(error); // => TypeError, "Failed to construct URL: Invalid URL"
+                console.log("error");
+            }
         });
     </script>
 
