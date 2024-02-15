@@ -50,8 +50,9 @@
                 <div class="form-group">
                     <label for="school">School:</label>
                     <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
+                        <option></option>
                         <% for(let i=0; i < schools.length; i++) { %>
-                            <option value="<%= schools[i] %>" <% if (schools[i]===user.School_Name) { %> selected <% }
+                            <option value="<%= schools[i] %>" required <% if (schools[i]===user.School_Name) { %> selected <% }
                                     %>>
                                     <%= schools[i] %>
                             </option>
@@ -105,7 +106,7 @@
                     <label for="websiteURL">Marist Website:</label>
                     <textarea class="form-control" id="websiteURL" name="websiteURL" rows="1"
                         maxlength="750"
-                        placeholder="Enter the correct URL address for your website"><% if (user.Website_URL) { %><%= `${user.Website_URL}`%><% } %></textarea>
+                        placeholder="Enter the correct URL address for your website" required ><% if (user.Website_URL) { %><%= `${user.Website_URL}`%><% } %></textarea>
                 </div>
 
                 <br>
@@ -256,6 +257,26 @@
             updateSelectedCommitteesInput();
         }
 
+
+        schoolDropdown.addEventListener("change", function(){
+            let schoolName = schoolDropdown.options[schoolDropdown.selectedIndex].text;
+            let fname = firstName.value.trim();
+            let lname = lastName.value.trim();
+            let pname = preferredName.value.trim();
+
+            schoolName = schoolName.replaceAll(" ", "-");
+            if (pname != "" && pname != null){
+                pname = pname.replaceAll(" ", "-");
+                websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + pname;
+                console.log("https://www.marist.edu/" + schoolName + "/faculty/" + pname);
+            }else{
+                fname = fname.replaceAll(" ", "-");
+                lname = lname.replaceAll(" ", "-");
+                websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname;
+                console.log("https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname);
+            }
+            
+        });
     </script>
 
     <%- include('./partials/footer.ejs') %>
