@@ -80,7 +80,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     //Formatting out the open and end quotes
     committeeString = selectedCommittees;
     committeeString = committeeString.substring(1, (committeeString.length - 1));
-    console.log("here:" + selectedCommittees);
+    //If there is no selected committees, create an empty array
     if (selectedCommittees) {
         committeeArray = JSON.parse(selectedCommittees);
     } else {
@@ -88,7 +88,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     }
     
 
-    console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
+    //console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 
     if (committeeArray.length > 0) {
         hasCommitties = true;

@@ -80,14 +80,13 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
             }
         })
     }
-
-    if (userExists !== null || userExists !== undefined) {
+    
+    if (userExists.length !== 0) {
         res.redirect(`/user/${reqCWID}`);
     } else {
+        console.log("here");
         res.redirect(`/user/${reqCWID}/edit`);
     }
-
-    
 });
 
 router.get('/logout', cas.logout);
