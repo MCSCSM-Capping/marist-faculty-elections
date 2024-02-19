@@ -80,8 +80,13 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     //Formatting out the open and end quotes
     committeeString = selectedCommittees;
     committeeString = committeeString.substring(1, (committeeString.length - 1));
-
-    committeeArray = JSON.parse(selectedCommittees);
+    console.log("here:" + selectedCommittees);
+    if (selectedCommittees) {
+        committeeArray = JSON.parse(selectedCommittees);
+    } else {
+        committeeArray = [];
+    }
+    
 
     console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 

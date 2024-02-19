@@ -57,7 +57,7 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
     reqFirst = nameArr[0];//removes open quote
     reqLast = nameArr[nameArr.length - 1]; //removes close quote
 
-    const userExists = await User.find({
+    const userExists = await User.findAll({
         where: {CWID: reqCWID}
     })
 
@@ -81,7 +81,7 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
         })
     }
 
-    if (userExists !== null) {
+    if (userExists !== null || userExists !== undefined) {
         res.redirect(`/user/${reqCWID}`);
     } else {
         res.redirect(`/user/${reqCWID}/edit`);
