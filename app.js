@@ -5,6 +5,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const memoryStore = require('memorystore')(session);
 //const CASAuthentication = require('express-cas-authentication');
 //const util = require('./util');
 var connection = require('./database');
@@ -26,6 +27,12 @@ const app = express();
 app.use(session({
     secret: 'secret key',
     saveUninitialized: false,
+    store: new memoryStore({
+        checkPeriod: 30 * 60 * 1000 //prunes expired sessions every 30 minutes
+    }),
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000 //sessions expire after 24 hours
+    },
     resave: false
 }));
 
