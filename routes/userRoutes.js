@@ -96,19 +96,6 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         hasCommitties = false;
     }
 
-    //if empty
-    // if (committeeString.length === 0){
-    //     hasCommitties = false;
-    // } else {
-    //     committeeArray = committeeString.split(',');
-    //     hasCommitties = true;
-    // }
-    // const reqUser = await db.getUsers({
-    //     where: {
-    //         CWID: userID
-    //     }
-    // });
-
     //Updating basic info
     await User.update({
         First_Name: firstName,
@@ -140,18 +127,17 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             let committeeName = e.name;
             
             //create new committee if it doesn't exist
-            console.log(committeeName, " committee number: ", committeeID);
             const committee = await db.getCommittees({
                 where: {
                     Committee_ID: committeeID
                 }
             });
             if (committee[0] == null){ //if no committee with that id exists, that committee needs to be added
-                console.log("**********YIPPEEEEEE***************");
                 await Committee.findOrCreate({
                     where: { Committee_ID: committeeID },
                     defaults: {
-                        Committee_Name: committeeName
+                        Committee_Name: committeeName,
+                        RecActive: true
                     }
                 });
             }
