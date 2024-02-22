@@ -25,10 +25,10 @@
                 </div>
             </div>
 
-            <!-- Buttons "Delete all from query" and "Export to CSV" -->
+            <!-- Buttons "Delete all from ballot" and "Export to CSV" -->
             <div class="row mt-4 justify-content-center">
                 <div class="col-md-3 mb-3">
-                    <button class="btn btn-danger btn-block">Delete All from Query</button>
+                    <button class="btn btn-danger btn-block">Delete All from Ballot</button>
                 </div>
                 <div class="col-md-3 mb-3">
                     <button class="btn btn-primary btn-block">Export to CSV</button>
@@ -116,7 +116,6 @@
             // Updates information of selected users stored in sessionStorage with 'faculty'
             function updateBallotInfo() {
                 var selectedUsers = JSON.parse(sessionStorage.getItem('selectedUsers')) || [];
-                console.log(sessionStorage.getItem('selectedUsers'));
                 selectedUsers.forEach(e => {
                     for (let i = 0; i < Object.keys(faculty).length; i++) {
                         
@@ -125,6 +124,7 @@
                             e.First_Name = faculty[i].First_Name;
                             e.Preferred_Name = faculty[i].Preferred_Name;
                             e.School_Name = faculty[i].School_Name;
+                            e.Website_URL = faculty[i].Website_URL;
                         }
                     }
                 });
@@ -154,7 +154,7 @@
                 populateResultsTable();
             };
 
-            // Function to handle "Delete all from query" button
+            // Function to handle "Delete all from ballot" button
             function deleteAllFromQuery() {
                 // Clear the selected users from session storage
                 sessionStorage.removeItem('selectedUsers');
@@ -162,7 +162,7 @@
                 // Repopulate the results table to reflect the changes
                 populateResultsTable();
             }
-            // Attach the deleteAllFromQuery function to the click event of "Delete all from query" button
+            // Attach the deleteAllFromQuery function to the click event of "Delete all from ballot" button
             document.querySelector('.btn.btn-danger.btn-block').addEventListener('click', deleteAllFromQuery);
 
             // Function to convert data to CSV format
@@ -186,6 +186,7 @@
                     window.alert("Must enter a Ballot Name");
                 }else{
                     // Prepare data for CSV
+                
                     var csvData = selectedUsers.map(function (user) {
                         var name = user.First_Name + " "
                         if (user.Preferred_Name != "" && user.Preferred_Name != null){
@@ -196,7 +197,7 @@
                             "question": title,
                             "title": name,
                             "short_description": "Click the \"i\" for a link to their Bio on the Marist Website",
-                            "description": "<a href=\"WEBSITE\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
+                            "description": "<a href=\" " +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
                             "photo": "",
                             "sort": ""
                         };
