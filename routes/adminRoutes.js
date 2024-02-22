@@ -42,7 +42,8 @@ router.get('/query_preview', async (req, res) => {
     if (req.session.selectedUser == null){
          req.session.selectedUser = reqUser[0].CWID;
     }
-    res.render('query_preview', {faculty: reqUser, selectedUser: req.session.selectedUser});
+    
+    res.render('query_preview', {facultyList: JSON.stringify(reqUser), selectedUser: req.session.selectedUser});
 });
 
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {

@@ -29,7 +29,7 @@ router.get('/:userID', isPageOwner, async (req, res) => {
     const reqUser = await db.getUsers({
         where: {
             CWID: userID
-        },
+        }
     });
 
     let userCommittees;
@@ -68,7 +68,8 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         schoolDropdown, 
         selectedCommittees, 
         candidateStatement,
-        serviceStatement 
+        serviceStatement,
+        websiteURL
     } = req.body;
 
     const userID = parseInt(req.params.userID);
@@ -76,25 +77,24 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     let hasCommitties;
 
     let committeeArray;
-
     //Formatting out the open and end quotes
-    committeeString = JSON.stringify(selectedCommittees);
+    committeeString = selectedCommittees;
     committeeString = committeeString.substring(1, (committeeString.length - 1));
-
-    console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
-
-    //if empty
-    if (committeeString.length === 0){
-        hasCommitties = false;
+    //If there is no selected committees, create an empty array
+    if (selectedCommittees) {
+        committeeArray = JSON.parse(selectedCommittees);
     } else {
-        committeeArray = committeeString.split(',');
-        hasCommitties = true;
+        committeeArray = [];
     }
-    // const reqUser = await db.getUsers({
-    //     where: {
-    //         CWID: userID
-    //     }
-    // });
+    
+
+    //console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
+
+    if (committeeArray.length > 0) {
+        hasCommitties = true;
+    } else {
+        hasCommitties = false;
+    }
 
     //Updating basic info
     await User.update({
@@ -104,7 +104,8 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
         School_Name: schoolDropdown,
         Candidate_Statement: candidateStatement,
         Service_Statement: serviceStatement,
-        Is_On_Committee: hasCommitties
+        Is_On_Committee: hasCommitties,
+        Website_URL: websiteURL
     }, {
         where: {
             CWID: userID
@@ -121,23 +122,22 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             }
         });
 
-        for (let i = 0; i < committeeArray.length; i+=2) {
-            let committeeID = committeeArray[i+1];
-            let committeeName = committeeArray[i];
+        committeeArray.forEach(async (e) => {
+            let committeeID = e.id;
+            let committeeName = e.name;
             
             //create new committee if it doesn't exist
-            console.log(committeeName, " committee number: ", committeeID);
             const committee = await db.getCommittees({
                 where: {
                     Committee_ID: committeeID
                 }
             });
             if (committee[0] == null){ //if no committee with that id exists, that committee needs to be added
-                console.log("**********YIPPEEEEEE***************");
                 await Committee.findOrCreate({
                     where: { Committee_ID: committeeID },
                     defaults: {
-                        Committee_Name: committeeName
+                        Committee_Name: committeeName,
+                        RecActive: true
                     }
                 });
             }
@@ -147,7 +147,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
                 CWID: userID,
                 Committee_ID: committeeID
             });
-        }
+        });
         committeeArray.forEach( async (e, committeeName) => {
             // //let committeeName = committeeArray;
             

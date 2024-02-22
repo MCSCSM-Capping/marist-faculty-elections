@@ -57,6 +57,10 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
     reqFirst = nameArr[0];//removes open quote
     reqLast = nameArr[nameArr.length - 1]; //removes close quote
 
+    const userExists = await User.findAll({
+        where: {CWID: reqCWID}
+    })
+
     //checks if a user with the logged in CWID exists in the database. If not, creates a new entry in the Faculty table of the database
     const user = await User.findOrCreate({
         where: { CWID: reqCWID },
@@ -76,7 +80,13 @@ router.get('/authenticate', cas.bounce, async (req, res) => {
             }
         })
     }
-    res.redirect(`/user/${reqCWID}`);
+    
+    if (userExists.length !== 0) {
+        res.redirect(`/user/${reqCWID}`);
+    } else {
+        console.log("here");
+        res.redirect(`/user/${reqCWID}/edit`);
+    }
 });
 
 router.get('/logout', cas.logout);

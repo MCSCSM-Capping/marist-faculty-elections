@@ -19,6 +19,10 @@ const Committee = sequelize.define ('Committees', {
     },
     Committee_Name: {
         type: DataTypes.STRING
+    },
+    RecActive: {
+        type: Boolean,
+        defaultValue: true
     }
 }, {
     timestamps: false
