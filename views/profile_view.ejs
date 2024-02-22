@@ -30,11 +30,10 @@
     <h5>Committees:</h5>
     <p>
         <% if (user.Is_On_Committee) { %>
-            <ul>
                 <% userCommittees.forEach(element => { %>
-                    <li><%= `${element.Committee_Name}` %></li>
+                    <%= `${element.Committee_Name}` %>
+                <br>
                 <% }) %>
-            </ul>
         <% } else { %>
           None
         <% } %>
