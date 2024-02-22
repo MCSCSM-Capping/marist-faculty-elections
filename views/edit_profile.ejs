@@ -6,6 +6,9 @@
         <div class="form-card">
             <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data"> 
 
+                <!--Allows users to input all the necessary fields-->
+
+
                 <!-- Display profile image -->
                 <!-- <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
                     class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
@@ -115,6 +118,7 @@
                 <br>
                 <br>
 
+                <!--"Save" button sends form to /user/${user.CWID}/save using POST-->
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
@@ -137,13 +141,14 @@
             committeeDropdown.appendChild(option);
         });
 
+        // If there are committees previously selected by user from server side, it's populated into selectedSet
         function updateSelectedCommitteesInput() {
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
             selectedCommitteesInput.value = JSON.stringify(selectedSet);
             //console.log("there:" + selectedSet[0].name);
         }
 
-        // add saved committees to list first
+        // if user has committees, populate committees
         if (currCommittees != null) {
             currCommittees.forEach((e) => {
                 const committeeName = e.Committee_Name;
@@ -164,7 +169,7 @@
             });
         }
 
-        // Dropdown change
+        // When committee is selected
         committeeDropdown.addEventListener("change", function () {
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
 
@@ -198,7 +203,7 @@
             updateSelectedCommitteesInput();
         });
 
-        addOtherCommitteeButton.addEventListener("click", function () { // get rid of if statement condition; committeeID needs to come from actual list of committees, not just the selected set; make condition where if there are no selected committees, the first other committee is first ID
+        addOtherCommitteeButton.addEventListener("click", function () {
             const committeeName = otherCommitteeInput.value.trim();
             //console.log(committeeName);
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
