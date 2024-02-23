@@ -42,7 +42,7 @@
 
                 <!-- Preferred Name Input -->
                 <div class="form-group">
-                    <label for="preferredName">Preferred Name:</label>
+                    <label for="preferredName">Preferred Name (optional):</label>
                     <input type="text" class="form-control" id="preferredName" name="preferredName"
                         placeholder="Enter your preferred name" <% if (user.Preferred_Name) { %>
                     value=<%= `${user.Preferred_Name}` %>
@@ -208,7 +208,7 @@
             //console.log(committeeName);
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
             const selectedOptionText = selectedOption.text;
-            if (selectedOptionText === committeeName) { // if there's the same committee in dropdown/typed again in other committee box
+            if (selectedOptionText === committeeName || committeeName == "") { // if there's the same committee in dropdown/typed again in other committee box
                 return;
             }
             //console.log(committeeName);
