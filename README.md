@@ -7,8 +7,11 @@ A system for Faculty Awards Elections at Marist College
 
 ## Installing Node.js
 Download Node.js from https://nodejs.org/en/download
+
 Add to PATH
+
 Once installed, go to the root of the git repository and run `npm install`
+
 All node modules used by the app will be downloaded and installed to the local repo
 
 ## Installing Docker
