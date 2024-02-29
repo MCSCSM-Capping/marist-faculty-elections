@@ -37,6 +37,12 @@ INSERT INTO Committees VALUES (12, "Core and Liberal Studies", True);
 INSERT INTO Committees VALUES (13, "Integrative Major Committee", True);
 INSERT INTO Committees VALUES (14, "Priorities and Resources Committee", True);
 INSERT INTO Committees VALUES (15, "Honors Council", True);
+INSERT INTO Committees VALUES (16, "Professional Programs Committee", True);
+INSERT INTO Committees VALUES (17, "Curriculum Committee", True);
+INSERT INTO Committees VALUES (18, "Assessment Committee", True);
+INSERT INTO Committees VALUES (19, "Institutional Review Board", True);
+INSERT INTO Committees VALUES (20, "Campus Sustainability Advisory Committee", True);
+INSERT INTO Committees VALUES (21, "Campus Campaign Committee (fundraising)", True);
 
 CREATE TABLE IF NOT EXISTS Faculty_Committees (CWID INT, Committee_ID INT);
 
