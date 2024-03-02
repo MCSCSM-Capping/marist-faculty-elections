@@ -145,7 +145,6 @@
         function updateSelectedCommitteesInput() {
             const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
             selectedCommitteesInput.value = JSON.stringify(selectedSet);
-            //console.log("there:" + selectedSet[0].name);
         }
 
         // if user has committees, populate committees
@@ -196,7 +195,6 @@
                         name: committeeName
                     }
                     selectedSet.push(committee);
-                    //console.log("beginning: " + committeeID);
                 }
             }
 
@@ -205,17 +203,14 @@
 
         addOtherCommitteeButton.addEventListener("click", function () {
             const committeeName = otherCommitteeInput.value.trim();
-            //console.log(committeeName);
             const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
             const selectedOptionText = selectedOption.text;
             if (selectedOptionText === committeeName || committeeName == "") { // if there's the same committee in dropdown/typed again in other committee box
                 return;
             }
-            //console.log(committeeName);
-            //console.log(selectedOptionText);
             // if there is existing committee in list
             const lastCommitteeID = dropdownOptions.length - 1;
-            //console.log(lastCommitteeID);
+
             const committeeID = lastCommitteeID + 1;
             const listItem = document.createElement("div");
             listItem.innerHTML = `
@@ -231,9 +226,6 @@
             }
             console.log(committee);
             selectedSet.push(committee);
-            
-
-            //console.log(committeeID);
 
             updateSelectedCommitteesInput();
         });
@@ -241,14 +233,7 @@
         function removeCommittee(button) {
             const listItem = button.parentElement;
             const committeeName = listItem.querySelector("span").textContent;
-            //const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
-            //const committeeName = selectedOption.text;
             const committeeID = listItem.querySelector("span").id;
-            //const committeeID = selectedOption[committeeName];
-            //console.log(committeeID);
-            console.log(selectedSet);
-            console.log("Name: " + committeeName);
-            console.log("ID: " + committeeID);
             // selectedSet.delete(committeeName);
             // selectedSet.delete(committeeID);
             selectedSet.forEach(function (item, index, object) {

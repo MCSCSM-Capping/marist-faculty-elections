@@ -1,3 +1,4 @@
+//routes and backend code for faculty users
 const express = require('express');
 const router = express.Router();
 
@@ -86,9 +87,6 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     } else {
         committeeArray = [];
     }
-    
-
-    //console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 
     if (committeeArray.length > 0) {
         hasCommitties = true;
@@ -159,7 +157,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             //     }
             // });
             // if (committee[0] == null){ //if no account with that username exists, the username is incorrect
-            //     console.log("**********YIPPEEEEEE***************");
+            //     console.log("test");
             // }
 
             // //creates a new mapping
@@ -187,26 +185,5 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
 
     res.redirect(`/user/${userID}`);
 });
-
-// // Statement
-// router.get('/:userID/statement', async (req, res) => {
-//     const reqUser = await db.getUsers({
-//         where: {
-//             CWID: parseInt(req.params.userID)
-//         }
-//     });
-//     res.render('statement', {user: reqUser[0]});
-// });
-
-// // Committees
-// router.get('/:userID/committees', async (req, res) => {
-//     const reqUser = await db.getUsers({
-//         where: {
-//             CWID: parseInt(req.params.userID)
-//         }
-//     });
-//     res.render('committees', {user: reqUser[0]});
-// });
-
 
 module.exports = router;

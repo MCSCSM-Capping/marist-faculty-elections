@@ -1,3 +1,4 @@
+//routes and backend code for admin users
 const express = require('express');
 const router = express.Router();
 
@@ -64,6 +65,7 @@ router.post('/view_and_manage/:userID/change_school', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+//change RecActive column to "N" for selected user
 router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
     const userID = parseInt(req.params.userID);
     
@@ -77,6 +79,7 @@ router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+//change RecActive column to "Y" for selected user
 router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
     const userID = parseInt(req.params.userID);
     
