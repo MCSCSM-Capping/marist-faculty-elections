@@ -61,6 +61,7 @@ router.get('/:userID/edit', isPageOwner, async (req, res) => {
     res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees, userCommittees: JSON.stringify(userCommittees)});
 });
 
+//save edits made in edit_profile
 router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), async (req, res) => {
     const { 
         firstName,

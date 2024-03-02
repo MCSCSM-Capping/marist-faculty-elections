@@ -1,3 +1,4 @@
+<!--Begin Balloting page where admin can search and select faculty to add to a ballot-->
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
     <!DOCTYPE html>
@@ -83,7 +84,7 @@
                         
                         <tbody id="facultyTableBody">
                             <% for(let i=0; i < faculty.length; i++) { %>
-                                <% if (faculty[i].RecActive=="Y" ){ %>
+                                <% if (faculty[i].RecActive=="Y" ){ %> <!--only display active faculty-->
                                     <% let individualUserCommittees = []; %>
                                     <!-- Get committees of faculty -->
                                     <% if (faculty[i].Is_On_Committee){ %>
@@ -119,7 +120,6 @@
                                         <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">View & Manage Profile</a>
                                         </td>
                                     </tr>
-                                    <% console.log("individualUserCommittees: ", individualUserCommittees); %>
                                 <% } %> <!-- if faculty record is active -->
                             <% } %> <!-- for i -->
                         </tbody>
@@ -222,16 +222,10 @@
                 var committeeFilter = document.getElementById('committeeFilter').value;
 
                 var rows = document.getElementsByClassName('faculty-row');
-
-                // console.log('School Filter:', schoolFilter);
-                // console.log('Committee Filter:', committeeFilter);
                 
                 for (var i = 0; i < rows.length; i++) {
                     var school = rows[i].getAttribute('data-school');
-                    // var committee = rows[i].getAttribute('data-committee');
                     var committee = JSON.parse(rows[i].getAttribute('data-committee'));
-
-                    console.log("Committee(s?): " + committee, "Committee Filter: " + committeeFilter);
 
                     var schoolMatch = schoolFilter == 'Select a School' || school == schoolFilter;
                     var committeeMatch = false;
@@ -242,7 +236,6 @@
                         }
                     })
 
-                    console.log("filter: ", committeeFilter, "match: ", committeeMatch, "user: ", i);
                     // Show/hide rows based on filter conditions
                     if (schoolMatch && committeeMatch) {
                         rows[i].style.display = '';

@@ -1,3 +1,4 @@
+//sequelize model for Admin_Login table
 const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
