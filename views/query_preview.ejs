@@ -54,16 +54,16 @@
                         <tbody id="resultsTableBody">
                             <!-- Add dynamic content here to populate the table rows -->
                             <!-- Example: 
-                    <tr>
-                        <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
-                        <td>Doe</td>
-                        <td>John</td>
-                        <td>Johnny</td>
-                        <td>School 1</td>
-                        <td>Committee 1</td>
-                        <td><a href="#">View</a></td>
-                    </tr>
-                    -->
+                            <tr>
+                                <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
+                                <td>Doe</td>
+                                <td>John</td>
+                                <td>Johnny</td>
+                                <td>School 1</td>
+                                <td>Committee 1</td>
+                                <td><a href="#">View</a></td>
+                            </tr>
+                            -->
                         </tbody>
                     </table>
                 </div>
@@ -89,19 +89,21 @@
 
                 // Add rows for selected users
                 selectedUsers.forEach(function (user) {
-                    var row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.Last_Name}</td>
-                        <td>${user.First_Name}</td>
-                        <td>${user.Preferred_Name}</td>
-                        <td>${user.School_Name}</td>
-                        <td>
-                            <a href="/admin/view_and_manage/${user.CWID}">View & Manage Profile</a>
-                            | 
-                            <a href="#" class="remove-link" data-cwid="${user.CWID}">Remove</a>
-                        </td>
-                        `;
-                    resultsTableBody.appendChild(row);
+                    if (user.isActive == "Y"){
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.Last_Name}</td>
+                            <td>${user.First_Name}</td>
+                            <td>${user.Preferred_Name}</td>
+                            <td>${user.School_Name}</td>
+                            <td>
+                                <a href="/admin/view_and_manage/${user.CWID}">View & Manage Profile</a>
+                                | 
+                                <a href="#" class="remove-link" data-cwid="${user.CWID}">Remove</a>
+                            </td>
+                            `;
+                        resultsTableBody.appendChild(row);
+                    }
                 });
 
                 // Attach click event to "Remove" links
@@ -125,6 +127,7 @@
                             e.Preferred_Name = faculty[i].Preferred_Name;
                             e.School_Name = faculty[i].School_Name;
                             e.Website_URL = faculty[i].Website_URL;
+                            e.isActive = faculty[i].RecActive;
                         }
                     }
                 });
@@ -185,22 +188,32 @@
                 if (title == "" || title == null){
                     window.alert("Must enter a Ballot Name");
                 }else{
-                    // Prepare data for CSV
-                
-                    var csvData = selectedUsers.map(function (user) {
-                        var name = user.First_Name + " "
-                        if (user.Preferred_Name != "" && user.Preferred_Name != null){
-                            name += "(" + user.Preferred_Name + ") ";
+                    // Prepare data for CSV 
+                    // var sources = images.filter(function(img) {
+                    // if (img.src.split('.').pop() === "json") {
+                    //     return false; // skip
+                    // }
+                    // return true;
+                    // }).map(function(img) { return img.src; });
+                    var csvData = selectedUsers.filter(function (user) {
+                        if (user.isActive == "N"){
+                            return false; //user is inactive, don't add to csv
                         }
-                        name += user.Last_Name;
-                        return {
-                            "question": title,
-                            "title": name,
-                            "short_description": "Click the \"i\" for a link to their Bio on the Marist Website",
-                            "description": "<a href=\" " +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
-                            "photo": "",
-                            "sort": ""
-                        };
+                        return true; //add to csv
+                    }).map(function (user) {
+                            var name = user.First_Name + " "
+                            if (user.Preferred_Name != "" && user.Preferred_Name != null){
+                                name += "(" + user.Preferred_Name + ") ";
+                            }
+                            name += user.Last_Name;
+                            return {
+                                "question": title,
+                                "title": name,
+                                "short_description": "Click the \"i\" for a link to their Bio on the Marist Website",
+                                "description": "<a href=\" " +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
+                                "photo": "",
+                                "sort": ""
+                            };
                     });
 
                     // Convert data to CSV format
