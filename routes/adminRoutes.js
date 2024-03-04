@@ -1,3 +1,9 @@
+/**
+All routes for admin pages.
+
+These routes are prepended with '/admin/' in the URL
+*/
+
 //routes and backend code for admin users
 const express = require('express');
 const router = express.Router();
