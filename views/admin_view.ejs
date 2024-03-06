@@ -1,4 +1,6 @@
 <!--Begin Balloting page where admin can search and select faculty to add to a ballot-->
+<!--Features include filter searching, clicking on view&manage profile links, and adding individual profiles to ballot-->
+
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
     <!DOCTYPE html>
@@ -17,6 +19,7 @@
             <h1 class="text-center">Begin Balloting</h1>
             <hr>
 
+            <!--Search function-->
             <div class="row mt-5 justify-content-center">
                 <div class="col-md-8">
                     <div class="input-group mb-3">
@@ -29,7 +32,8 @@
                 </div>
             </div>
 
-            <!-- Filter dropdown boxes -->
+            <!--Filter dropdown boxes-->
+            <!--By school(s):-->
             <div class="row mt-3 justify-content-center">
                 <div class="col-md-3 mb-3">
                     <label for="schoolFilter">All Schools</label>
@@ -43,6 +47,7 @@
                     </select>
                 </div>
 
+                <!--By committee(s):-->
                 <div class="col-md-3 mb-3">
                     <label for="committeeFilter">All Committees</label>
                     <select class="form-control" id="committeeFilter" onchange="filterTable()">
@@ -56,19 +61,19 @@
                 </div>
             </div>
 
-            <!-- Buttons for "Add to Query" and "View Profile" -->
+            <!--Buttons for "Add to Query" and "View Profile"-->
             <div class="row mt-3 justify-content-center">
                 <div class="col-md-3 mb-3">
                     <button class="btn btn-danger btn-block" onclick="buildBallot()">Build a Ballot</button>
                 </div>
             </div>
 
-            <!-- Display search results -->
+            <!--Display search results-->
             <div class="row mt-5">
                 <div class="col-12">
                     <h3>Search Results</h3>
 
-                    <!-- Table to display search results -->
+                    <!--Table to display search results-->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -120,8 +125,8 @@
                                         <td><a class="nav-link" href="/admin/view_and_manage/<%= faculty[i].CWID %>">View & Manage Profile</a>
                                         </td>
                                     </tr>
-                                <% } %> <!-- if faculty record is active -->
-                            <% } %> <!-- for i -->
+                                <% } %> <!--if faculty record is active-->
+                            <% } %> <!--for i-->
                         </tbody>
                     </table>
                 </div>
@@ -132,7 +137,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <!-- Add this script at the end of your HTML file -->
         <script>
             // Function to handle "Select All" checkbox
             document.getElementById('selectAllCheckbox').addEventListener('click', function () {
@@ -282,7 +286,5 @@
             document.getElementById('button-addon2').addEventListener('click', performSearch);
         </script>
 
-
     </body>
-
     </html>
