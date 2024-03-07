@@ -1,3 +1,8 @@
+/*
+All routes used by user-visible pages
+
+Every route is prepended by '/user/' in the URL
+*/
 //routes and backend code for faculty users
 const express = require('express');
 const router = express.Router();

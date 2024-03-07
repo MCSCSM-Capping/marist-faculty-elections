@@ -1,4 +1,5 @@
 <!--Faculty page to edit their own profile-->
+
 <%- include('./partials/base.ejs', {user: user}) %>
 
     <link rel="stylesheet" href="/stylesheets/name_and_picture.css">
@@ -6,22 +7,6 @@
     <div class="container">
         <div class="form-card">
             <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data"> 
-
-                <!--Allows users to input all the necessary fields-->
-
-
-                <!-- Display profile image -->
-                <!-- <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image"
-                    class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">
-                <br>
-                <br> -->
-
-                <!-- Image Upload -->
-                <!-- <div class="form-group">
-                    <label for="profilePicture">Profile Picture:</label>
-                    <input type="file" class="form-control-file" id="profilePicture" name="profilePicture"
-                        accept="image/*">
-                </div> -->
 
                 <!-- First Name -->
                 <div class="form-group">
@@ -86,7 +71,7 @@
                 <input type="hidden" id="selectedCommitteesInput" name="selectedCommittees" value="">
                 <div class="form-group">
                     <div class="selected-committees" id="selectedCommittees">
-                        <!-- Selected committees will be displayed here -->
+                        <!--Selected committees will be displayed here-->
                     </div>
                 </div>
 
@@ -255,18 +240,19 @@
         }
 
 
-        schoolDropdown.addEventListener("change", function(){
+        schoolDropdown.addEventListener("change", function() {
             let schoolName = schoolDropdown.options[schoolDropdown.selectedIndex].text;
             let fname = firstName.value.trim();
             let lname = lastName.value.trim();
             let pname = preferredName.value.trim();
 
             schoolName = schoolName.replaceAll(" ", "-");
-            if (pname != "" && pname != null){
+            if (pname != "" && pname != null) {
                 pname = pname.replaceAll(" ", "-");
                 websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + pname;
                 console.log("https://www.marist.edu/" + schoolName + "/faculty/" + pname);
-            }else{
+            }
+            else {
                 fname = fname.replaceAll(" ", "-");
                 lname = lname.replaceAll(" ", "-");
                 websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname;
@@ -275,11 +261,13 @@
             
             try {
                 const url = new URL(websiteURL.value);
-            } catch (error) {
+            }
+            catch (error) {
                 console.log(error); // => TypeError, "Failed to construct URL: Invalid URL"
                 console.log("error");
             }
         });
+
     </script>
 
     <%- include('./partials/footer.ejs') %>

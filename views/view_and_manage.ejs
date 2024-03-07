@@ -1,3 +1,5 @@
+<!--Viewing individual faculty profile on a separate page-->
+
 <link rel="stylesheet" href="/stylesheets/view_and_manage.css">
 
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
@@ -90,6 +92,8 @@
             <h5>Marist Page</h5>
             <p><%= `${faculty.Website_URL}`%></p>
         </div>
+
+<%- include('./partials/footer') %>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

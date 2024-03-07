@@ -1,40 +1,44 @@
-<!-- Bootstrap styles -->
+<!--First page when you get to the address-->
+
+<%- include('./partials/base.ejs', {user: user}) %>
+
+<!--Bootstrap styles-->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
+<!--Custom styles for this page-->
 <link rel="stylesheet" href="/stylesheets/landing.css">
 
-<div class="container-fluid h-100"> <!-- Using Bootstrap's container to center content -->
+<div class="container-fluid h-100"> <!--Using Bootstrap's container to center content-->
 
-    <!-- Enhanced Title -->
+    <!--Enhanced Title-->
     <div class="title-top-centered bg-danger py-3 mb-5 rounded-lg shadow-sm">
         <h1 class="text-center text-white font-weight-bold" style="font-size: 2.5rem;">Marist Faculty Elections</h1>
     </div>
 
-    <!-- Main content of the login page -->
+    <!--Main content of the login page-->
     <div class="login-page d-flex flex-column align-items-center justify-content-center"> 
-        <!-- Card Container -->
+        <!--Card Container-->
         <div class="card shadow-lg" style="width: 24rem;"> 
             <h2 class="card-header text-center bg-danger text-white">Login</h2>
             <div class="card-body">
-                <!-- Login form -->
+                <!--Login form-->
                 <form method="GET" action="/authenticate">
                     <div class="form-group">
-                        <!-- Marist SSO Login button -->
+                        <!--Marist SSO Login button-->
                         <input type="submit" value="Marist SSO" class="btn btn-danger btn-block btn-lg">
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Admin Login Button -->
+        <!--Admin Login Button-->
         <div class="text-center mt-4">
             <a href="/admin_login" class="btn btn-outline-dark btn-sm">Admin?</a>
         </div>
     </div>
 </div>
 
-<!-- Optional: Include Bootstrap's JS, Popper.js, and jQuery if needed -->
+<!--Optional: Include Bootstrap's JS, Popper.js, and jQuery if needed-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

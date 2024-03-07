@@ -1,3 +1,5 @@
+<!--Page to view added profiles to ballot and export to CSV file-->
+
 <%- include('./partials/adminbase.ejs', {selectedUser: selectedUser}) %>
 
     <!DOCTYPE html>
@@ -25,7 +27,7 @@
                 </div>
             </div>
 
-            <!-- Buttons "Delete all from ballot" and "Export to CSV" -->
+            <!--Buttons "Delete all from ballot" and "Export to CSV"-->
             <div class="row mt-4 justify-content-center">
                 <div class="col-md-3 mb-3">
                     <button class="btn btn-danger btn-block">Delete All from Ballot</button>
@@ -35,12 +37,12 @@
                 </div>
             </div>
 
-            <!-- Display results -->
+            <!--Display results-->
             <div class="row mt-5">
                 <div class="col-12">
                     <h3>Results</h3>
 
-                    <!-- Table to display results -->
+                    <!--Table to display results-->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -52,24 +54,14 @@
                             </tr>
                         </thead>
                         <tbody id="resultsTableBody">
-                            <!-- Add dynamic content here to populate the table rows -->
-                            <!-- Example: 
-                            <tr>
-                                <td><img src="path_to_image.jpg" alt="Profile Image" width="50"></td>
-                                <td>Doe</td>
-                                <td>John</td>
-                                <td>Johnny</td>
-                                <td>School 1</td>
-                                <td>Committee 1</td>
-                                <td><a href="#">View</a></td>
-                            </tr>
-                            -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
         </div>
+
+<%- include('./partials/footer') %>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -187,12 +179,12 @@
 
                 var title = document.getElementById("ballotName").value;
 
-                if (title == "" || title == null){
+                if (title == "" || title == null) {
                     window.alert("Must enter a Ballot Name");
                 }else{
                     // Prepare data for CSV 
                     var csvData = selectedUsers.filter(function (user) {
-                        if (user.isActive == "N"){
+                        if (user.isActive == "N") {
                             return false; //user is inactive, don't add to csv
                         }
                         return true; //add to csv
@@ -231,6 +223,7 @@
             // Attach the downloadCSV function to the click event of "Export to CSV" button
             document.querySelector('.btn.btn-primary.btn-block').addEventListener('click', downloadCSV);
         </script>
+
     </body>
 
     </html>
