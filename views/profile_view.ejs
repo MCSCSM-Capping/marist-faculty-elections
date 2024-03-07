@@ -1,22 +1,21 @@
-<!--faculty page to view their own profile-->
+<!--Faculty page to view their own profile-->
+
 <%- include('partials/base.ejs', {user: user}) %>
 
 <link rel="stylesheet" href="/stylesheets/profile.css">
 
 <div id="profile" class="profile-container text-center mt-5">
-    <!-- Display profile image -->
-    <!-- <img src="{{ url_for('static', filename=image_filename.split('/')[-1]) }}" alt="Profile Image" class="img-thumbnail img-circle profile-img" style="width:200px; height:200px;">-->
 
-    <!-- Display name -->
+    <!--Display name-->
     <h1 class="mt-3"><%= `${user.First_Name} ${user.Last_Name}` %></h1>
 
-    <!-- Display Preferred Name -->
+    <!--Display Preferred Name-->
     <% if (user.Preferred_Name) { %>
         <h4 class="mt-3"><%= `Preferred Name: ${user.Preferred_Name}`%></h4>
     <% } %>
     
 
-    <!-- Display School -->
+    <!--Display School-->
     <h4 class="mt-3">
         <% if (user.School_Name) { %>
             <%= `${user.School_Name}` %>
@@ -25,9 +24,9 @@
         <% } %>
     </h4>
     
-    <hr>  <!-- Horizontal Line -->
+    <hr>
 
-    <!-- Display Committees -->
+    <!--Display Committees-->
     <h5>Committees:</h5>
     <p>
         <% if (user.Is_On_Committee) { %>
@@ -41,9 +40,9 @@
         
     </p>
     
-    <hr>  <!-- Horizontal Line -->
+    <hr>
     
-    <!-- Display Service Statement -->
+    <!--Display Service Statement-->
     <h5>Service Statement:</h5>
     <p>
         <% if (user.Service_Statement) { %>
@@ -53,9 +52,9 @@
         <% } %>
     </p>
 
-    <hr>  <!-- Horizontal Line -->
+    <hr>
 
-    <!-- Display Candidate Statement -->
+    <!--Display Candidate Statement-->
     <h5>Candidate Statement:</h5>
     <p>
         <% if (user.Candidate_Statement) { %>
@@ -65,7 +64,7 @@
         <% } %></p>
     </p>
 
-    <!-- Placeholder for more content or other sections -->
+    <!--Placeholder for more content or other sections-->
     <h5>Marist Page</h5>
     <p><%= `${user.Website_URL}`%></p>
 
