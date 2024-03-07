@@ -1,3 +1,10 @@
+/**
+All routes for admin pages.
+
+These routes are prepended with '/admin/' in the URL
+*/
+
+//routes and backend code for admin users
 const express = require('express');
 const router = express.Router();
 
@@ -46,6 +53,7 @@ router.get('/query_preview', async (req, res) => {
     res.render('query_preview', {facultyList: JSON.stringify(reqUser), selectedUser: req.session.selectedUser});
 });
 
+//Change selected faculty member's school
 router.post('/view_and_manage/:userID/change_school', async (req, res) => {
     //req.body contains school name 
     const {schoolDropdown} = req.body;
@@ -64,6 +72,7 @@ router.post('/view_and_manage/:userID/change_school', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+//change RecActive column to "N" for selected user
 router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
     const userID = parseInt(req.params.userID);
     
@@ -77,6 +86,7 @@ router.post('/view_and_manage/:userID/delete_profile', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+//change RecActive column to "Y" for selected user
 router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
     const userID = parseInt(req.params.userID);
     
@@ -90,6 +100,7 @@ router.post('/view_and_manage/:userID/activate_profile', async (req, res) => {
     res.redirect(`/admin/view_and_manage/${userID}`);
 });
 
+//admin logout
 router.get('/logout_admin', (req, res) => {
     //https://stackoverflow.com/questions/51430267/logout-in-nodejs
     if (req.session) {

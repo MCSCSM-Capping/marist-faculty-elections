@@ -1,3 +1,6 @@
+<!--Committees section of edit_profile-->
+<!--Features include adding committees, adding new committees, removing committees-->
+
 <%- include('./partials/base.ejs', {user: user}) %>
 
 <link rel="stylesheet" href="/stylesheets/committees.css">
@@ -67,6 +70,7 @@
         committeeDropdown.appendChild(option);
     });
 
+    // Add committee button
     committeeDropdown.addEventListener("change", function () {
         const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
         if (selectedOption && selectedOption.value === "Other") {
@@ -91,6 +95,7 @@
         }
     });
 
+    // Add 'other' committee button
     addOtherCommitteeButton.addEventListener("click", function () {
         const committeeName = otherCommitteeInput.value.trim();
         if (committeeName && !selectedSet.has(committeeName)) {
@@ -105,10 +110,12 @@
         }
     });
 
+    // Remove committee button
     function removeCommittee(button) {
         const listItem = button.parentElement;
         const committeeName = listItem.querySelector("span").textContent;
         selectedSet.delete(committeeName); // Remove from selected set
         selectedCommittees.removeChild(listItem);
     }
+
 </script>

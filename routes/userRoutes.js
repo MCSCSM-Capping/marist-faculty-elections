@@ -1,3 +1,9 @@
+/*
+All routes used by user-visible pages
+
+Every route is prepended by '/user/' in the URL
+*/
+//routes and backend code for faculty users
 const express = require('express');
 const router = express.Router();
 
@@ -60,6 +66,7 @@ router.get('/:userID/edit', isPageOwner, async (req, res) => {
     res.render('edit_profile', {user: reqUser[0], schools: User.getAttributes().School_Name.values, committees: reqCommittees, userCommittees: JSON.stringify(userCommittees)});
 });
 
+//save edits made in edit_profile
 router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), async (req, res) => {
     const { 
         firstName,
@@ -86,9 +93,6 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
     } else {
         committeeArray = [];
     }
-    
-
-    //console.log("Committee String: ", committeeString, "              %%%%%%%%%%%%%%");
 
     if (committeeArray.length > 0) {
         hasCommitties = true;
@@ -159,7 +163,7 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
             //     }
             // });
             // if (committee[0] == null){ //if no account with that username exists, the username is incorrect
-            //     console.log("**********YIPPEEEEEE***************");
+            //     console.log("test");
             // }
 
             // //creates a new mapping
@@ -187,26 +191,5 @@ router.post('/:userID/save', isPageOwner, util.upload.single('profilePicture'), 
 
     res.redirect(`/user/${userID}`);
 });
-
-// // Statement
-// router.get('/:userID/statement', async (req, res) => {
-//     const reqUser = await db.getUsers({
-//         where: {
-//             CWID: parseInt(req.params.userID)
-//         }
-//     });
-//     res.render('statement', {user: reqUser[0]});
-// });
-
-// // Committees
-// router.get('/:userID/committees', async (req, res) => {
-//     const reqUser = await db.getUsers({
-//         where: {
-//             CWID: parseInt(req.params.userID)
-//         }
-//     });
-//     res.render('committees', {user: reqUser[0]});
-// });
-
 
 module.exports = router;

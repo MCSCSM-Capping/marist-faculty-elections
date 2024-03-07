@@ -1,3 +1,10 @@
+/*
+All routes that are used for account handling.
+
+These routes utilize CAS authentication for regular users, or our own authentication for admins
+All routes here are prepended with '/' in the url.
+*/
+
 const express = require('express');
 const router = express.Router();
 

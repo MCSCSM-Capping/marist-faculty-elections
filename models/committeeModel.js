@@ -1,3 +1,4 @@
+//sequelize model for Committees table
 const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize('FacultyElectionsDB', 'root', 'example', {
