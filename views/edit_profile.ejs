@@ -75,15 +75,18 @@
                     </div>
                 </div>
 
-                <!--Service Statement Input-->
+                <!-- Service Statement Input -->
+                <!-- character limit for the service statement in the database is 4095. do not set the maxlength above that-->
+                <!-- character limit is set to 160 in order to fit into the .csv export to ElectionRunner-->
                 <div class="form-group">
                     <label for="serviceStatement">Service Statement:</label>
                     <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6"
-                        maxlength="250"
+                        maxlength="160"
                         placeholder="Enter your service statement"><% if (user.Service_Statement) { %><%= `${user.Service_Statement}` %><% } %></textarea>
                 </div>
 
-                <!--Candidate Statement Input-->
+                <!-- Candidate Statement Input -->
+                <!-- character limit for the candidate statement in the database is 4095. do not set the maxlength above that-->
                 <div class="form-group">
                     <label for="candidateStatement">Candidate Statement:</label>
                     <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6"

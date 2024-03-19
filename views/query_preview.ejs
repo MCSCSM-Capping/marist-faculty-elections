@@ -120,6 +120,8 @@
                             e.School_Name = faculty[i].School_Name;
                             e.Website_URL = faculty[i].Website_URL;
                             e.isActive = faculty[i].RecActive;
+                            e.Service_Statement = faculty[i].Service_Statement;
+                            e.Candidate_Statement = faculty[i].Candidate_Statement;
                         }
                     }
                 });
@@ -179,8 +181,8 @@
 
                 if (title == "" || title == null) {
                     window.alert("Must enter a Ballot Name");
-                }
-                else {
+                }else{
+                    // Prepare data for CSV 
                     var csvData = selectedUsers.filter(function (user) {
                         if (user.isActive == "N") {
                             return false; //user is inactive, don't add to csv
@@ -192,11 +194,27 @@
                                 name += "(" + user.Preferred_Name + ") ";
                             }
                             name += user.Last_Name;
+                            var candidatestatement = user.Candidate_Statement.trim();
+                            if (candidatestatement != "") {
+                                candidatestatement = candidatestatement + " ";
+                            }
+                            //candidatestatement = candidatestatement.replaceAll(",", '');
+
+                            //instructions on going to the user's Marist bio should be included
+                            //if no service statement was 
+                            var serviceStatement = user.Service_Statement.trim();
+                            if (serviceStatement === "") {
+                                serviceStatement = "Click the \"i\" for a link to their Bio on the Marist Website";
+                            } else {
+                                //serviceStatement = serviceStatement.replaceAll(",", "");
+                                serviceStatement = "\"" + serviceStatement + "\""
+                            }
+
                             return {
                                 "question": title,
                                 "title": name,
-                                "short_description": "Click the \"i\" for a link to their Bio on the Marist Website",
-                                "description": "<a href=\" " +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
+                                "short_description": serviceStatement,
+                                "description": "\"" +candidatestatement + "\"" + "<a href=\"" +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
                                 "photo": "",
                                 "sort": ""
                             };
