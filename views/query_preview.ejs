@@ -194,13 +194,27 @@
                                 name += "(" + user.Preferred_Name + ") ";
                             }
                             name += user.Last_Name;
-                            //var candidatestatement = user.Candidate_Statement.trim();
-                            //candidatestatement = candidatestatement.replaceAll(",", '""');
+                            var candidatestatement = user.Candidate_Statement.trim();
+                            if (candidatestatement != "") {
+                                candidatestatement = candidatestatement + " ";
+                            }
+                            //candidatestatement = candidatestatement.replaceAll(",", '');
+
+                            //instructions on going to the user's Marist bio should be included
+                            //if no service statement was 
+                            var serviceStatement = user.Service_Statement.trim();
+                            if (serviceStatement === "") {
+                                serviceStatement = "Click the \"i\" for a link to their Bio on the Marist Website";
+                            } else {
+                                //serviceStatement = serviceStatement.replaceAll(",", "");
+                                serviceStatement = "\"" + serviceStatement + "\""
+                            }
+
                             return {
                                 "question": title,
                                 "title": name,
-                                "short_description": "Click the \"i\" for more on this candidate. " + user.Service_Statement,
-                                "description": "<a href=\" " +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click Candidate Statement: \"" + user.Candidate_Statement +"\"</a>",
+                                "short_description": serviceStatement,
+                                "description": "\"" +candidatestatement + "\"" + "<a href=\"" +  user.Website_URL + "\" target=\"_blank\" >" + name + "'s bio on marist.edu <br> Not supported on Android - you will exit the election app if you click</a>",
                                 "photo": "",
                                 "sort": ""
                             };
