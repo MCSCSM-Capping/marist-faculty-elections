@@ -26,7 +26,7 @@ var cas = new CASAuthentication({
     session_name: 'cas_user',
     session_info: 'attributes',
 
-    is_dev_mode: true,
+    is_dev_mode: false,
     dev_mode_user: '12345678@marist.edu',
     dev_mode_info: { 
         displayname: "John P Smith",
