@@ -1,31 +1,42 @@
-/* Container and Layout */
+/* Global Container and Layout */
 .container {
-    max-width: 700px; /* Restricting the width for better visual appeal */
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    /* Padding to ensure content doesn't touch the edge at smaller screens */
 }
 
+/* Form Card Styles */
 .form-card {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 /* Typography */
+h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
 label {
     color: #34495e;
     font-weight: 500;
-    display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-/* Input Styles */
-.form-control, .form-control-file {
-    border-radius: 5px;
+/* Input and Textarea Styles */
+.form-control {
     border: 1px solid #ecf0f1;
-    padding: 12px;
-    font-size: 16px;
+    padding: 15px;
+    font-size: 15px;
     transition: border-color .2s, box-shadow .2s;
+    width: 100%;
 }
 
 .form-control::placeholder {
@@ -33,31 +44,51 @@ label {
 }
 
 .form-control:focus {
-    border-color: #2980b9;
-    box-shadow: 0 0 10px rgba(41, 128, 185, 0.25);
+    border-color: #f24646;
+    /* Updated focus border color to match the red button */
+    box-shadow: 0 0 10px rgba(242, 70, 70, 0.25);
+    /* Shadow with red hue when input is focused */
 }
 
-.form-control-file {
-    padding: 5px;
-}
-
-/* Button */
+/* Button Styles */
 .btn-primary {
-    background-color: #2980b9;
+    background-color: #f24646;
+    /* Red color */
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    margin-top: 20px;
     transition: background-color .2s, transform .1s;
 }
 
-.btn-primary:hover, .btn-primary:focus {
-    background-color: #3498db;
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #e02121;
+    /* Darker shade of red for hover */
     transform: translateY(-2px);
+    /* Slight lift on hover/focus */
 }
 
-/* Additional Spacing */
+/* Spacing and Layout */
 .form-group {
     margin-bottom: 20px;
+}
+
+#schoolDropdown {
+    padding: 3px 2px;
+    width: 100%;
+    font-size: 15px;
+}
+
+#committeeDropdown {
+    padding: 3px 2px;
+    z-index: 1;
+    width: 300;
+}
+
+#otherCommitteeContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 }

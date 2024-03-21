@@ -1,88 +1,79 @@
-/* Global styles for the body */
+/* Global styles */
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f6f8; 
     line-height: 1.6;
+    color: #555; /* Slightly darker for better contrast */
+    background: #fafafa; /* Neutral background for a more professional look */
 }
 
-/* Styles for the login page layout */
+/* Login Page Layout */
 .login-page {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    padding: 20px;
+    padding: 20px; /* Added padding for better responsiveness on smaller screens */
 }
 
-/* Top-centered title styles */
+/* Title */
 .title-top-centered {
     position: absolute;
     top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    padding: 10px 30px;
-    border-radius: 8px;
-    color: #ffffff;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Styles for the login card */
-.card {
-    width: 320px;
-    background-color: #ffffff;
+    padding: 15px 40px; 
     border-radius: 12px;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    font-family: 'Helvetica', 'sans-serif';
+    color: #fff;
+    background: #f24646; /* Removing gradient for a more professional look */
+    box-shadow: 0px 5px 15px rgba(185, 75, 75, 0.2); /* Slightly softened the shadow for a modern touch */
 }
 
+/* Card */
+.card {
+    width: 330px;
+    border: none; /* Border removed for a cleaner look */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s; /* Animation on hover */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Subtle lift on hover for interactivity */
+}
 
 .card-header {
-    padding: 20px;
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
+    background-color: #f24646;
+    color: #fff;
+    font-family: 'Helvetica', 'sans-serif';
+    text-align: center;
+    padding: 12px 16px; /* Consistent padding */
+    font-size: 1.25rem; /* Slightly increased font size for emphasis */
 }
 
-.card-body {
-    padding: 20px;
-}
-
-/* General button styles */
-.btn {
-    border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all .3s ease;
-}
-
-/* Styles for the danger/red button */
+/* Button Styles */
 .btn-danger {
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
+    background-color: #f24646;
+    border: none;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: all 0.3s; /* Smoothens the hover effect */
 }
 
 .btn-danger:hover, .btn-danger:focus {
-    background: linear-gradient(45deg, #8e1c1c, #f24646);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    background-color: #e03535; /* Slightly brighter on hover */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow */
 }
 
-/* Styles for the outlined danger/red button */
 .btn-outline-danger {
-    background-color: transparent;
-    border: 2px solid #f24646;
     color: #f24646;
+    border: 2px solid #f24646;
 }
 
 .btn-outline-danger:hover, .btn-outline-danger:focus {
-    background: linear-gradient(45deg, #f24646, #8e1c1c);
-    color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    background-color: #f24646;
+    color: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Consistent with .btn-danger */
 }

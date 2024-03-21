@@ -1,7 +1,27 @@
-{% extends "base.html" %}
+<!--Committees section of edit_profile-->
+<!--Features include adding committees, adding new committees, removing committees-->
 
-{% block content %}
+<%- include('./partials/base.ejs', {user: user}) %>
+
 <link rel="stylesheet" href="/stylesheets/committees.css">
+
+<style>
+    /* Style for the selected committees list */
+    .selected-committees {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    /* Style for the delete (x) button */
+    .delete-button {
+        background-color: transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
+    }
+</style>
 
 <div class="container mt-4">
     <div class="form-card">
@@ -9,11 +29,93 @@
 
         <form action="/update_committees" method="post">
             <div class="form-group">
-                <label for="committees">List Your Committees:</label>
-                <textarea class="form-control" id="committees" name="committees" rows="5" placeholder="Enter each committee on a new line or separate with commas."></textarea>
+                <label for="committeeDropdown">Select Committee:</label>
+                <select class="form-control" id="committeeDropdown" name="committeeDropdown">
+                    <option value="" disabled>Select a committee</option>
+                    <option value="Math">Math</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Art">Art</option>
+                    <option value="History">History</option>
+                    <option value="Other">Other</option> <!-- Add "Other" option -->
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="otherCommittee" placeholder="Enter Other Committee">
+                <button type="button" id="addOtherCommittee" class="btn btn-secondary">Add</button>
+            </div>
+            <div class="form-group">
+                <div class="selected-committees" id="selectedCommittees">
+                    <!-- Selected committees will be displayed here -->
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Save Committees</button>
         </form>
     </div>
 </div>
-{% endblock %}
+
+<%- include('./partials/footer.ejs') %>
+
+<script>
+    const committeeDropdown = document.getElementById("committeeDropdown");
+    const otherCommitteeInput = document.getElementById("otherCommittee");
+    const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
+    const selectedCommittees = document.getElementById("selectedCommittees");
+    const selectedSet = new Set(); // To keep track of selected committees
+
+    // Sort the dropdown options alphabetically
+    const dropdownOptions = Array.from(committeeDropdown.options);
+    dropdownOptions.sort((a, b) => a.text.localeCompare(b.text));
+    committeeDropdown.innerHTML = ''; // Clear the dropdown
+    dropdownOptions.forEach(option => {
+        committeeDropdown.appendChild(option);
+    });
+
+    // Add committee button
+    committeeDropdown.addEventListener("change", function () {
+        const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
+        if (selectedOption && selectedOption.value === "Other") {
+            otherCommitteeInput.style.display = "block";
+            otherCommitteeInput.focus();
+            addOtherCommitteeButton.style.display = "block";
+        } else {
+            otherCommitteeInput.style.display = "none";
+            addOtherCommitteeButton.style.display = "none";
+        }
+
+        if (selectedOption && selectedOption.value && !selectedSet.has(selectedOption.value)) {
+            const committeeName = selectedOption.value;
+            const listItem = document.createElement("div");
+            listItem.innerHTML = `
+                <span>${committeeName}</span>
+                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+            `;
+            selectedCommittees.appendChild(listItem);
+            committeeDropdown.selectedIndex = 0; // Reset dropdown
+            selectedSet.add(committeeName); // Add to selected set
+        }
+    });
+
+    // Add 'other' committee button
+    addOtherCommitteeButton.addEventListener("click", function () {
+        const committeeName = otherCommitteeInput.value.trim();
+        if (committeeName && !selectedSet.has(committeeName)) {
+            const listItem = document.createElement("div");
+            listItem.innerHTML = `
+                <span>${committeeName}</span>
+                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+            `;
+            selectedCommittees.appendChild(listItem);
+            otherCommitteeInput.value = "";
+            selectedSet.add(committeeName); // Add to selected set
+        }
+    });
+
+    // Remove committee button
+    function removeCommittee(button) {
+        const listItem = button.parentElement;
+        const committeeName = listItem.querySelector("span").textContent;
+        selectedSet.delete(committeeName); // Remove from selected set
+        selectedCommittees.removeChild(listItem);
+    }
+
+</script>

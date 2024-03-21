@@ -1,0 +1,273 @@
+<!--Faculty page to edit their own profile-->
+
+<%- include('./partials/base.ejs', {user: user}) %>
+
+    <link rel="stylesheet" href="/stylesheets/name_and_picture.css">
+
+    <div class="container">
+        <div class="form-card">
+            <form action=<%=`/user/${user.CWID}/save` %> method="POST" enctype="multipart/form-data"> 
+
+                <!-- First Name -->
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName"
+                        placeholder="Enter your first name" required <% if (user.First_Name) { %>
+                    value=<%= `${user.First_Name}` %>
+                        <% } %>>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName"
+                        placeholder="Enter your last name" required <% if (user.Last_Name) { %>
+                    value=<%= `${user.Last_Name}` %>
+                        <% } %>>
+                </div>
+
+                <!-- Preferred Name Input -->
+                <div class="form-group">
+                    <label for="preferredName">Preferred Name (optional):</label>
+                    <input type="text" class="form-control" id="preferredName" name="preferredName"
+                        placeholder="Enter your preferred name" <% if (user.Preferred_Name) { %>
+                    value=<%= `${user.Preferred_Name}` %>
+                        <% } %>>
+                </div>
+
+                <!-- School Input -->
+                <div class="form-group">
+                    <label for="school">School:</label>
+                    <select class="form-control" id="schoolDropdown" name="schoolDropdown" required>
+                        <option></option>
+                        <% for(let i=0; i < schools.length; i++) { %>
+                            <option value="<%= schools[i] %>" required <% if (schools[i]===user.School_Name) { %> selected <% }
+                                    %>>
+                                    <%= schools[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+
+                <!-- Committees Dropdown -->
+                <div class="form-group">
+                    <label for="committees">Committees:</label>
+                    <select class="form-control" id="committeeDropdown">
+                        <option value="" disabled selected>Select Committee</option>
+                        <% for( let i=0; i < committees.length; i++ ) { %>
+                            <% if (committees[i].RecActive) { %>
+                                <option value="<%= committees[i].Committee_ID %>">
+                                    <%= committees[i].Committee_Name %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="otherCommittee" placeholder="Enter Other Committee">
+                    <br>
+                    <button type="button" id="addOtherCommittee" class="btn btn-secondary">Add</button>
+                </div>
+                <input type="hidden" id="selectedCommitteesInput" name="selectedCommittees" value="">
+                <div class="form-group">
+                    <div class="selected-committees" id="selectedCommittees">
+                        <!--Selected committees will be displayed here-->
+                    </div>
+                </div>
+
+                <!-- Service Statement Input -->
+                <!-- character limit for the service statement in the database is 4095. do not set the maxlength above that-->
+                <!-- character limit is set to 160 in order to fit into the .csv export to ElectionRunner-->
+                <div class="form-group">
+                    <label for="serviceStatement">Service Statement:</label>
+                    <textarea class="form-control" id="serviceStatement" name="serviceStatement" rows="6"
+                        maxlength="160"
+                        placeholder="Enter your service statement"><% if (user.Service_Statement) { %><%= `${user.Service_Statement}` %><% } %></textarea>
+                </div>
+
+                <!-- Candidate Statement Input -->
+                <!-- character limit for the candidate statement in the database is 4095. do not set the maxlength above that-->
+                <div class="form-group">
+                    <label for="candidateStatement">Candidate Statement:</label>
+                    <textarea class="form-control" id="candidateStatement" name="candidateStatement" rows="6"
+                        maxlength="750"
+                        placeholder="Enter your candidate statement"><% if (user.Candidate_Statement) { %><%= `${user.Candidate_Statement}` %><% } %></textarea>
+                </div>
+
+
+                <!--Marist Page URL Input-->
+                <div class="form-group">
+                    <label for="websiteURL">Marist Website:</label>
+                    <textarea class="form-control" id="websiteURL" name="websiteURL" rows="1"
+                        maxlength="750"
+                        placeholder="Enter the correct URL address for your website" required ><% if (user.Website_URL) { %><%= `${user.Website_URL}`%><% } %></textarea>
+                </div>
+
+                <br>
+                <br>
+                <br>
+
+                <!--"Save" button sends form to /user/${user.CWID}/save using POST-->
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const currCommittees = <%- userCommittees %>;
+        const committeeDropdown = document.getElementById("committeeDropdown");
+        const otherCommitteeInput = document.getElementById("otherCommittee");
+        const addOtherCommitteeButton = document.getElementById("addOtherCommittee");
+        const selectedCommittees = document.getElementById("selectedCommittees");
+        const selectedSet = new Array(); // To keep track of selected committees
+
+        // Sort the dropdown options alphabetically
+        const dropdownOptions = Array.from(committeeDropdown.options);
+        //console.log(dropdownOptions);
+        dropdownOptions.sort((a, b) => a.text.localeCompare(b.text));
+        committeeDropdown.innerHTML = ''; // Clear the dropdown
+        dropdownOptions.forEach(option => {
+            committeeDropdown.appendChild(option);
+        });
+
+        // If there are committees previously selected by user from server side, it's populated into selectedSet
+        function updateSelectedCommitteesInput() {
+            const selectedCommitteesInput = document.getElementById("selectedCommitteesInput");
+            selectedCommitteesInput.value = JSON.stringify(selectedSet);
+        }
+
+        // if user has committees, populate committees
+        if (currCommittees != null) {
+            currCommittees.forEach((e) => {
+                const committeeName = e.Committee_Name;
+                const committeeID = e.Committee_ID;
+                const listItem = document.createElement("div");
+                listItem.innerHTML = `
+                    <span id="${committeeID}">${committeeName}</span>
+                    <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                `;
+                selectedCommittees.appendChild(listItem);
+                var committee = {
+                    id: Number(committeeID),
+                    name: committeeName
+                }
+                selectedSet.push(committee);
+                
+                updateSelectedCommitteesInput();
+            });
+        }
+
+        // When committee is selected
+        committeeDropdown.addEventListener("change", function () {
+            const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex];
+
+            if (selectedOption && selectedOption.value) {
+                const committeeName = selectedOption.text;
+                const committeeID = Number(selectedOption.value);
+
+                //if (!selectedSet.has(committeeName)) {
+                var committeeExists = false;
+                selectedSet.forEach(e => {
+                    if (e.id === committeeID) {
+                        committeeExists = true;
+                    }
+                })
+                if (!committeeExists) {
+                    const listItem = document.createElement("div");
+                    listItem.innerHTML = `
+                    <span id="${committeeID}">${committeeName}</span>
+                        <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+                    `;
+                    selectedCommittees.appendChild(listItem);
+                    var committee = {
+                        id: Number(committeeID),
+                        name: committeeName
+                    }
+                    selectedSet.push(committee);
+                }
+            }
+
+            updateSelectedCommitteesInput();
+        });
+
+        addOtherCommitteeButton.addEventListener("click", function () {
+            const committeeName = otherCommitteeInput.value.trim();
+            const selectedOption = committeeDropdown.options[committeeDropdown.selectedIndex]; // existing committee that's chosen by user
+            const selectedOptionText = selectedOption.text;
+            if (selectedOptionText === committeeName || committeeName == "") { // if there's the same committee in dropdown/typed again in other committee box
+                return;
+            }
+            // if there is existing committee in list
+            const lastCommitteeID = dropdownOptions.length - 1;
+
+            const committeeID = lastCommitteeID + 1;
+            const listItem = document.createElement("div");
+            listItem.innerHTML = `
+                <span id="${committeeID}">${committeeName}</span>
+                <button type="button" class="delete-button" onclick="removeCommittee(this)">x</button>
+            `;
+            selectedCommittees.appendChild(listItem);
+            otherCommitteeInput.value = "";
+            dropdownOptions.push({text: committeeName, value: committeeID}); // adds other committee to list
+            var committee = {
+                id: Number(committeeID),
+                name: committeeName
+            }
+            console.log(committee);
+            selectedSet.push(committee);
+
+            updateSelectedCommitteesInput();
+        });
+
+        function removeCommittee(button) {
+            const listItem = button.parentElement;
+            const committeeName = listItem.querySelector("span").textContent;
+            const committeeID = listItem.querySelector("span").id;
+            // selectedSet.delete(committeeName);
+            // selectedSet.delete(committeeID);
+            selectedSet.forEach(function (item, index, object) {
+                if (item.id == committeeID) {
+                    object.splice(index, 1);
+                }
+            });
+            selectedCommittees.removeChild(listItem);
+            //committeeDropdown.selectedIndex = -1;
+            //if (committeeDropdown.selectedIndex === -1 && committeeDropdown.options.length > 0) {
+                //committeeDropdown.selectedIndex = 0;
+            //}
+            committeeDropdown.value = "";
+            updateSelectedCommitteesInput();
+        }
+
+
+        schoolDropdown.addEventListener("change", function() {
+            let schoolName = schoolDropdown.options[schoolDropdown.selectedIndex].text;
+            let fname = firstName.value.trim();
+            let lname = lastName.value.trim();
+            let pname = preferredName.value.trim();
+
+            schoolName = schoolName.replaceAll(" ", "-");
+            if (pname != "" && pname != null) {
+                pname = pname.replaceAll(" ", "-");
+                websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + pname;
+                console.log("https://www.marist.edu/" + schoolName + "/faculty/" + pname);
+            }
+            else {
+                fname = fname.replaceAll(" ", "-");
+                lname = lname.replaceAll(" ", "-");
+                websiteURL.value = "https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname;
+                console.log("https://www.marist.edu/" + schoolName + "/faculty/" + fname + "-" + lname);
+            }
+            
+            try {
+                const url = new URL(websiteURL.value);
+            }
+            catch (error) {
+                console.log(error); // => TypeError, "Failed to construct URL: Invalid URL"
+                console.log("error");
+            }
+        });
+
+    </script>
+
+    <%- include('./partials/footer.ejs') %>

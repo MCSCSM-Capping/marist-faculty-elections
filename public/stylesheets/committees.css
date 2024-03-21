@@ -1,13 +1,16 @@
-/* Container and Layout */
+/* Global Container and Layout */
 .container {
-    max-width: 700px; /* Restricting the width for better visual appeal */
+    max-width: 700px;
+    margin: auto;
 }
 
+/* Form Card Styles */
 .form-card {
-    background-color: #ffffff; /* White background for the card */
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px; /* Rounded corners for the card */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px; /* Space between cards if stacked */
 }
 
 /* Typography */
@@ -22,43 +25,44 @@ h2 {
 label {
     color: #34495e;
     font-weight: 500;
+    margin-bottom: 5px; /* Space between label and input */
 }
 
-/* Textarea */
+/* Input and Textarea Styles */
 .form-control {
     border-radius: 5px;
     border: 1px solid #ecf0f1;
     padding: 15px;
     font-size: 16px;
     transition: border-color .2s, box-shadow .2s;
-    resize: vertical; /* Allows vertical resizing only */
+    resize: vertical;
 }
 
 .form-control::placeholder {
-    color: #95a5a6; /* Light gray color for the placeholder text */
+    color: #95a5a6;
 }
 
 .form-control:focus {
-    border-color: #2980b9;
-    box-shadow: 0 0 10px rgba(41, 128, 185, 0.25); /* Subtle glow on focus */
+    border-color: #f24646; /* Updated focus border color to match the red button */
+    box-shadow: 0 0 10px rgba(242, 70, 70, 0.25); /* Shadow with red hue when input is focused */
 }
 
-/* Button */
+/* Button Styles */
 .btn-primary {
-    background-color: #2980b9;
+    background-color: #f24646; /* Red color */
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color .2s, transform .1s; /* Added transform transition */
+    transition: background-color .2s, transform .1s;
 }
 
 .btn-primary:hover, .btn-primary:focus {
-    background-color: #3498db;
-    transform: translateY(-2px); /* Subtle lift on hover/focus */
+    background-color: #e02121; /* Darker shade of red for hover */
+    transform: translateY(-2px); /* Slight lift on hover/focus */
 }
 
-/* Additional Spacing */
+/* Spacing and Layout */
 .form-group {
     margin-bottom: 30px;
 }

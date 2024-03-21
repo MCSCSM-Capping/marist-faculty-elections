@@ -1,15 +1,52 @@
+<%- include('./partials/base.ejs', {user: user}) %>
+<!-- Include the base EJS file which usually contains the basic HTML structure like head, header etc. -->
+
 <link rel="stylesheet" href="/stylesheets/statement.css">
+<!-- Linking a CSS file specific to the statement page for styling -->
 
 <div class="container mt-5">
+    <!-- A container div with margin-top (mt-5) for layout -->
+
     <div class="form-card">
-        <h2>Statement</h2>
+        <!-- A div for the form with a card style -->
+
+        <h2>Statements</h2>
+        <!-- Header for the page -->
 
         <form action="/update_statement" method="post">
+            <!-- Form with POST method to send data to the server at the '/update_statement' endpoint -->
+
             <div class="form-group">
-                <label for="userStatement">Your Personal Statement:</label>
+                <!-- Grouping form elements -->
+
+                <label for="userStatement">Service Statement:</label>
+                <!-- Label for the textarea -->
+
                 <textarea class="form-control" id="userStatement" name="userStatement" rows="10" placeholder="Enter your personal statement here..."></textarea>
+                <!-- Textarea for user to input their service statement -->
+
             </div>
-            <button type="submit" class="btn btn-primary">Save Statement</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <!-- Submit button to save the service statement -->
+
+            <!-- Break tags for spacing -->
+
+            <div class="form-group">
+                <!-- Another form group for the candidate statement -->
+
+                <label for="userStatement">Candidate Statement:</label>
+                <!-- Label for the candidate statement textarea -->
+
+                <textarea class="form-control" id="userStatement" name="userStatement" rows="10" placeholder="Enter your personal statement here..."></textarea>
+                <!-- Textarea for user to input their candidate statement -->
+
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <!-- Submit button to save the candidate statement -->
+
         </form>
     </div>
 </div>
+
+<%- include('./partials/footer') %>
+<!-- Include the footer EJS file -->
